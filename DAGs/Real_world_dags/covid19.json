@@ -1,0 +1,396 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id": "Exposure to C19"
+    },
+    {
+      "id": "Onset of C19"
+    },
+    {
+      "id": "Access to tests"
+    },
+    {
+      "id": "New cases"
+    },
+    {
+      "id": "Herd immunity"
+    },
+    {
+      "id": "Susceptibility"
+    },
+    {
+      "id": "Tracing capacity"
+    },
+    {
+      "id": "Mobility"
+    },
+    {
+      "id": "Trust in society"
+    },
+    {
+      "id": "Searches corona"
+    },
+    {
+      "id": "Right-wing populist party votes"
+    },
+    {
+      "id": "Turnout"
+    },
+    {
+      "id": "Health care utilization"
+    },
+    {
+      "id": "Humidity"
+    },
+    {
+      "id": "Rainfall"
+    },
+    {
+      "id": "Temperature"
+    },
+    {
+      "id": "Wind"
+    },
+    {
+      "id": "C19 burden"
+    },
+    {
+      "id": "Interventions"
+    },
+    {
+      "id": "Population density"
+    },
+    {
+      "id": "Age"
+    },
+    {
+      "id": "Socio-economic status"
+    },
+    {
+      "id": "Nursing homes"
+    },
+    {
+      "id": "Gender"
+    },
+    {
+      "id": "Foreign citizens"
+    }
+  ],
+  "links": [
+    {
+      "source": "Exposure to C19",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Exposure to C19",
+      "target": "Access to tests"
+    },
+    {
+      "source": "Onset of C19",
+      "target": "New cases"
+    },
+    {
+      "source": "Access to tests",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Herd immunity",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Herd immunity",
+      "target": "Susceptibility"
+    },
+    {
+      "source": "Susceptibility",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Tracing capacity",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Mobility",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Mobility",
+      "target": "Tracing capacity"
+    },
+    {
+      "source": "Trust in society",
+      "target": "Searches corona"
+    },
+    {
+      "source": "Trust in society",
+      "target": "Right-wing populist party votes"
+    },
+    {
+      "source": "Trust in society",
+      "target": "Turnout"
+    },
+    {
+      "source": "Searches corona",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Searches corona",
+      "target": "Mobility"
+    },
+    {
+      "source": "Searches corona",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Right-wing populist party votes",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Right-wing populist party votes",
+      "target": "Searches corona"
+    },
+    {
+      "source": "Turnout",
+      "target": "Searches corona"
+    },
+    {
+      "source": "Turnout",
+      "target": "Right-wing populist party votes"
+    },
+    {
+      "source": "Health care utilization",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Health care utilization",
+      "target": "Tracing capacity"
+    },
+    {
+      "source": "Humidity",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Rainfall",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Rainfall",
+      "target": "Mobility"
+    },
+    {
+      "source": "Rainfall",
+      "target": "Humidity"
+    },
+    {
+      "source": "Rainfall",
+      "target": "Temperature"
+    },
+    {
+      "source": "Temperature",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Temperature",
+      "target": "Mobility"
+    },
+    {
+      "source": "Temperature",
+      "target": "Humidity"
+    },
+    {
+      "source": "Wind",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Wind",
+      "target": "Temperature"
+    },
+    {
+      "source": "C19 burden",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "C19 burden",
+      "target": "Tracing capacity"
+    },
+    {
+      "source": "C19 burden",
+      "target": "Mobility"
+    },
+    {
+      "source": "C19 burden",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "C19 burden",
+      "target": "Searches corona"
+    },
+    {
+      "source": "C19 burden",
+      "target": "Interventions"
+    },
+    {
+      "source": "Interventions",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Interventions",
+      "target": "Mobility"
+    },
+    {
+      "source": "Interventions",
+      "target": "Searches corona"
+    },
+    {
+      "source": "Population density",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Population density",
+      "target": "Mobility"
+    },
+    {
+      "source": "Population density",
+      "target": "Trust in society"
+    },
+    {
+      "source": "Population density",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Population density",
+      "target": "Right-wing populist party votes"
+    },
+    {
+      "source": "Age",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Age",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Age",
+      "target": "Mobility"
+    },
+    {
+      "source": "Age",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Age",
+      "target": "Searches corona"
+    },
+    {
+      "source": "Age",
+      "target": "Right-wing populist party votes"
+    },
+    {
+      "source": "Age",
+      "target": "Turnout"
+    },
+    {
+      "source": "Age",
+      "target": "Socio-economic status"
+    },
+    {
+      "source": "Age",
+      "target": "Nursing homes"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Mobility"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Trust in society"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Searches corona"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Right-wing populist party votes"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Turnout"
+    },
+    {
+      "source": "Socio-economic status",
+      "target": "Nursing homes"
+    },
+    {
+      "source": "Nursing homes",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Gender",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Gender",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Gender",
+      "target": "Mobility"
+    },
+    {
+      "source": "Gender",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Gender",
+      "target": "Searches corona"
+    },
+    {
+      "source": "Gender",
+      "target": "Right-wing populist party votes"
+    },
+    {
+      "source": "Gender",
+      "target": "Turnout"
+    },
+    {
+      "source": "Gender",
+      "target": "Age"
+    },
+    {
+      "source": "Gender",
+      "target": "Socio-economic status"
+    },
+    {
+      "source": "Foreign citizens",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Foreign citizens",
+      "target": "Right-wing populist party votes"
+    },
+    {
+      "source": "Foreign citizens",
+      "target": "Age"
+    },
+    {
+      "source": "Foreign citizens",
+      "target": "Socio-economic status"
+    },
+    {
+      "source": "Foreign citizens",
+      "target": "Nursing homes"
+    }
+  ]
+}

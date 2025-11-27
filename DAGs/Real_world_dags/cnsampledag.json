@@ -1,0 +1,1773 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id": "negligence"
+    },
+    {
+      "id": "accident"
+    },
+    {
+      "id": "injuries"
+    },
+    {
+      "id": "injury"
+    },
+    {
+      "id": "death"
+    },
+    {
+      "id": "damage"
+    },
+    {
+      "id": "damages"
+    },
+    {
+      "id": "personal_injury"
+    },
+    {
+      "id": "fire"
+    },
+    {
+      "id": "deaths"
+    },
+    {
+      "id": "disability"
+    },
+    {
+      "id": "serious_injury"
+    },
+    {
+      "id": "bodily_injury"
+    },
+    {
+      "id": "loss"
+    },
+    {
+      "id": "disease"
+    },
+    {
+      "id": "pain"
+    },
+    {
+      "id": "symptoms"
+    },
+    {
+      "id": "blindness"
+    },
+    {
+      "id": "mortality"
+    },
+    {
+      "id": "pneumonia"
+    },
+    {
+      "id": "cancer"
+    },
+    {
+      "id": "heart_attack"
+    },
+    {
+      "id": "illness"
+    },
+    {
+      "id": "hair_loss"
+    },
+    {
+      "id": "stroke"
+    },
+    {
+      "id": "complications"
+    },
+    {
+      "id": "infection"
+    },
+    {
+      "id": "inflammation"
+    },
+    {
+      "id": "diarrhea"
+    },
+    {
+      "id": "fever"
+    },
+    {
+      "id": "heart_failure"
+    },
+    {
+      "id": "violence"
+    },
+    {
+      "id": "condition"
+    },
+    {
+      "id": "permanent_disability"
+    },
+    {
+      "id": "shock"
+    },
+    {
+      "id": "cardiac_arrest"
+    },
+    {
+      "id": "heart_disease"
+    },
+    {
+      "id": "dehydration"
+    },
+    {
+      "id": "headaches"
+    },
+    {
+      "id": "malnutrition"
+    },
+    {
+      "id": "sin"
+    },
+    {
+      "id": "suffering"
+    },
+    {
+      "id": "war"
+    },
+    {
+      "id": "famine"
+    },
+    {
+      "id": "destruction"
+    },
+    {
+      "id": "fall"
+    },
+    {
+      "id": "old_age"
+    },
+    {
+      "id": "paralysis"
+    },
+    {
+      "id": "diabetes"
+    },
+    {
+      "id": "kidney_failure"
+    },
+    {
+      "id": "suffocation"
+    },
+    {
+      "id": "aids"
+    },
+    {
+      "id": "respiratory_failure"
+    },
+    {
+      "id": "accidents"
+    },
+    {
+      "id": "fatalities"
+    },
+    {
+      "id": "tuberculosis"
+    },
+    {
+      "id": "overdose"
+    },
+    {
+      "id": "diseases"
+    },
+    {
+      "id": "suicide"
+    },
+    {
+      "id": "starvation"
+    },
+    {
+      "id": "infections"
+    },
+    {
+      "id": "hypothermia"
+    },
+    {
+      "id": "smoking"
+    },
+    {
+      "id": "lung_cancer"
+    },
+    {
+      "id": "emphysema"
+    },
+    {
+      "id": "drug"
+    },
+    {
+      "id": "exposure"
+    },
+    {
+      "id": "abuse"
+    },
+    {
+      "id": "asphyxia"
+    },
+    {
+      "id": "sepsis"
+    },
+    {
+      "id": "liver_failure"
+    },
+    {
+      "id": "neglect"
+    },
+    {
+      "id": "hemorrhage"
+    },
+    {
+      "id": "malaria"
+    },
+    {
+      "id": "incident"
+    },
+    {
+      "id": "crime"
+    },
+    {
+      "id": "stress"
+    },
+    {
+      "id": "high_blood_pressure"
+    },
+    {
+      "id": "anxiety"
+    },
+    {
+      "id": "depression"
+    },
+    {
+      "id": "problems"
+    },
+    {
+      "id": "insomnia"
+    },
+    {
+      "id": "health_problems"
+    },
+    {
+      "id": "weight_gain"
+    },
+    {
+      "id": "fatigue"
+    },
+    {
+      "id": "ulcers"
+    },
+    {
+      "id": "poisoning"
+    },
+    {
+      "id": "hiv"
+    },
+    {
+      "id": "actions"
+    },
+    {
+      "id": "poison"
+    },
+    {
+      "id": "sickness"
+    },
+    {
+      "id": "virus"
+    },
+    {
+      "id": "attack"
+    },
+    {
+      "id": "asthma"
+    },
+    {
+      "id": "exhaustion"
+    },
+    {
+      "id": "failure"
+    },
+    {
+      "id": "murder"
+    },
+    {
+      "id": "pulmonary_embolism"
+    },
+    {
+      "id": "alcoholism"
+    },
+    {
+      "id": "cirrhosis"
+    },
+    {
+      "id": "drugs"
+    },
+    {
+      "id": "side_effects"
+    },
+    {
+      "id": "wounds"
+    },
+    {
+      "id": "car_accident"
+    },
+    {
+      "id": "abortion"
+    },
+    {
+      "id": "infectious_diseases"
+    },
+    {
+      "id": "asphyxiation"
+    },
+    {
+      "id": "internal_bleeding"
+    },
+    {
+      "id": "congestive_heart_failure"
+    },
+    {
+      "id": "events"
+    },
+    {
+      "id": "consumption"
+    },
+    {
+      "id": "measles"
+    },
+    {
+      "id": "trauma"
+    },
+    {
+      "id": "renal_failure"
+    },
+    {
+      "id": "blood_clot"
+    },
+    {
+      "id": "medical_malpractice"
+    },
+    {
+      "id": "hunger"
+    },
+    {
+      "id": "heart_attacks"
+    },
+    {
+      "id": "explosion"
+    },
+    {
+      "id": "heart_trouble"
+    },
+    {
+      "id": "influenza"
+    },
+    {
+      "id": "carelessness"
+    },
+    {
+      "id": "cardiovascular_disease"
+    },
+    {
+      "id": "bacteria"
+    },
+    {
+      "id": "acne"
+    },
+    {
+      "id": "mutations"
+    },
+    {
+      "id": "imbalance"
+    },
+    {
+      "id": "radiation"
+    },
+    {
+      "id": "asbestos"
+    },
+    {
+      "id": "mesothelioma"
+    },
+    {
+      "id": "coronary_artery_disease"
+    },
+    {
+      "id": "blood_clots"
+    },
+    {
+      "id": "surgery"
+    },
+    {
+      "id": "conflict"
+    },
+    {
+      "id": "alcohol"
+    },
+    {
+      "id": "anger"
+    },
+    {
+      "id": "poverty"
+    },
+    {
+      "id": "assault"
+    },
+    {
+      "id": "overuse"
+    },
+    {
+      "id": "drought"
+    },
+    {
+      "id": "arthritis"
+    },
+    {
+      "id": "pressure"
+    },
+    {
+      "id": "asbestos_exposure"
+    },
+    {
+      "id": "cigarette_smoking"
+    },
+    {
+      "id": "lightning"
+    },
+    {
+      "id": "chronic_pain"
+    },
+    {
+      "id": "spinal_cord_injury"
+    },
+    {
+      "id": "obesity"
+    },
+    {
+      "id": "type_2_diabetes"
+    },
+    {
+      "id": "insulin_resistance"
+    },
+    {
+      "id": "endometriosis"
+    },
+    {
+      "id": "infertility"
+    },
+    {
+      "id": "lack_of_exercise"
+    },
+    {
+      "id": "poor_diet"
+    },
+    {
+      "id": "viruses"
+    },
+    {
+      "id": "heavy_rains"
+    },
+    {
+      "id": "flooding"
+    },
+    {
+      "id": "floods"
+    },
+    {
+      "id": "heavy_rain"
+    },
+    {
+      "id": "heavy_rainfall"
+    },
+    {
+      "id": "tension"
+    },
+    {
+      "id": "storm"
+    },
+    {
+      "id": "issues"
+    },
+    {
+      "id": "human_activity"
+    },
+    {
+      "id": "global_warming"
+    },
+    {
+      "id": "climate_change"
+    },
+    {
+      "id": "greenhouse_gases"
+    },
+    {
+      "id": "carbon_dioxide"
+    },
+    {
+      "id": "greenhouse_effect"
+    },
+    {
+      "id": "greenhouse_gas_emissions"
+    },
+    {
+      "id": "carbon_emissions"
+    },
+    {
+      "id": "human_activities"
+    },
+    {
+      "id": "burning_of_fossil_fuels"
+    },
+    {
+      "id": "droughts"
+    },
+    {
+      "id": "rising_sea_levels"
+    },
+    {
+      "id": "corruption"
+    },
+    {
+      "id": "osteoporosis"
+    },
+    {
+      "id": "fractures"
+    },
+    {
+      "id": "chemotherapy"
+    },
+    {
+      "id": "earthquake"
+    },
+    {
+      "id": "tsunami"
+    },
+    {
+      "id": "vaccines"
+    },
+    {
+      "id": "autism"
+    },
+    {
+      "id": "hpv"
+    },
+    {
+      "id": "cervical_cancer"
+    },
+    {
+      "id": "exposure_to_asbestos"
+    },
+    {
+      "id": "natural_selection"
+    },
+    {
+      "id": "evolution"
+    },
+    {
+      "id": "glaucoma"
+    },
+    {
+      "id": "diabetic_retinopathy"
+    },
+    {
+      "id": "anemia"
+    },
+    {
+      "id": "lack_of_sleep"
+    },
+    {
+      "id": "rape"
+    },
+    {
+      "id": "pregnancy"
+    },
+    {
+      "id": "deforestation"
+    },
+    {
+      "id": "soil_erosion"
+    },
+    {
+      "id": "medication"
+    },
+    {
+      "id": "iron_deficiency"
+    },
+    {
+      "id": "blood_loss"
+    },
+    {
+      "id": "extreme_weather_events"
+    },
+    {
+      "id": "iodine_deficiency"
+    },
+    {
+      "id": "goiter"
+    },
+    {
+      "id": "hard_work"
+    },
+    {
+      "id": "success"
+    },
+    {
+      "id": "constipation"
+    },
+    {
+      "id": "hemorrhoids"
+    },
+    {
+      "id": "brain_injury"
+    },
+    {
+      "id": "cerebral_palsy"
+    }
+  ],
+  "links": [
+    {
+      "source": "negligence",
+      "target": "accident"
+    },
+    {
+      "source": "negligence",
+      "target": "injuries"
+    },
+    {
+      "source": "negligence",
+      "target": "injury"
+    },
+    {
+      "source": "negligence",
+      "target": "death"
+    },
+    {
+      "source": "negligence",
+      "target": "damage"
+    },
+    {
+      "source": "negligence",
+      "target": "damages"
+    },
+    {
+      "source": "negligence",
+      "target": "personal_injury"
+    },
+    {
+      "source": "accident",
+      "target": "injuries"
+    },
+    {
+      "source": "accident",
+      "target": "injury"
+    },
+    {
+      "source": "accident",
+      "target": "fire"
+    },
+    {
+      "source": "accident",
+      "target": "death"
+    },
+    {
+      "source": "accident",
+      "target": "deaths"
+    },
+    {
+      "source": "accident",
+      "target": "damage"
+    },
+    {
+      "source": "accident",
+      "target": "disability"
+    },
+    {
+      "source": "accident",
+      "target": "damages"
+    },
+    {
+      "source": "accident",
+      "target": "personal_injury"
+    },
+    {
+      "source": "accident",
+      "target": "serious_injury"
+    },
+    {
+      "source": "accident",
+      "target": "bodily_injury"
+    },
+    {
+      "source": "accident",
+      "target": "loss"
+    },
+    {
+      "source": "injuries",
+      "target": "death"
+    },
+    {
+      "source": "injuries",
+      "target": "pain"
+    },
+    {
+      "source": "injuries",
+      "target": "deaths"
+    },
+    {
+      "source": "injury",
+      "target": "death"
+    },
+    {
+      "source": "injury",
+      "target": "condition"
+    },
+    {
+      "source": "injury",
+      "target": "inflammation"
+    },
+    {
+      "source": "injury",
+      "target": "pain"
+    },
+    {
+      "source": "injury",
+      "target": "disability"
+    },
+    {
+      "source": "injury",
+      "target": "permanent_disability"
+    },
+    {
+      "source": "fire",
+      "target": "death"
+    },
+    {
+      "source": "fire",
+      "target": "damage"
+    },
+    {
+      "source": "disease",
+      "target": "death"
+    },
+    {
+      "source": "disease",
+      "target": "pain"
+    },
+    {
+      "source": "disease",
+      "target": "deaths"
+    },
+    {
+      "source": "disease",
+      "target": "disability"
+    },
+    {
+      "source": "disease",
+      "target": "symptoms"
+    },
+    {
+      "source": "disease",
+      "target": "blindness"
+    },
+    {
+      "source": "disease",
+      "target": "mortality"
+    },
+    {
+      "source": "pain",
+      "target": "depression"
+    },
+    {
+      "source": "pneumonia",
+      "target": "death"
+    },
+    {
+      "source": "cancer",
+      "target": "death"
+    },
+    {
+      "source": "cancer",
+      "target": "pain"
+    },
+    {
+      "source": "cancer",
+      "target": "deaths"
+    },
+    {
+      "source": "heart_attack",
+      "target": "death"
+    },
+    {
+      "source": "illness",
+      "target": "death"
+    },
+    {
+      "source": "illness",
+      "target": "disability"
+    },
+    {
+      "source": "illness",
+      "target": "symptoms"
+    },
+    {
+      "source": "illness",
+      "target": "hair_loss"
+    },
+    {
+      "source": "stroke",
+      "target": "death"
+    },
+    {
+      "source": "complications",
+      "target": "death"
+    },
+    {
+      "source": "infection",
+      "target": "disease"
+    },
+    {
+      "source": "infection",
+      "target": "illness"
+    },
+    {
+      "source": "infection",
+      "target": "death"
+    },
+    {
+      "source": "infection",
+      "target": "inflammation"
+    },
+    {
+      "source": "infection",
+      "target": "pain"
+    },
+    {
+      "source": "infection",
+      "target": "diarrhea"
+    },
+    {
+      "source": "infection",
+      "target": "symptoms"
+    },
+    {
+      "source": "infection",
+      "target": "fever"
+    },
+    {
+      "source": "infection",
+      "target": "mortality"
+    },
+    {
+      "source": "inflammation",
+      "target": "pain"
+    },
+    {
+      "source": "diarrhea",
+      "target": "dehydration"
+    },
+    {
+      "source": "heart_failure",
+      "target": "death"
+    },
+    {
+      "source": "violence",
+      "target": "death"
+    },
+    {
+      "source": "condition",
+      "target": "death"
+    },
+    {
+      "source": "condition",
+      "target": "pain"
+    },
+    {
+      "source": "condition",
+      "target": "symptoms"
+    },
+    {
+      "source": "shock",
+      "target": "death"
+    },
+    {
+      "source": "cardiac_arrest",
+      "target": "death"
+    },
+    {
+      "source": "heart_disease",
+      "target": "death"
+    },
+    {
+      "source": "dehydration",
+      "target": "death"
+    },
+    {
+      "source": "dehydration",
+      "target": "headaches"
+    },
+    {
+      "source": "malnutrition",
+      "target": "death"
+    },
+    {
+      "source": "sin",
+      "target": "death"
+    },
+    {
+      "source": "sin",
+      "target": "suffering"
+    },
+    {
+      "source": "war",
+      "target": "death"
+    },
+    {
+      "source": "war",
+      "target": "famine"
+    },
+    {
+      "source": "war",
+      "target": "deaths"
+    },
+    {
+      "source": "war",
+      "target": "destruction"
+    },
+    {
+      "source": "fall",
+      "target": "injury"
+    },
+    {
+      "source": "fall",
+      "target": "death"
+    },
+    {
+      "source": "old_age",
+      "target": "death"
+    },
+    {
+      "source": "paralysis",
+      "target": "death"
+    },
+    {
+      "source": "diabetes",
+      "target": "death"
+    },
+    {
+      "source": "diabetes",
+      "target": "kidney_failure"
+    },
+    {
+      "source": "diabetes",
+      "target": "blindness"
+    },
+    {
+      "source": "kidney_failure",
+      "target": "death"
+    },
+    {
+      "source": "suffocation",
+      "target": "death"
+    },
+    {
+      "source": "aids",
+      "target": "death"
+    },
+    {
+      "source": "respiratory_failure",
+      "target": "death"
+    },
+    {
+      "source": "accidents",
+      "target": "injuries"
+    },
+    {
+      "source": "accidents",
+      "target": "injury"
+    },
+    {
+      "source": "accidents",
+      "target": "death"
+    },
+    {
+      "source": "accidents",
+      "target": "deaths"
+    },
+    {
+      "source": "accidents",
+      "target": "fatalities"
+    },
+    {
+      "source": "tuberculosis",
+      "target": "death"
+    },
+    {
+      "source": "overdose",
+      "target": "death"
+    },
+    {
+      "source": "diseases",
+      "target": "death"
+    },
+    {
+      "source": "diseases",
+      "target": "deaths"
+    },
+    {
+      "source": "suicide",
+      "target": "death"
+    },
+    {
+      "source": "starvation",
+      "target": "death"
+    },
+    {
+      "source": "infections",
+      "target": "death"
+    },
+    {
+      "source": "infections",
+      "target": "deaths"
+    },
+    {
+      "source": "hypothermia",
+      "target": "death"
+    },
+    {
+      "source": "smoking",
+      "target": "disease"
+    },
+    {
+      "source": "smoking",
+      "target": "cancer"
+    },
+    {
+      "source": "smoking",
+      "target": "heart_disease"
+    },
+    {
+      "source": "smoking",
+      "target": "death"
+    },
+    {
+      "source": "smoking",
+      "target": "lung_cancer"
+    },
+    {
+      "source": "smoking",
+      "target": "deaths"
+    },
+    {
+      "source": "smoking",
+      "target": "emphysema"
+    },
+    {
+      "source": "lung_cancer",
+      "target": "deaths"
+    },
+    {
+      "source": "drug",
+      "target": "death"
+    },
+    {
+      "source": "exposure",
+      "target": "disease"
+    },
+    {
+      "source": "exposure",
+      "target": "cancer"
+    },
+    {
+      "source": "exposure",
+      "target": "illness"
+    },
+    {
+      "source": "exposure",
+      "target": "death"
+    },
+    {
+      "source": "abuse",
+      "target": "death"
+    },
+    {
+      "source": "asphyxia",
+      "target": "death"
+    },
+    {
+      "source": "sepsis",
+      "target": "death"
+    },
+    {
+      "source": "liver_failure",
+      "target": "death"
+    },
+    {
+      "source": "neglect",
+      "target": "death"
+    },
+    {
+      "source": "hemorrhage",
+      "target": "death"
+    },
+    {
+      "source": "malaria",
+      "target": "death"
+    },
+    {
+      "source": "malaria",
+      "target": "deaths"
+    },
+    {
+      "source": "incident",
+      "target": "injury"
+    },
+    {
+      "source": "incident",
+      "target": "death"
+    },
+    {
+      "source": "crime",
+      "target": "death"
+    },
+    {
+      "source": "stress",
+      "target": "disease"
+    },
+    {
+      "source": "stress",
+      "target": "illness"
+    },
+    {
+      "source": "stress",
+      "target": "death"
+    },
+    {
+      "source": "stress",
+      "target": "diseases"
+    },
+    {
+      "source": "stress",
+      "target": "high_blood_pressure"
+    },
+    {
+      "source": "stress",
+      "target": "pain"
+    },
+    {
+      "source": "stress",
+      "target": "anxiety"
+    },
+    {
+      "source": "stress",
+      "target": "depression"
+    },
+    {
+      "source": "stress",
+      "target": "problems"
+    },
+    {
+      "source": "stress",
+      "target": "insomnia"
+    },
+    {
+      "source": "stress",
+      "target": "health_problems"
+    },
+    {
+      "source": "stress",
+      "target": "headaches"
+    },
+    {
+      "source": "stress",
+      "target": "symptoms"
+    },
+    {
+      "source": "stress",
+      "target": "hair_loss"
+    },
+    {
+      "source": "stress",
+      "target": "weight_gain"
+    },
+    {
+      "source": "stress",
+      "target": "fatigue"
+    },
+    {
+      "source": "stress",
+      "target": "ulcers"
+    },
+    {
+      "source": "high_blood_pressure",
+      "target": "stroke"
+    },
+    {
+      "source": "anxiety",
+      "target": "depression"
+    },
+    {
+      "source": "anxiety",
+      "target": "insomnia"
+    },
+    {
+      "source": "anxiety",
+      "target": "symptoms"
+    },
+    {
+      "source": "depression",
+      "target": "suicide"
+    },
+    {
+      "source": "depression",
+      "target": "insomnia"
+    },
+    {
+      "source": "depression",
+      "target": "fatigue"
+    },
+    {
+      "source": "poisoning",
+      "target": "death"
+    },
+    {
+      "source": "hiv",
+      "target": "death"
+    },
+    {
+      "source": "hiv",
+      "target": "aids"
+    },
+    {
+      "source": "actions",
+      "target": "death"
+    },
+    {
+      "source": "poison",
+      "target": "death"
+    },
+    {
+      "source": "sickness",
+      "target": "death"
+    },
+    {
+      "source": "virus",
+      "target": "disease"
+    },
+    {
+      "source": "virus",
+      "target": "death"
+    },
+    {
+      "source": "virus",
+      "target": "aids"
+    },
+    {
+      "source": "attack",
+      "target": "death"
+    },
+    {
+      "source": "asthma",
+      "target": "death"
+    },
+    {
+      "source": "exhaustion",
+      "target": "death"
+    },
+    {
+      "source": "failure",
+      "target": "death"
+    },
+    {
+      "source": "murder",
+      "target": "death"
+    },
+    {
+      "source": "pulmonary_embolism",
+      "target": "death"
+    },
+    {
+      "source": "alcoholism",
+      "target": "death"
+    },
+    {
+      "source": "cirrhosis",
+      "target": "death"
+    },
+    {
+      "source": "drugs",
+      "target": "death"
+    },
+    {
+      "source": "drugs",
+      "target": "side_effects"
+    },
+    {
+      "source": "wounds",
+      "target": "death"
+    },
+    {
+      "source": "car_accident",
+      "target": "death"
+    },
+    {
+      "source": "abortion",
+      "target": "death"
+    },
+    {
+      "source": "infectious_diseases",
+      "target": "death"
+    },
+    {
+      "source": "asphyxiation",
+      "target": "death"
+    },
+    {
+      "source": "internal_bleeding",
+      "target": "death"
+    },
+    {
+      "source": "congestive_heart_failure",
+      "target": "death"
+    },
+    {
+      "source": "events",
+      "target": "death"
+    },
+    {
+      "source": "consumption",
+      "target": "death"
+    },
+    {
+      "source": "measles",
+      "target": "death"
+    },
+    {
+      "source": "trauma",
+      "target": "injury"
+    },
+    {
+      "source": "trauma",
+      "target": "death"
+    },
+    {
+      "source": "renal_failure",
+      "target": "death"
+    },
+    {
+      "source": "blood_clot",
+      "target": "heart_attack"
+    },
+    {
+      "source": "blood_clot",
+      "target": "stroke"
+    },
+    {
+      "source": "blood_clot",
+      "target": "death"
+    },
+    {
+      "source": "medical_malpractice",
+      "target": "death"
+    },
+    {
+      "source": "hunger",
+      "target": "death"
+    },
+    {
+      "source": "heart_attacks",
+      "target": "death"
+    },
+    {
+      "source": "explosion",
+      "target": "death"
+    },
+    {
+      "source": "heart_trouble",
+      "target": "death"
+    },
+    {
+      "source": "influenza",
+      "target": "pneumonia"
+    },
+    {
+      "source": "influenza",
+      "target": "death"
+    },
+    {
+      "source": "carelessness",
+      "target": "injury"
+    },
+    {
+      "source": "carelessness",
+      "target": "death"
+    },
+    {
+      "source": "cardiovascular_disease",
+      "target": "death"
+    },
+    {
+      "source": "bacteria",
+      "target": "disease"
+    },
+    {
+      "source": "bacteria",
+      "target": "pneumonia"
+    },
+    {
+      "source": "bacteria",
+      "target": "illness"
+    },
+    {
+      "source": "bacteria",
+      "target": "infection"
+    },
+    {
+      "source": "bacteria",
+      "target": "diseases"
+    },
+    {
+      "source": "bacteria",
+      "target": "infections"
+    },
+    {
+      "source": "bacteria",
+      "target": "inflammation"
+    },
+    {
+      "source": "bacteria",
+      "target": "acne"
+    },
+    {
+      "source": "mutations",
+      "target": "disease"
+    },
+    {
+      "source": "mutations",
+      "target": "cancer"
+    },
+    {
+      "source": "imbalance",
+      "target": "disease"
+    },
+    {
+      "source": "radiation",
+      "target": "cancer"
+    },
+    {
+      "source": "asbestos",
+      "target": "cancer"
+    },
+    {
+      "source": "asbestos",
+      "target": "lung_cancer"
+    },
+    {
+      "source": "asbestos",
+      "target": "mesothelioma"
+    },
+    {
+      "source": "coronary_artery_disease",
+      "target": "heart_attack"
+    },
+    {
+      "source": "blood_clots",
+      "target": "stroke"
+    },
+    {
+      "source": "surgery",
+      "target": "complications"
+    },
+    {
+      "source": "surgery",
+      "target": "pain"
+    },
+    {
+      "source": "conflict",
+      "target": "violence"
+    },
+    {
+      "source": "alcohol",
+      "target": "violence"
+    },
+    {
+      "source": "alcohol",
+      "target": "problems"
+    },
+    {
+      "source": "anger",
+      "target": "violence"
+    },
+    {
+      "source": "poverty",
+      "target": "violence"
+    },
+    {
+      "source": "poverty",
+      "target": "malnutrition"
+    },
+    {
+      "source": "poverty",
+      "target": "crime"
+    },
+    {
+      "source": "assault",
+      "target": "injury"
+    },
+    {
+      "source": "overuse",
+      "target": "injury"
+    },
+    {
+      "source": "drought",
+      "target": "famine"
+    },
+    {
+      "source": "arthritis",
+      "target": "pain"
+    },
+    {
+      "source": "pressure",
+      "target": "pain"
+    },
+    {
+      "source": "asbestos_exposure",
+      "target": "lung_cancer"
+    },
+    {
+      "source": "asbestos_exposure",
+      "target": "mesothelioma"
+    },
+    {
+      "source": "cigarette_smoking",
+      "target": "lung_cancer"
+    },
+    {
+      "source": "lightning",
+      "target": "fire"
+    },
+    {
+      "source": "chronic_pain",
+      "target": "depression"
+    },
+    {
+      "source": "spinal_cord_injury",
+      "target": "paralysis"
+    },
+    {
+      "source": "obesity",
+      "target": "diabetes"
+    },
+    {
+      "source": "obesity",
+      "target": "diseases"
+    },
+    {
+      "source": "obesity",
+      "target": "high_blood_pressure"
+    },
+    {
+      "source": "obesity",
+      "target": "type_2_diabetes"
+    },
+    {
+      "source": "obesity",
+      "target": "insulin_resistance"
+    },
+    {
+      "source": "endometriosis",
+      "target": "infertility"
+    },
+    {
+      "source": "lack_of_exercise",
+      "target": "obesity"
+    },
+    {
+      "source": "poor_diet",
+      "target": "obesity"
+    },
+    {
+      "source": "viruses",
+      "target": "diseases"
+    },
+    {
+      "source": "heavy_rains",
+      "target": "flooding"
+    },
+    {
+      "source": "heavy_rains",
+      "target": "floods"
+    },
+    {
+      "source": "heavy_rain",
+      "target": "flooding"
+    },
+    {
+      "source": "heavy_rainfall",
+      "target": "flooding"
+    },
+    {
+      "source": "tension",
+      "target": "headaches"
+    },
+    {
+      "source": "storm",
+      "target": "damage"
+    },
+    {
+      "source": "issues",
+      "target": "problems"
+    },
+    {
+      "source": "human_activity",
+      "target": "global_warming"
+    },
+    {
+      "source": "human_activity",
+      "target": "climate_change"
+    },
+    {
+      "source": "global_warming",
+      "target": "climate_change"
+    },
+    {
+      "source": "global_warming",
+      "target": "floods"
+    },
+    {
+      "source": "global_warming",
+      "target": "droughts"
+    },
+    {
+      "source": "global_warming",
+      "target": "rising_sea_levels"
+    },
+    {
+      "source": "climate_change",
+      "target": "extreme_weather_events"
+    },
+    {
+      "source": "greenhouse_gases",
+      "target": "global_warming"
+    },
+    {
+      "source": "carbon_dioxide",
+      "target": "global_warming"
+    },
+    {
+      "source": "greenhouse_effect",
+      "target": "global_warming"
+    },
+    {
+      "source": "greenhouse_gas_emissions",
+      "target": "global_warming"
+    },
+    {
+      "source": "greenhouse_gas_emissions",
+      "target": "climate_change"
+    },
+    {
+      "source": "carbon_emissions",
+      "target": "global_warming"
+    },
+    {
+      "source": "human_activities",
+      "target": "global_warming"
+    },
+    {
+      "source": "human_activities",
+      "target": "climate_change"
+    },
+    {
+      "source": "burning_of_fossil_fuels",
+      "target": "global_warming"
+    },
+    {
+      "source": "corruption",
+      "target": "poverty"
+    },
+    {
+      "source": "osteoporosis",
+      "target": "fractures"
+    },
+    {
+      "source": "chemotherapy",
+      "target": "hair_loss"
+    },
+    {
+      "source": "earthquake",
+      "target": "tsunami"
+    },
+    {
+      "source": "vaccines",
+      "target": "autism"
+    },
+    {
+      "source": "hpv",
+      "target": "cervical_cancer"
+    },
+    {
+      "source": "exposure_to_asbestos",
+      "target": "mesothelioma"
+    },
+    {
+      "source": "natural_selection",
+      "target": "evolution"
+    },
+    {
+      "source": "glaucoma",
+      "target": "blindness"
+    },
+    {
+      "source": "diabetic_retinopathy",
+      "target": "blindness"
+    },
+    {
+      "source": "anemia",
+      "target": "fatigue"
+    },
+    {
+      "source": "lack_of_sleep",
+      "target": "fatigue"
+    },
+    {
+      "source": "rape",
+      "target": "pregnancy"
+    },
+    {
+      "source": "deforestation",
+      "target": "soil_erosion"
+    },
+    {
+      "source": "medication",
+      "target": "side_effects"
+    },
+    {
+      "source": "iron_deficiency",
+      "target": "anemia"
+    },
+    {
+      "source": "blood_loss",
+      "target": "anemia"
+    },
+    {
+      "source": "iodine_deficiency",
+      "target": "goiter"
+    },
+    {
+      "source": "hard_work",
+      "target": "success"
+    },
+    {
+      "source": "constipation",
+      "target": "hemorrhoids"
+    },
+    {
+      "source": "brain_injury",
+      "target": "cerebral_palsy"
+    }
+  ]
+}

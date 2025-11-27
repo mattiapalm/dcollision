@@ -1,0 +1,232 @@
+########--------------- Requirements ---------------########
+
+from pathlib import Path
+import numpy as np
+import pandas as pd
+import pickle
+
+##### ====== #####
+
+# Base path
+BASE = Path(__file__).resolve().parent.parent.parent
+
+# Path to subfolders
+runtimes_dir = BASE / "Results/Runtimes"
+all_runtimes_dir = runtimes_dir / "All_runtimes"
+mean_runtimes_dir = runtimes_dir / "Mean_runtimes"
+var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
+
+##### ====== #####
+
+### Graphs' names
+
+graph_names = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
+baseline_graph_names = ['SACHS', 'CHILD', 'REDUCEDCOVID']
+
+########--------------- Load the runtimes' files ---------------########
+    
+## Read transformation runtimes
+with open(all_runtimes_dir / "RW_all_runtimes_T_dict.pkl", "rb") as f:
+    RW_all_runtimes_T_dict = pickle.load(f)
+
+## Read query runtimes
+
+# Native
+with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "rb") as f:
+    RW_all_runtimes_Qn_dict = pickle.load(f)
+# APOC
+with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "rb") as f:
+    RW_all_runtimes_Qa_dict = pickle.load(f)
+    
+## Read total runtimes
+
+# Native
+with open(all_runtimes_dir / "RW_all_runtimes_tot_n_dict.pkl", "rb") as f:
+    RW_all_runtimes_tot_n_dict = pickle.load(f)
+# APOC
+with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "rb") as f:
+    RW_all_runtimes_tot_a_dict = pickle.load(f)
+
+## Baseline runtimes
+with open(all_runtimes_dir / "RW_all_runtimes_baseline_dict.pkl", "rb") as f:
+    RW_all_runtimes_baseline_dict = pickle.load(f)
+    
+    
+########--------------- Retrieve statistics ---------------########
+
+
+## Retrieve means and variances of runtimes per each (|X|, |Z|)
+
+# Initialization
+RW_all_mean_runtimes_T_dict = {}
+RW_all_mean_runtimes_Qn_dict, RW_all_mean_runtimes_tot_n_dict = {}, {}
+RW_all_mean_runtimes_Qa_dict, RW_all_mean_runtimes_tot_a_dict = {}, {}
+RW_all_mean_runtimes_baseline_dict = {}
+RW_all_var_runtimes_T_dict = {}
+RW_all_var_runtimes_Qn_dict, RW_all_var_runtimes_tot_n_dict = {}, {}
+RW_all_var_runtimes_Qa_dict, RW_all_var_runtimes_tot_a_dict = {}, {}
+RW_all_var_runtimes_baseline_dict = {}
+
+RW_all_runtimes_list = [
+                          RW_all_runtimes_T_dict,
+                          RW_all_runtimes_Qn_dict,
+                          RW_all_runtimes_tot_n_dict,
+                          RW_all_runtimes_Qa_dict,
+                          RW_all_runtimes_tot_a_dict,
+                       ]
+
+# Parallel lists for iteration
+means_dict_list = [
+    RW_all_mean_runtimes_T_dict,
+    RW_all_mean_runtimes_Qn_dict,
+    RW_all_mean_runtimes_tot_n_dict,
+    RW_all_mean_runtimes_Qa_dict,
+    RW_all_mean_runtimes_tot_a_dict,
+]
+
+vars_dict_list = [
+    RW_all_var_runtimes_T_dict,
+    RW_all_var_runtimes_Qn_dict,
+    RW_all_var_runtimes_tot_n_dict,
+    RW_all_var_runtimes_Qa_dict,
+    RW_all_var_runtimes_tot_a_dict
+]
+
+# Compute mean and variance DataFrames
+
+for algo_runtimes, mean_dict, var_dict in zip(RW_all_runtimes_list, means_dict_list, vars_dict_list):
+        
+    for name in graph_names:
+        
+        subdict = algo_runtimes[name]
+        
+        # Extract all |X| and |Z| values
+        X_values = sorted({i for (i, j) in subdict.keys()})
+        Z_values = sorted({j for (i, j) in subdict.keys()})
+        
+        # Initialize DataFrames
+        df_mean = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
+        df_var = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
+        
+        # Fill with mean and variance
+        for (i, j), runtimes in subdict.items():
+            if len(runtimes) > 0:
+                df_mean.loc[i, j] = np.mean(runtimes)
+                df_var.loc[i, j] = np.var(runtimes, ddof=1)  # sample variance
+            else:
+                df_mean.loc[i, j] = np.nan
+                df_var.loc[i, j] = np.nan
+        
+        # Store results
+        mean_dict[name] = df_mean
+        var_dict[name] = df_var
+
+for name in baseline_graph_names:
+    
+    subdict = RW_all_runtimes_baseline_dict[name]
+    
+    # Extract all |X| and |Z| values
+    X_values = sorted({i for (i, j) in subdict.keys()})
+    Z_values = sorted({j for (i, j) in subdict.keys()})
+    
+    # Initialize DataFrames
+    df_mean = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
+    df_var = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
+    
+    # Fill with mean and variance
+    for (i, j), runtimes in subdict.items():
+        if len(runtimes) > 0:
+            df_mean.loc[i, j] = np.mean(runtimes)
+            df_var.loc[i, j] = np.var(runtimes, ddof=1)  # sample variance
+        else:
+            df_mean.loc[i, j] = np.nan
+            df_var.loc[i, j] = np.nan
+    
+    # Store results
+    RW_all_mean_runtimes_baseline_dict[name] = df_mean
+    RW_all_var_runtimes_baseline_dict[name] = df_var
+
+
+###
+
+# Retrieve means and variances of the runtimes for the transformation with |Z| fixed
+
+# Means
+T_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_T_dict.items()}
+RW_all_mean_runtimes_T_Zfix = pd.DataFrame(T_means)
+RW_all_mean_runtimes_T_Zfix = RW_all_mean_runtimes_T_Zfix.sort_index()
+
+# Variances
+T_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_T_dict.items()}
+RW_all_var_runtimes_T_Zfix = pd.DataFrame(T_vars)
+RW_all_var_runtimes_T_Zfix = RW_all_var_runtimes_T_Zfix.sort_index()
+
+print(RW_all_mean_runtimes_T_Zfix)
+
+# RW_all_mean_runtimes_T_Zfix_dict, RW_all_var_runtimes_T_Zfix_dict = {}, {}
+
+# for name in graph_names:
+#     RW_all_mean_runtimes_T_dict.setdefault(name, pd.DataFrame())
+#     RW_all_var_runtimes_T_dict.setdefault(name, pd.DataFrame())
+#     RW_all_mean_runtimes_T_Zfix_dict[name] = RW_all_mean_runtimes_T_dict[name].mean(axis=0)
+#     RW_all_var_runtimes_T_Zfix_dict[name] = RW_all_var_runtimes_T_dict[name].mean(axis=0)
+    
+    
+########--------------- Save to disks ---------------########
+
+
+# Means
+
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_T_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_T_dict, f)
+
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qn_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_Qn_dict, f)
+    
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_n_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_tot_n_dict, f)
+    
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qa_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_Qa_dict, f)
+    
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_a_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_tot_a_dict, f)
+    
+with open(mean_runtimes_dir/ "RW_all_mean_runtimes_T_Zfix.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_T_Zfix, f)
+    
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_baseline_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_baseline_dict, f)
+    
+# Variances    
+
+with open(var_runtimes_dir / "RW_all_var_runtimes_T_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_T_dict, f)
+
+with open(var_runtimes_dir / "RW_all_var_runtimes_Qn_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_Qn_dict, f)
+    
+with open(var_runtimes_dir / "RW_all_var_runtimes_tot_n_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_tot_n_dict, f)
+    
+with open(var_runtimes_dir / "RW_all_var_runtimes_Qa_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_Qa_dict, f)
+    
+with open(var_runtimes_dir / "RW_all_var_runtimes_tot_a_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_tot_a_dict, f)
+    
+with open(var_runtimes_dir/ "RW_all_var_runtimes_T_Zfix.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_T_Zfix, f)
+    
+with open(var_runtimes_dir / "RW_all_var_runtimes_baseline_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_baseline_dict, f)
+    
+
+    
+# for name in names:
+#     all_mean_runtimes_T_Zfix_APOC[name].to_excel("all_mean_runtimes_T_Zfix_APOC_"+name+".xlsx", index=False)
+#     all_mean_runtimes_T_Zfix_Native[name].to_excel("all_mean_runtimes_T_Zfix_Native_"+name+".xlsx", index=False)    
+
+# all_mean_runtimes_T_Zfix_APOC.to_excel("all_mean_runtimes_T_Zfix_APOC_.xlsx", index=False)
+# all_mean_runtimes_T_Zfix_Native.to_excel("all_mean_runtimes_T_Zfix_Native_.xlsx", index=False)    
+    

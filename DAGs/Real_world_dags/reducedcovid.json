@@ -1,0 +1,163 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id": "Weather"
+    },
+    {
+      "id": "Exposure to C19"
+    },
+    {
+      "id": "Mobility"
+    },
+    {
+      "id": "Onset of C19"
+    },
+    {
+      "id": "Access to tests"
+    },
+    {
+      "id": "Tracing capacity"
+    },
+    {
+      "id": "New cases"
+    },
+    {
+      "id": "Herd immunity"
+    },
+    {
+      "id": "Susceptibility"
+    },
+    {
+      "id": "Health care utilization"
+    },
+    {
+      "id": "Interventions"
+    },
+    {
+      "id": "Population density"
+    },
+    {
+      "id": "Age"
+    },
+    {
+      "id": "Gender"
+    }
+  ],
+  "links": [
+    {
+      "source": "Weather",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Weather",
+      "target": "Mobility"
+    },
+    {
+      "source": "Exposure to C19",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Exposure to C19",
+      "target": "Access to tests"
+    },
+    {
+      "source": "Mobility",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Mobility",
+      "target": "Tracing capacity"
+    },
+    {
+      "source": "Onset of C19",
+      "target": "New cases"
+    },
+    {
+      "source": "Access to tests",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Tracing capacity",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Herd immunity",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Herd immunity",
+      "target": "Susceptibility"
+    },
+    {
+      "source": "Susceptibility",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Health care utilization",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Health care utilization",
+      "target": "Tracing capacity"
+    },
+    {
+      "source": "Interventions",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Interventions",
+      "target": "Mobility"
+    },
+    {
+      "source": "Population density",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Population density",
+      "target": "Mobility"
+    },
+    {
+      "source": "Population density",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Age",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Age",
+      "target": "Mobility"
+    },
+    {
+      "source": "Age",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Age",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Gender",
+      "target": "Exposure to C19"
+    },
+    {
+      "source": "Gender",
+      "target": "Mobility"
+    },
+    {
+      "source": "Gender",
+      "target": "Onset of C19"
+    },
+    {
+      "source": "Gender",
+      "target": "Health care utilization"
+    },
+    {
+      "source": "Gender",
+      "target": "Age"
+    }
+  ]
+}
