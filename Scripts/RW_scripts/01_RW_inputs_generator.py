@@ -49,7 +49,7 @@ RW_X_inputs, Z_inputs = dict(), dict()
 range_10 = list(range(10))
 range_frac = [ r / 10 for r in range_10]
 
-its = 2
+its = 100
 
 for name in names_of_graphs:
     if name in ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN']:

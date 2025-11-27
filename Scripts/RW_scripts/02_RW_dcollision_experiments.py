@@ -94,7 +94,7 @@ for name in names_of_graphs:
     
 ########--------------- Iterates over the DAGs ---------------########
     
-file = open("RW_DC_execution.txt", "w")
+text_file = open("RW_DC_execution.txt", "w")
 
 for name in names_of_graphs:
     
@@ -118,8 +118,8 @@ for name in names_of_graphs:
     N_nodes = len(G.nodes())   # Number of nodes in the DAG
     
     to_be_printed = f"The graph {name} has {N_nodes} nodes and {len(G.edges())} edges"
-    file.write(to_be_printed+'\n')
-    file.flush()
+    text_file.write(to_be_printed+'\n')
+    text_file.flush()
     print(to_be_printed)
 
     ### Connect to Neo4j
@@ -263,13 +263,13 @@ for name in names_of_graphs:
                 pickle.dump(all_runtimes_tot_a_dict, f)
                 
             to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
-            file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}; A: {Qa_rt}\n")
-            file.flush()
+            text_file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}; A: {Qa_rt}\n")
+            text_file.flush()
             print(to_be_printed)
             
         n_pair += 1
             
-file.close()
+text_file.close()
 
     
 

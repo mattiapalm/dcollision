@@ -185,3 +185,5 @@ for name in names_of_graphs:
             print(to_be_printed)
             
         n_pair += 1
+        
+text_file.close()
