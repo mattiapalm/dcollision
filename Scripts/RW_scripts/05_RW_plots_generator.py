@@ -1,19 +1,27 @@
 ########--------------- Requirements ---------------########
 
-
-from pathlib import Path
-from pgmpy.readwrite import BIFReader
-import json
-import networkx as nx
-from py2neo import Graph, Node, Relationship
-import random
-import numpy as np
-import time
-import pandas as pd
-import os
+import importlib
+import subprocess
 import sys
-import pickle
-import matplotlib.pyplot as plt
+
+def require(package, pip_name=None):
+    """
+    Try to import a package. If not installed, install it using pip.
+    package:   import name
+    pip_name:  name used in pip install (if different)
+    """
+    pip_name = pip_name or package
+    try:
+        return importlib.import_module(package)
+    except ImportError:
+        print(f"[INFO] '{package}' not found. Installing '{pip_name}'...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", pip_name])
+        return importlib.import_module(package)
+    
+Path = require("pathlib").Path
+np = require("numpy")
+pickle = require("pickle")
+plt = require("matplotlib.pyplot", "matplotlib")
 
 ###----------------------###
 
