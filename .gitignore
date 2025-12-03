@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.env/
+.env*/
+
+# Logs
+nohup.out
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data / binaries
+*.pkl
