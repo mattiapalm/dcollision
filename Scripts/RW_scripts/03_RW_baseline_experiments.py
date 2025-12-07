@@ -76,7 +76,7 @@ with open(inputs_dir / "RW_X_inputs.pkl", "rb") as f:
 with open(inputs_dir / "RW_Z_inputs.pkl", "rb") as f:
     RW_Z_inputs = pickle.load(f)
 
-########--------------- Initialize the runtimes dictionaries ----------########
+########--------------- Initialize the runtimes' dictionaries ----------########
 
 RW_all_runtimes_baseline_dict = {}
 for name in names_of_graphs:

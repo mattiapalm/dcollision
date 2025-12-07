@@ -26,8 +26,6 @@ random = require("random")
 time = require("time")
 pd = require("pandas")
 pickle = require("pickle")
-plt = require("matplotlib.pyplot", "matplotlib")
-
 
 ##### ====== #####
 
@@ -41,20 +39,20 @@ inputs_dir.mkdir(exist_ok=True)  # does not create it if it does not exist
 
 ########------------------------------########
 
+graph_names = []
 graph_types = ['BA','ER','LF','TR']
 
-# Initialize inputs dictionary 
-S_X_inputs, S_Z_inputs = dict(), dict()
-for t in graph_types:
-    S_X_inputs[t] = {}
-    S_Z_inputs[t] = {}
+for dag in S_dags_dir.iterdir():
+    if dag.is_file() and dag.suffix == ".pkl":
+        graph_names.append(dag.name)
+        
+graph_names.sort()
     
 #
-range_10 = list(range(10))
-range_frac = [ r / 10 for r in range_10]
+range_frac = [0, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 0.8]
 
 # Number of iterations
-its = 5
+its = 30
 
 text_file = open("S_Inputs_execution.txt", "w")
 time0=time.time()
@@ -62,14 +60,19 @@ time0=time.time()
 for t in graph_types:
     prefix = t
 
-    ######## Load synthetic DAGs ########
+######## Load synthetic DAGs ########
 
     for dag in S_dags_dir.iterdir():
-        if dag.is_file() and dag.name.startswith(prefix) and dag.suffix == ".pkl":
+        if (dag.is_file()
+            and dag.name.startswith(prefix)
+            and ('3' in dag.name or '4' in dag.name)
+            and dag.suffix == ".pkl"):
             time1 = time.time()
             with open(dag, "rb") as f:
                 G = pickle.load(f)
-
+                
+            dag_name = dag.name[:-4]
+    
             N = len(G.nodes())    # number of nodes in the graph
             
             to_be_printed = f"The graph {dag.name} has {N} nodes and {len(G.edges())} edges."
@@ -79,24 +82,10 @@ for t in graph_types:
             
             ### Compute inputs dimension
             #
-            range_ = [int(N * f) for f in range_frac]
-            max_e = 1
-            while N / 10**max_e > 100:
-                max_e +=1
-            to_be_added_X = [n * 10**e for n in [1,2,5] for e in range(max_e+1)]
-            to_be_added_Z = to_be_added_X.copy()
-    
-            for ind in range(len(to_be_added_X)):
-                a = to_be_added_X[ind]
-                if a >= int(N*0.9):
-                    to_be_added_X = to_be_added_X[:ind]
-                    to_be_added_Z = to_be_added_Z[:ind]
-                    break
-            
+            range_ = [int(N * f) for f in range_frac] + [1,2]
+            range_ = list(set(range_)); range_.sort()
             range_X, range_Z = range_.copy(), range_.copy()
-            range_X = range_X + to_be_added_X; range_Z = range_Z + to_be_added_Z
-            range_Z = list(set(range_Z)); range_Z.sort()
-            range_X = list(set(range_X)); range_X.remove(0); range_X.sort()
+            range_X.remove(0)
             
             dict_XZ = {(i,j):0 for i in range_X for j in range_Z if i+j < N}
             temp_df = pd.DataFrame(
@@ -110,16 +99,16 @@ for t in graph_types:
             # Number of input dimensions
             tot_pairs = rts_df.count().sum()
             
-            S_X_inputs[t][N] = {}
-            S_Z_inputs[t][N] = {}
-            
+            S_X_inputs, S_Z_inputs = {}, {}
             
             ########--------------- Generate inputs ---------------########
             
+            random.seed(2026)
             for card_X in range_X:
                 for card_Z in range_Z:
                     card_union = card_X + card_Z
                     if card_union < N:
+                        print(card_X, card_Z)
                         
                         X_instances, Z_instances = {}, {}
                         for h in range(its):
@@ -127,14 +116,14 @@ for t in graph_types:
                             X_instances[h] = list(sample_nodes[:card_X])
                             Z_instances[h] = list(sample_nodes[card_X:])
                             
-                        S_X_inputs[t][N][(card_X, card_Z)] = X_instances
-                        S_Z_inputs[t][N][(card_X, card_Z)] = Z_instances
+                        S_X_inputs[(card_X, card_Z)] = X_instances
+                        S_Z_inputs[(card_X, card_Z)] = Z_instances
         
             # Save to disk
-            with open(inputs_dir / "S_X_inputs.pkl", "wb") as f:
+            with open(inputs_dir / f"S_X_inputs_{dag_name}.pkl", "wb") as f:
                 pickle.dump(S_X_inputs, f)
             
-            with open(inputs_dir / "S_Z_inputs.pkl", "wb") as f:
+            with open(inputs_dir / f"S_Z_inputs_{dag_name}.pkl", "wb") as f:
                 pickle.dump(S_Z_inputs, f)
             
             time2 = time.time()

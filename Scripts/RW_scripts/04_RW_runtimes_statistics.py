@@ -38,8 +38,8 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 
 ### Graphs' names
 
-graph_names = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
-baseline_graph_names = ['SACHS', 'CHILD', 'REDUCEDCOVID']
+graph_names = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'SMALLCOVID', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
+baseline_graph_names = ['SACHS', 'CHILD', 'SMALLCOVID', 'REDUCEDCOVID']
 
 ########--------------- Load the runtimes' files ---------------########
     

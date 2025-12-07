@@ -23,6 +23,7 @@ nx = require("networkx")
 random = require("random")
 np = require("numpy")
 pickle = require("pickle")
+time = require("time")
 
 
 ##### ====== #####
@@ -115,7 +116,7 @@ def random_sequence_sum(n, low, high, total, seed=None):
     return seq
 
 
-def layered_dag(nodes_per_layer, p=0.3, seed=None):
+def layered_dag(nodes_per_layer, p, seed=None):
     """
     Create a layered (feed-forward) DAG.
 
@@ -124,7 +125,8 @@ def layered_dag(nodes_per_layer, p=0.3, seed=None):
     nodes_per_layer : list of ints
         Number of nodes in each layer.
     p : float
-        Probability of creating an edge from layer i to layer i+1
+        Probability of existence of an edge from a vertex in layer i to another
+        in layer i+1
     seed : int, optional
         Optional random seed. The default is None.
 
@@ -136,6 +138,8 @@ def layered_dag(nodes_per_layer, p=0.3, seed=None):
         list of lists of node IDs.
 
     """
+    
+    np.random.seed(seed)
 
     DAG = nx.DiGraph()
     
@@ -149,24 +153,25 @@ def layered_dag(nodes_per_layer, p=0.3, seed=None):
     
     # Add edges from layer i to layer i+1 (or beyond if desired)
     for i in range(len(layers) - 1):
+        
         U = layers[i]
-        size_U = nodes_per_layer[i]
-        for v in layers[i+1]:
-            k = random.randint(1, size_U)     # random number of elements to sample
+        V = layers[i+1]
+        
+        size_U, size_V = len(U), len(V)
+        for v in V:
+            k = np.random.binomial(n=size_U-1, p=p) + 1   # random number of elements to sample
             subset = random.sample(U, k)
             for u in U:
                 if u in subset:
                     DAG.add_edge(u, v)
-    
-    U, V = layers[0], layers[1]
-    size_V = nodes_per_layer[1]
-    for u in U:
-        if len(DAG.out_edges(u))==0:
-            k = random.randint(1, size_V)
-            subset = random.sample(V, k)
-            for v in V:
-                if u in subset:
-                    DAG.add_edge(u, v)
+                    
+        for u in U:
+            if len(DAG.out_edges(u))==0:
+                k = np.random.binomial(n=size_V-1, p=p) + 1
+                subset = random.sample(V, k)
+                for v in V:
+                    if v in subset:
+                        DAG.add_edge(u, v)
         
     return DAG, layers
 
@@ -179,30 +184,34 @@ all_graphs_dict = {}
 for t in graph_types:
     all_graphs_dict[t] = {}
 
-card_V_list = [10**3, 10**4]# 10**5, 10**6, 5*10**6]
+card_V_list0 = [10**3, 10**4, 10**5, 10**6, 5*10**6]
+card_V_list1 = [5*10**6]#, 10**5]#, 10**6, 5*10**6]
 
-D = 0.01
+D = 0.005
 seed = 2026
 
-for N in card_V_list:
+for N in card_V_list1:
     
-    index = card_V_list.index(N)+3
+    index = card_V_list0.index(N)+3
     
     ########--------------- BARABASI-ALBERT ---------------########
     
+    """seed = 2026
     G_ba = nx.barabasi_albert_graph(N, m=3)
     DAG_ba = transform_into_DAG(G_ba, seed)
     
     print(f"BA {N} has {len(DAG_ba.edges())} edges.")
     print("BA Is DAG:", nx.is_directed_acyclic_graph(DAG_ba))        
-    all_graphs_dict['BA'][N] = DAG_ba
+    #all_graphs_dict['BA'][N] = DAG_ba
     
-    to_be_saved = f"BA_{index}.pkl"
+    to_be_saved = f"BA{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
-        pickle.dump(DAG_ba, f)
+        pickle.dump(DAG_ba, f)"""
     
     ########--------------- ERDOS-RENYI ---------------########
     
+    """seed = 2026
+    start = time.time()
     G_er = nx.erdos_renyi_graph(n=N, p=D, directed=False)
     DAG_er = transform_into_DAG(G_er, seed)
     
@@ -210,40 +219,46 @@ for N in card_V_list:
     print("ER Is DAG:", nx.is_directed_acyclic_graph(DAG_er))
     all_graphs_dict['ER'][N] = DAG_er
     
-    to_be_saved = f"ER_{index}.pkl"
+    to_be_saved = f"ER{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
         pickle.dump(DAG_er, f)
+    end = time.time()
+    
+    print(f"{index} ", end-start)"""
     
     ########--------------- LAYERED / FEED-FORWARD ---------------########
     
+    seed = 2026
     n_layers = int(np.sqrt(N))+1
     low = int(n_layers/2); high = int(3*n_layers/2)
+    exv = 5 / (low-1)
     
-    n_p_layer = random_sequence_sum(n=n_layers, low=low, high=high, total=N)
-    DAG_lf, layers = layered_dag(n_p_layer, p=D)
+    n_p_layer = random_sequence_sum(n=n_layers, low=low, high=high, total=N, seed=seed)
+    DAG_lf, layers = layered_dag(n_p_layer, p = exv, seed=seed)
     
     print(f"LF {N} has {len(DAG_lf.edges())} edges.")
     print("LF Is DAG:", nx.is_directed_acyclic_graph(DAG_lf))
     all_graphs_dict['LF'][N] = DAG_lf
     
-    to_be_saved = f"LF_{index}.pkl"
+    to_be_saved = f"LF{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
         pickle.dump(DAG_lf, f)
     
     ########--------------- TREE ---------------########
     
-    T_und = random_labeled_rooted_tree(N)
+    """seed = 2026
+    T_und = nx.random_labeled_rooted_tree(N)
     root = T_und.graph['root']
     DAG_tr = nx.bfs_tree(T_und, source=root)
     
     print(f"TR {N} has {len(DAG_tr.edges())} edges.")
     print("TR Is DAG:", nx.is_directed_acyclic_graph(DAG_tr))
-    all_graphs_dict['TR'][N] = DAG_tr
+    #all_graphs_dict['TR'][N] = DAG_tr
     
-    to_be_saved = f"TR_{index}.pkl"
+    to_be_saved = f"TR{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
-        pickle.dump(DAG_tr, f)
+        pickle.dump(DAG_tr, f)"""
 
 
-with open(synthetic_dags_dir / "S_all_graphs_dict.pkl", "wb") as f:
-    pickle.dump(all_graphs_dict, f)
+""""with open(synthetic_dags_dir / S_all_graphs_dict.pkl", "wb") as f:
+    pickle.dump(all_graphs_dict, f)"""

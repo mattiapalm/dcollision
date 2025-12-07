@@ -45,7 +45,7 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 
 # ## Read query runtimes
 
-# # Normal
+# # Native
 # with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "rb") as f:
 #     RW_all_runtimes_Qn_dict = pickle.load(f)
 # # APOC
@@ -54,7 +54,7 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
     
 # ## Read total runtimes
 
-# # Normal
+# # Native
 # with open(all_runtimes_dir / "RW_all_runtimes_tot_n_dict.pkl", "rb") as f:
 #     RW_all_runtimes_tot_n_dict = pickle.load(f)
 # # APOC
@@ -79,7 +79,7 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_T_Zfix.pkl", "rb") as f:
 
 ## Read mean query runtimes
 
-# Normal
+# Native
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qn_dict.pkl", "rb") as f:
     RW_all_mean_runtimes_Qn_dict = pickle.load(f)
 
@@ -89,7 +89,7 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qa_dict.pkl", "rb") as f:
 
 ## Read mean total runtimes
 
-# Normal
+# Native
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_n_dict.pkl", "rb") as f:
     RW_all_mean_runtimes_tot_n_dict  = pickle.load(f)
 
@@ -116,7 +116,7 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_baseline_dict.pkl", "rb") as
 
 # ## Read variances of query runtimes
 
-# # Normal
+# # Native
 # with open(var_runtimes_dir / "RW_all_var_runtimes_Qn_dict.pkl", "rb") as f:
 #     RW_all_var_runtimes_Qn_dict = pickle.load(f)
 
@@ -126,7 +126,7 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_baseline_dict.pkl", "rb") as
 
 # ## Read variances of total runtimes
 
-# # Normal
+# # Native
 # with open(var_runtimes_dir / "RW_all_var_runtimes_tot_n_dict.pkl", "rb") as f:
 #     RW_all_var_runtimes_tot_n_dict  = pickle.load(f)
 
@@ -143,8 +143,8 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_baseline_dict.pkl", "rb") as
 
 ### Graphs' names
 
-graph_names = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
-baseline_graph_names = ['SACHS', 'CHILD', 'REDUCEDCOVID']
+graph_names = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'SMALLCOVID', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
+baseline_graph_names = ['SACHS', 'CHILD', 'SMALLCOVID', 'REDUCEDCOVID']
 
 ########--------------- PLOTS ---------------########
 
@@ -166,7 +166,7 @@ for name in baseline_graph_names:
         x = df1.columns[mask].astype(float)
     
         plt.figure()
-        plt.plot(x, y1[mask], 'o-', color='blue', label='Normal')
+        plt.plot(x, y1[mask], 'o-', color='blue', label='Native')
         plt.plot(x, y2[mask], 'o--', color='red', label='Baseline')
     
         plt.title(name + f" |X| = {row_idx}")
@@ -187,7 +187,7 @@ for name in baseline_graph_names:
         x = df1.index[mask]
     
         plt.figure()
-        plt.plot(x, y1[mask], 'o-', color='blue', label='Normal')
+        plt.plot(x, y1[mask], 'o-', color='blue', label='Native')
         plt.plot(x, y2[mask], 'o--', color='red', label='Baseline')
     
         plt.title(name + f" |Z| = {col}")
@@ -206,7 +206,7 @@ for name in baseline_graph_names:
     df1 = RW_all_mean_runtimes_tot_n_dict[name]     # first dataframe
     df2 = RW_all_mean_runtimes_baseline_dict[name]     # second dataframe
     
-    dfs = {'Normal': df1, 'Baseline': df2}
+    dfs = {'Native': df1, 'Baseline': df2}
     
     for k in dfs.keys():
         
@@ -277,7 +277,7 @@ for col in graph_names:
 
 # ### LINEAR INTERPOLATION
 
-# ## LI Normal and APOC comparison
+# ## LI Native and APOC comparison
 
 # for name in graph_names:
     
@@ -294,7 +294,7 @@ for col in graph_names:
 #         x = df1.columns[mask].astype(float)
     
 #         plt.figure()
-#         plt.plot(x, y1[mask], 'o-', color='blue', label='NORMAL')
+#         plt.plot(x, y1[mask], 'o-', color='blue', label='Native')
 #         plt.plot(x, y2[mask], 'o--', color='red', label='APOC')
     
 #         plt.title(name + f" |X| = {row_idx}")
@@ -315,7 +315,7 @@ for col in graph_names:
 #         x = df1.index[mask]
     
 #         plt.figure()
-#         plt.plot(x, y1[mask], 'o-', color='blue', label='NORMAL')
+#         plt.plot(x, y1[mask], 'o-', color='blue', label='Native')
 #         plt.plot(x, y2[mask], 'o--', color='red', label='APOC')
     
 #         plt.title(name + f" |Z| = {col}")
@@ -336,7 +336,7 @@ for name in graph_names:
     df1 = RW_all_mean_runtimes_Qn_dict[name]     # first dataframe
     df2 = RW_all_mean_runtimes_Qa_dict[name]     # second dataframe
     
-    dfs = {'Normal': df1, 'APOC': df2}
+    dfs = {'Native': df1, 'APOC': df2}
     
     for k in dfs.keys():
         
@@ -428,7 +428,7 @@ for name in graph_names:
     plt.figure(figsize=(8, 5))
 
     for r in rows_to_keep:
-        plt.plot(cols, norm_interp.loc[r], marker='o', label=f"|X|={r} Normal")
+        plt.plot(cols, norm_interp.loc[r], marker='o', label=f"|X|={r} Native")
         plt.plot(cols, apoc_interp.loc[r], marker='s', linestyle='--', label=f"|X|={r} APOC")
 
     plt.title(f"{name}: Runtime Comparison (|Z| varies)")
@@ -448,7 +448,7 @@ for name in graph_names:
     plt.figure(figsize=(8, 5))
 
     for c in cols_to_keep:
-        plt.plot(rows, norm_interp[c], marker='o', label=f"|Z|={c} Normal")
+        plt.plot(rows, norm_interp[c], marker='o', label=f"|Z|={c} Native")
         plt.plot(rows, apoc_interp[c], marker='s', linestyle='--', label=f"|Z|={c} APOC")
 
     plt.title(f"{name}: Runtime Comparison (|X| varies)")
