@@ -16,3 +16,10 @@ nohup.out
 
 # Data / binaries
 *.pkl
+!DAGs/Synthetic_dags/BA3.pkl
+!DAGs/Synthetic_dags/BA4.pkl
+!DAGs/Synthetic_dags/TR3.pkl
+!DAGs/Synthetic_dags/TR4.pkl
+!DAGs/Synthetic_dags/LF3.pkl
+!DAGs/Synthetic_dags/LF4.pkl
+
