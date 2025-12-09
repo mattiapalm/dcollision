@@ -58,8 +58,8 @@ from queries import (
 )
 
 graph_types = ['BA', 'ER', 'LF', 'TR']
-current_run_types = ['BA', 'LF', 'TR']
-current_run_dim = ['3', '4']
+current_run_types = ['BA']
+current_run_dim = ['5']
 
 current_run_names = []
 for t in current_run_types:

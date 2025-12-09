@@ -15,4 +15,5 @@ nohup.out
 .ipynb_checkpoints/
 
 # Data / binaries
-
+*.pkl
+!!DAGs/Synthetic_dags/BA5.pkl

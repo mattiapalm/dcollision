@@ -390,7 +390,7 @@ for name in graph_names:
 ### Main comparisons
 
 dict_sachs = {'|X| fixed' : [1,6,2], '|Z| fixed' : [0,2]}
-dict_child = {'|X| fixed' : [1,2], '|Z| fixed' : [1,7]}
+dict_child = {'|X| fixed' : [1,2], '|Z| fixed' : [0,5]}
 dict_smallcovid = {'|X| fixed' : [1,9], '|Z| fixed': [0,1,2]}
 dict_reducedcovid = {'|X| fixed' : [1,9], '|Z| fixed': [0,1,2]}
 dict_covid = {'|X| fixed' : [1,10,22], '|Z| fixed' : [0,2]}
