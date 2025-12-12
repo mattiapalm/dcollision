@@ -16,4 +16,3 @@ nohup.out
 
 # Data / binaries
 *.pkl
-!DAGs/Synthetic_dags/BA5.pkl
