@@ -45,7 +45,7 @@ for dag in S_dags_dir.iterdir():
         
 graph_names.sort()
 
-name = "LF5"+'.pkl'
+name = "BA2"+'.pkl'
 with open(S_dags_dir / name, "rb") as f:
     G = pickle.load(f)
     
@@ -61,7 +61,7 @@ G.remove_nodes_from(to_be_removed)
 
 print('The graph', name, 'has', len(G.nodes()), 'nodes and', len(G.edges()), 'edges')
 
-## Read transformation runtimes
+"""## Read transformation runtimes
 with open(all_runtimes_dir / f"S_all_runtimes_T_{name[:-4]}.pkl", "rb") as f:
     S_all_runtimes_T_dict = pickle.load(f)
 
@@ -72,4 +72,4 @@ with open(all_runtimes_dir / f"S_all_runtimes_Qn_{name[:-4]}.pkl", "rb") as f:
     S_all_runtimes_Qn_dict = pickle.load(f)
 # APOC
 with open(all_runtimes_dir / f"S_all_runtimes_tot_n_{name[:-4]}.pkl", "rb") as f:
-    S_all_runtimes_tot_n_dict = pickle.load(f)
+    S_all_runtimes_tot_n_dict = pickle.load(f)"""

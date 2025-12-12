@@ -1,13 +1,3 @@
-The graph BA4.pkl has 10000 nodes and 29991 edges.
-Elapsed time = 1.4506330490112305
-The graph BA3.pkl has 1000 nodes and 2991 edges.
-Elapsed time = 0.16883111000061035
-The graph LF4.pkl has 10000 nodes and 109085 edges.
-Elapsed time = 1.7318010330200195
-The graph LF3.pkl has 1000 nodes and 10868 edges.
-Elapsed time = 0.1640760898590088
-The graph TR3.pkl has 1000 nodes and 999 edges.
-Elapsed time = 0.1506650447845459
-The graph TR4.pkl has 10000 nodes and 9999 edges.
-Elapsed time = 1.4542720317840576
-Total time = 5.120897054672241
+The graph ER1.pkl has 10000 nodes and 188292 edges.
+Elapsed time = 1.3376190662384033
+Total time = 1.337705135345459

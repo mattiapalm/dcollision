@@ -22,6 +22,8 @@ Path = require("pathlib").Path
 np = require("numpy")
 pickle = require("pickle")
 pd = require("pandas")
+plt = require("matplotlib.pyplot")
+sns = require("seaborn")
 
 ##### ====== #####
 
@@ -198,3 +200,18 @@ with open(var_runtimes_dir/ "S_all_var_runtimes_T_Zfix.pkl", "wb") as f:
 
 # all_mean_runtimes_T_Zfix_APOC.to_excel("all_mean_runtimes_T_Zfix_APOC_.xlsx", index=False)
 # all_mean_runtimes_T_Zfix_Native.to_excel("all_mean_runtimes_T_Zfix_Native_.xlsx", index=False)    """
+
+
+runtimes = S_all_runtimes_Qn_dict['TR3'][(1,1)]
+
+plt.hist(runtimes, bins=30)
+plt.xlabel("Runtime")
+plt.ylabel("Count")
+plt.title("Runtime Distribution")
+plt.show()
+
+
+sns.violinplot(x=runtimes)
+plt.xlabel("Runtime")
+plt.title("Runtime Violin Plot")
+plt.show()
