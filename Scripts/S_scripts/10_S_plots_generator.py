@@ -40,20 +40,20 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
     
 # ## Read transformation runtimes
 
-# with open(all_runtimes_dir / "S_all_runtimes_T_dict.pkl", "rb") as f:
-#     S_all_runtimes_T_dict = pickle.load(f)
+# with open(all_runtimes_dir / "S_all_runtimes_WO_T_dict.pkl", "rb") as f:
+#     S_all_runtimes_WO_T_dict = pickle.load(f)
 
 # ## Read query runtimes
 
 # # Native
-# with open(all_runtimes_dir / "S_all_runtimes_Qn_dict.pkl", "rb") as f:
-#     S_all_runtimes_Qn_dict = pickle.load(f)
+# with open(all_runtimes_dir / "S_all_runtimes_WO_Qn_dict.pkl", "rb") as f:
+#     S_all_runtimes_WO_Qn_dict = pickle.load(f)
     
 # ## Read total runtimes
 
 # # Native
-# with open(all_runtimes_dir / "S_all_runtimes_tot_n_dict.pkl", "rb") as f:
-#     S_all_runtimes_tot_n_dict = pickle.load(f)
+# with open(all_runtimes_dir / "S_all_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+#     S_all_runtimes_WO_tot_n_dict = pickle.load(f)
 
 
 ### Read mean runtimes
@@ -61,24 +61,24 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 ## Read mean transformation runtimes
 
 # All
-with open(mean_runtimes_dir / "S_all_mean_runtimes_T_dict.pkl", "rb") as f:
-    S_all_mean_runtimes_T_dict = pickle.load(f)
+with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_T_dict.pkl", "rb") as f:
+    S_all_mean_runtimes_WO_T_dict = pickle.load(f)
     
 # |Z| fixed
-with open(mean_runtimes_dir / "S_all_mean_runtimes_T_Zfix.pkl", "rb") as f:
-    S_all_mean_runtimes_T_Zfix = pickle.load(f)
+with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_T_Zfix.pkl", "rb") as f:
+    S_all_mean_runtimes_WO_T_Zfix = pickle.load(f)
 
 ## Read mean query runtimes
 
 # Native
-with open(mean_runtimes_dir / "S_all_mean_runtimes_Qn_dict.pkl", "rb") as f:
-    S_all_mean_runtimes_Qn_dict = pickle.load(f)
+with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_Qn_dict.pkl", "rb") as f:
+    S_all_mean_runtimes_WO_Qn_dict = pickle.load(f)
 
 ## Read mean total runtimes
 
 # Native
-with open(mean_runtimes_dir / "S_all_mean_runtimes_tot_n_dict.pkl", "rb") as f:
-    S_all_mean_runtimes_tot_n_dict  = pickle.load(f)
+with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+    S_all_mean_runtimes_WO_tot_n_dict  = pickle.load(f)
 
 
 # ### Read variances of the runtimes
@@ -86,24 +86,24 @@ with open(mean_runtimes_dir / "S_all_mean_runtimes_tot_n_dict.pkl", "rb") as f:
 # ## Read variances of transformation runtimes
 
 # # All
-# with open(var_runtimes_dir / "S_all_var_runtimes_T_dict.pkl", "rb") as f:
-#     S_all_var_runtimes_T_dict = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_var_runtimes_WO_T_dict.pkl", "rb") as f:
+#     S_all_var_runtimes_WO_T_dict = pickle.load(f)
     
 # # |Z| fixed
-# with open(var_runtimes_dir / "S_all_var_runtimes_T_Zfix.pkl", "rb") as f:
-#     S_all_var_runtimes_T_Zfix = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_var_runtimes_WO_T_Zfix.pkl", "rb") as f:
+#     S_all_var_runtimes_WO_T_Zfix = pickle.load(f)
 
 # ## Read variances of query runtimes
 
 # # Native
-# with open(var_runtimes_dir / "S_all_var_runtimes_Qn_dict.pkl", "rb") as f:
-#     S_all_var_runtimes_Qn_dict = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_var_runtimes_WO_Qn_dict.pkl", "rb") as f:
+#     S_all_var_runtimes_WO_Qn_dict = pickle.load(f)
 
 # ## Read variances of total runtimes
 
 # # Native
-# with open(var_runtimes_dir / "S_all_var_runtimes_tot_n_dict.pkl", "rb") as f:
-#     S_all_var_runtimes_tot_n_dict  = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_var_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+#     S_all_var_runtimes_WO_tot_n_dict  = pickle.load(f)
 
 
     
@@ -125,7 +125,7 @@ for t in current_run_types:
 
 ########------––-- Native - Transformation only ----––----########
 
-S_mean_T_Zfix_interpolated = S_all_mean_runtimes_T_Zfix.interpolate(method='index', limit_area='inside')
+S_mean_T_Zfix_interpolated = S_all_mean_runtimes_WO_T_Zfix.interpolate(method='index', limit_area='inside')
 
 ### |Z| fixed
 for col in current_run_names:
@@ -144,7 +144,7 @@ for col in current_run_names:
 
 # for name in current_run_names:
     
-#     df1 = S_all_mean_runtimes_Qn_dict[name]     # first dataframe
+#     df1 = S_all_mean_runtimes_WO_Qn_dict[name]     # first dataframe
 
 #     for row_idx in df1.index:
         
@@ -192,7 +192,7 @@ for col in current_run_names:
     
 for name in current_run_names:
     
-    df = S_all_mean_runtimes_Qn_dict[name]
+    df = S_all_mean_runtimes_WO_Qn_dict[name]
 
     colors = plt.cm.tab20(np.linspace(0, 1, len(df.columns)))  # distinct colors
 
@@ -268,7 +268,7 @@ dict_fixed['MUNIN'] = dict_munin
 
 for name in current_run_names:
     
-    df1 = S_all_mean_runtimes_Qn_dict[name]
+    df1 = S_all_mean_runtimes_WO_Qn_dict[name]
     df2 = S_all_mean_runtimes_Qa_dict[name]
     
     rows_to_keep = [r for r in dict_fixed[name]['|X| fixed'] if r in df1.index]

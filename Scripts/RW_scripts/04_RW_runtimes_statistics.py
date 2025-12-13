@@ -279,7 +279,7 @@ def filter_by_mod_zscore(values, threshold=3.5):
         mzs_values = 0.6745 * (values - median) / mad
     
     mzs_abs_values = np.abs(mzs_values)
-    filtered_rts = [rt for rt, z in zip(runtimes, mzs_abs_values) if z <= threshold]
+    filtered_rts = [rt for rt, z in zip(values, mzs_abs_values) if z <= threshold]
     return filtered_rts
     
 
@@ -324,7 +324,7 @@ means_WO_dict_list = [
     RW_all_mean_runtimes_WO_tot_n_dict,
     RW_all_mean_runtimes_WO_Qa_dict,
     RW_all_mean_runtimes_WO_tot_a_dict,
-]
+    ]
 
 vars_WO_dict_list = [
     RW_all_var_runtimes_WO_T_dict,
@@ -360,6 +360,10 @@ for algo_runtimes, mean_dict, var_dict in zip(RW_all_runtimes_WO_list, means_WO_
         # Store results
         mean_dict[name] = df_mean
         var_dict[name] = df_var
+        
+for name in baseline_graph_names:
+    for pair in RW_all_runtimes_WO_baseline_dict[name].keys():
+        RW_all_runtimes_WO_baseline_dict[name][pair] = filter_by_mod_zscore(RW_all_runtimes_WO_baseline_dict[name][pair])
 
 for name in baseline_graph_names:
     
