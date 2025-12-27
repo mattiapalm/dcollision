@@ -287,7 +287,7 @@ for name in names_of_graphs:
             text_file.flush()
             print(to_be_printed)
                 
-            n_pair += 1
+        n_pair += 1
             
 text_file.close()
 
