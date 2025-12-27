@@ -66,7 +66,7 @@ for t in current_run_types:
     for dag in S_dags_dir.iterdir():
         if (dag.is_file()
             and dag.name.startswith(prefix)
-            and ('1' in dag.name)
+            #and ('1' in dag.name)
             and dag.suffix == ".pkl"):
             time1 = time.time()
             with open(dag, "rb") as f:
@@ -100,11 +100,11 @@ for t in current_run_types:
             # Number of input dimensions
             tot_pairs = rts_df.count().sum()
             
-            S_X_inputs, S_Z_inputs = {}, {}
-            
             ########--------------- Generate inputs ---------------########
             
+            S_X_inputs, S_Z_inputs = {}, {}
             random.seed(2026)
+            
             for card_X in range_X:
                 for card_Z in range_Z:
                     card_union = card_X + card_Z

@@ -1,3 +1,7 @@
-The graph ER1.pkl has 10000 nodes and 188292 edges.
-Elapsed time = 1.3376190662384033
-Total time = 1.337705135345459
+The graph ER0.pkl has 1000 nodes and 1272 edges.
+Elapsed time = 0.13436508178710938
+The graph ER1.pkl has 10000 nodes and 125334 edges.
+Elapsed time = 1.2577579021453857
+The graph ER2.pkl has 20000 nodes and 499944 edges.
+Elapsed time = 2.6506218910217285
+Total time = 4.042926073074341

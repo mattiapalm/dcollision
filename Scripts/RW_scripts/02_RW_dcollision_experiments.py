@@ -60,29 +60,30 @@ from queries import (
 
 ########--------------- Retrieve DAGs' path ---------------########
 
-names_of_graphs = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'SMALLCOVID', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
+names_of_graphs = ['SACHS', 'C01', 'C02', 'CHILD', 'COVID', 'BARLEY', 'WIN95PTS', 'CNSDAG', 'LINK', 'MUNIN']
 
 path_to_sachs = RW_dags_dir / "sachs.bif"
+path_to_c01 = RW_dags_dir / "c01.json"
+path_to_c02 = RW_dags_dir / "c02.json"
 path_to_child = RW_dags_dir / "child.bif"
+path_to_covid19 = RW_dags_dir / "covid19.json"
 path_to_barley = RW_dags_dir / "barley.bif"
 path_to_win95pts = RW_dags_dir / "win95pts.bif"
+path_to_cnsdag = RW_dags_dir / "cnsdag.json"
 path_to_link = RW_dags_dir / "link.bif"
 path_to_munin = RW_dags_dir / "munin.bif"
-path_to_covid19 = RW_dags_dir / "covid19.json"
-path_to_smallcovid19 = RW_dags_dir / "smallcovid19.json"
-path_to_reducedcovid19 = RW_dags_dir / "reducedcovid.json"
-path_to_cnsampledag = RW_dags_dir / "cnsampledag.json"
 
 all_paths_to_dags = [path_to_sachs,
+                     path_to_c01,
+                     path_to_c02,
                      path_to_child,
+                     path_to_covid19,
                      path_to_barley,
                      path_to_win95pts,
+                     path_to_cnsdag,
                      path_to_link,
-                     path_to_munin,
-                     path_to_smallcovid19,
-                     path_to_reducedcovid19,
-                     path_to_covid19,
-                     path_to_cnsampledag]
+                     path_to_munin
+                     ]
 
 data_files = dict(zip(names_of_graphs, all_paths_to_dags))
 
@@ -101,8 +102,6 @@ all_runtimes_Qn_dict = {}
 all_runtimes_tot_n_dict = {}
 all_runtimes_Qa_dict = {}
 all_runtimes_tot_a_dict = {}
-
-# Y_all_dict = {}
 
 for name in names_of_graphs:
     all_runtimes_T_dict[name] = {}
@@ -131,7 +130,7 @@ for name in names_of_graphs:
         G = nx.DiGraph()
         G = nx.json_graph.node_link_graph(data, edges="links")
 
-    ## Keep only the largest connecred component
+    ## Keep only the largest connected component
     largest_cc = max(nx.weakly_connected_components(G), key=len)
     G.remove_nodes_from(G.nodes() - largest_cc)
     N_nodes = len(G.nodes())   # Number of nodes in the DAG
@@ -197,10 +196,10 @@ for name in names_of_graphs:
     n_pair=1   # keeps truck of the current cardinality pair
     
     graph_db.run(query_dcollision_reset)
-    saved_op = []
+    Y_all_dict = {}
 
     for pair in all_pairs:
-            
+                
         card_X, card_Z = pair  # unfolds |X| and |Z|
     
         X_instances = RW_X_inputs_current[pair]
@@ -210,6 +209,8 @@ for name in names_of_graphs:
         T_rts = []
         Qn_rts, Qa_rts = [], []
         tot_n_rts, tot_a_rts = [], []
+        
+        Y_all_dict[pair] = []
         
         its = len(X_instances)   # number of iterations (inputs) for the pair
         
@@ -233,8 +234,10 @@ for name in names_of_graphs:
             end_T = time.time()
             
             # Native
-            graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
+            Y_all = graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
             end_Qn = time.time()
+            
+            print(X, Z, Y_all, len(Y_all))
             
             # Partial reset
             graph_db.run(query_dcollision_partial_reset)
@@ -247,6 +250,8 @@ for name in names_of_graphs:
             # Reset
             graph_db.run(query_dcollision_reset)
             
+            
+            Y_all_dict[pair].add(Y_all)
             # Y_con = list(G.nodes() - Y_all - set(X) - set(Z))
         
             # Save iteration's runtimes
@@ -261,8 +266,6 @@ for name in names_of_graphs:
             all_runtimes_tot_n_dict[name][pair] = tot_n_rts
             all_runtimes_Qa_dict[name][pair] = Qa_rts
             all_runtimes_tot_a_dict[name][pair] = tot_a_rts
-            
-            if Qn_rt > 1: saved_op.append([(X, Z), Qn_rt])
         
             # Save to disk
             
@@ -281,12 +284,15 @@ for name in names_of_graphs:
             with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "wb") as f:
                 pickle.dump(all_runtimes_tot_a_dict, f)
                 
+            with open(all_runtimes_dir / f"RW_Y_all_dict_{name}.pkl", "wb") as f:
+                pickle.dump(all_runtimes_tot_a_dict, f)
+                
             to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
             text_file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}; A: {Qa_rt}\n")
             text_file.flush()
             print(to_be_printed)
-            
-        n_pair += 1
+                
+            n_pair += 1
             
 text_file.close()
 

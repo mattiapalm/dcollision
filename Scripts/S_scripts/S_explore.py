@@ -45,11 +45,11 @@ for dag in S_dags_dir.iterdir():
         
 graph_names.sort()
 
-name = "BA2"+'.pkl'
+name = "LF1"+'.pkl'
 with open(S_dags_dir / name, "rb") as f:
     G = pickle.load(f)
     
-N_nodes = len(G.nodes())    # Number of nodes in the DAG
+"""N_nodes = len(G.nodes())    # Number of nodes in the DAG
 E_edges = len(G.edges())
 D = 2* E_edges / ( N_nodes * (N_nodes -1))
 print("Density= ", D)
@@ -57,9 +57,25 @@ print("Density= ", D)
 largest_cc = max(nx.weakly_connected_components(G), key=len)
 
 to_be_removed = G.nodes() - largest_cc
-G.remove_nodes_from(to_be_removed)
+G.remove_nodes_from(to_be_removed)"""
 
-print('The graph', name, 'has', len(G.nodes()), 'nodes and', len(G.edges()), 'edges')
+name = "LF4"+'.pkl'
+with open(S_dags_dir / name, "rb") as f:
+    G2 = pickle.load(f)
+    
+print(G == G2)
+    
+"""N_nodes = len(G.nodes())    # Number of nodes in the DAG
+E_edges = len(G.edges())
+D = 2* E_edges / ( N_nodes * (N_nodes -1))
+print("Density= ", D)
+
+largest_cc = max(nx.weakly_connected_components(G), key=len)
+
+to_be_removed = G.nodes() - largest_cc
+G2.remove_nodes_from(to_be_removed)
+
+print('The graph', name, 'has', len(G.nodes()), 'nodes and', len(G.edges()), 'edges')"""
 
 """## Read transformation runtimes
 with open(all_runtimes_dir / f"S_all_runtimes_T_{name[:-4]}.pkl", "rb") as f:

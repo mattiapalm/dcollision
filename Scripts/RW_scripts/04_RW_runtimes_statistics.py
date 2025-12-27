@@ -27,6 +27,34 @@ plt = require("matplotlib.pyplot")
 sns = require("seaborn")
 sts = require("scipy.stats")
 
+
+def filter_by_mod_zscore(values, threshold=3.5):
+    """
+    Compute the list of values without otliers
+    
+    Parameters
+    ----------
+    values: list of floats
+    threshold: float
+    
+    Returns
+    -------
+    filtered_rts: array of floats
+        
+    """
+    values = np.asarray(values)
+    median = np.median(values)
+    mad = np.median(np.abs(values - median))
+
+    if mad == 0:
+        mzs_values = np.zeros_like(values, dtype=float)
+    else:
+        mzs_values = 0.6745 * (values - median) / mad
+    
+    mzs_abs_values = np.abs(mzs_values)
+    filtered_rts = [rt for rt, z in zip(values, mzs_abs_values) if z <= threshold]
+    return filtered_rts
+
 ##### ====== #####
 
 # Base path
@@ -42,8 +70,8 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 
 ### Graphs' names
 
-graph_names = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'SMALLCOVID', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
-baseline_graph_names = ['SACHS', 'CHILD', 'SMALLCOVID', 'REDUCEDCOVID']
+graph_names = ['SACHS', 'C01', 'C02', 'CHILD', 'COVID', 'BARLEY', 'WIN95PTS', 'CNSDAG', 'LINK', 'MUNIN']
+baseline_graph_names = ['SACHS', 'C01', 'C02', 'CHILD']
 
 ########--------------- Load the runtimes' files ---------------########
     
@@ -74,6 +102,15 @@ with open(all_runtimes_dir / "RW_all_runtimes_baseline_dict.pkl", "rb") as f:
     RW_all_runtimes_baseline_dict = pickle.load(f)
     
     
+all_dicts = [RW_all_runtimes_T_dict,
+             RW_all_runtimes_Qn_dict,
+             RW_all_runtimes_Qa_dict,
+             RW_all_runtimes_tot_n_dict,
+             RW_all_runtimes_tot_a_dict,
+             RW_all_runtimes_baseline_dict
+             ]
+
+ 
 ########--------------- Retrieve statistics ---------------########
 
 
@@ -255,32 +292,6 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_baseline_dict.pkl", "wb") as f
 
 ########--------------- Without Outliers ---------------########
 
-def filter_by_mod_zscore(values, threshold=3.5):
-    """
-    Compute the list of values without otliers
-    
-    Parameters
-    ----------
-    values: list of floats
-    threshold: float
-    
-    Returns
-    -------
-    filtered_rts: array of floats
-        
-    """
-    values = np.asarray(values)
-    median = np.median(values)
-    mad = np.median(np.abs(values - median))
-
-    if mad == 0:
-        mzs_values = np.zeros_like(values, dtype=float)
-    else:
-        mzs_values = 0.6745 * (values - median) / mad
-    
-    mzs_abs_values = np.abs(mzs_values)
-    filtered_rts = [rt for rt, z in zip(values, mzs_abs_values) if z <= threshold]
-    return filtered_rts
     
 
 RW_all_runtimes_WO_T_dict = copy.deepcopy(RW_all_runtimes_T_dict)
@@ -453,7 +464,7 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_WO_baseline_dict.pkl", "wb") a
         
 ####
 
-runtimes1 = RW_all_runtimes_Qn_dict['REDUCEDCOVID'][(1,1)]
+runtimes1 = RW_all_runtimes_Qn_dict['C02'][(1,1)]
 
 plt.hist(runtimes1, bins=60)
 plt.xlabel("Runtime")
@@ -468,7 +479,7 @@ plt.show()
 
 
 
-runtimes2 = RW_all_runtimes_WO_Qn_dict['REDUCEDCOVID'][(1,1)]
+runtimes2 = RW_all_runtimes_WO_Qn_dict['C02'][(1,1)]
 print(len(runtimes2))
 
 plt.hist(runtimes2, bins=30)

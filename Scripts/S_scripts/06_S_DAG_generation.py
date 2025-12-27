@@ -185,9 +185,9 @@ for t in graph_types:
     all_graphs_dict[t] = {}
 
 card_V_list0 = [10**3, 10**4, 2*10**4]
-card_V_list1 = [10**3, 10**4]#, 10**6, 5*10**6]
+card_V_list1 = [10**4]#, 10**6, 5*10**6]
 
-D = 0.00375
+D = 0.0025
 random.seed(2026)
 
 for N in card_V_list1:
@@ -196,7 +196,7 @@ for N in card_V_list1:
     
     ########--------------- BARABASI-ALBERT ---------------########
     
-    seed = 2026
+    """seed = 2026
     G_ba = nx.barabasi_albert_graph(N, m=3)
     DAG_ba = transform_into_DAG(G_ba, seed)
     
@@ -206,16 +206,17 @@ for N in card_V_list1:
     
     to_be_saved = f"BA{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
-        pickle.dump(DAG_ba, f)
+        pickle.dump(DAG_ba, f)"""
     
     ########--------------- ERDOS-RENYI ---------------########
     
+    """seed = 2026
     start = time.time()
     G_er = nx.erdos_renyi_graph(n=N, p=D, directed=False)
     DAG_er = transform_into_DAG(G_er, seed)
     
-    print(f"ER {N} has {len(DAG_er.edges())} edges.")
-    print("ER Is DAG:", nx.is_directed_acyclic_graph(DAG_er))
+    #print(f"ER {N} has {len(DAG_er.edges())} edges.")
+    #print("ER Is DAG:", nx.is_directed_acyclic_graph(DAG_er))
     all_graphs_dict['ER'][N] = DAG_er
     
     to_be_saved = f"ER{index}.pkl"
@@ -223,7 +224,15 @@ for N in card_V_list1:
         pickle.dump(DAG_er, f)
     end = time.time()
     
-    print(f"{index} ", end-start)
+    G = DAG_er
+    largest_cc = max(nx.weakly_connected_components(G), key=len)
+
+    to_be_removed = G.nodes() - largest_cc
+    G.remove_nodes_from(to_be_removed)
+    
+    print('The graph  has', len(G.nodes()), 'nodes and', len(G.edges()), 'edges')
+
+    print(f"{index} ", end-start)"""
     
     ########--------------- LAYERED / FEED-FORWARD ---------------########
     
@@ -239,13 +248,13 @@ for N in card_V_list1:
     print("LF Is DAG:", nx.is_directed_acyclic_graph(DAG_lf))
     all_graphs_dict['LF'][N] = DAG_lf
     
-    to_be_saved = f"LF{index}.pkl"
-    with open(synthetic_dags_dir / to_be_saved, "wb") as f:
-        pickle.dump(DAG_lf, f)
+    # to_be_saved = f"LF{index}.pkl"
+    # with open(synthetic_dags_dir / to_be_saved, "wb") as f:
+    #     pickle.dump(DAG_lf, f)
     
     ########--------------- TREE ---------------########
     
-    T_und = nx.random_labeled_rooted_tree(N)
+    """T_und = nx.random_labeled_rooted_tree(N)
     root = T_und.graph['root']
     DAG_tr = nx.bfs_tree(T_und, source=root)
     
@@ -255,5 +264,5 @@ for N in card_V_list1:
     
     to_be_saved = f"TR{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
-        pickle.dump(DAG_tr, f)
+        pickle.dump(DAG_tr, f)"""
 

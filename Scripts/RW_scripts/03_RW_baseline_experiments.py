@@ -46,24 +46,23 @@ all_runtimes_dir = BASE /"Results/Runtimes/All_runtimes"
 
 # Get queries
 sys.path.append(str(BASE / "Scripts"))
-from queries import query_baseline
+#from queries import query_baseline
 from queries import query_baseline_1, query_baseline_2
 
 ########--------------- Retrieve DAGs' path ---------------########
 
-names_of_graphs = ['SACHS', 'SMALLCOVID', 'CHILD', 'REDUCEDCOVID']
+names_of_graphs = ['SACHS', 'CHILD', 'C01',  'C02']# 'COVID', 'BARLEY', 'WIN95PTS', 'CNSDAG', 'LINK', 'MUNIN']
 
 path_to_sachs = RW_dags_dir / "sachs.bif"
-path_to_smallcovid19 = RW_dags_dir / "smallcovid19.json"
 path_to_child = RW_dags_dir / "child.bif"
-path_to_reducedcovid = RW_dags_dir / "reducedcovid.json"
-#path_to_covid19 = RW_dags_dir / "covid19.json"
+path_to_c01= RW_dags_dir / "c01.json"
+path_to_c02 = RW_dags_dir / "c02.json"
+
 
 all_paths_to_dags = [ path_to_sachs,
-                      path_to_smallcovid19,
                       path_to_child,
-                      path_to_reducedcovid#,
-                      #path_to_covid19
+                      path_to_c01,
+                      path_to_c02
                     ]
 
 data_files = dict(zip(names_of_graphs, all_paths_to_dags))
@@ -89,7 +88,7 @@ text_file = open("RW_Baseline_execution.txt", "w")
 ### Open the DAG
 
 for name in names_of_graphs:
-    if name in ['SACHS', 'CHILD']:
+    if name in ['SACHS', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN']:
         reader = BIFReader(data_files[name])
         model = reader.get_model()
         G = nx.DiGraph()
@@ -137,7 +136,7 @@ for name in names_of_graphs:
     
     # Obtain the DAG-specific query
     query_baseline_complete = (   query_baseline_1 + str(ub)
-                                + query_baseline_2         )
+                                + query_baseline_2           )
     
     # Retrieve inputs for the current DAG
     RW_X_inputs_current, RW_Z_inputs_current = RW_X_inputs[name], RW_Z_inputs[name]
@@ -178,6 +177,8 @@ for name in names_of_graphs:
         its = len(X_instances) # number of iterations (inputs) for the pair
         
         for h in range(its):
+            
+            print('Begins')
             
             # Takes the input of the current iteration
             X, Z = X_instances[h], Z_instances[h]

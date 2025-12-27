@@ -58,7 +58,7 @@ from queries import (
 )
 
 graph_types = ['BA', 'ER', 'LF', 'TR']
-current_run_types = ['LF', 'TR']
+current_run_types = ['ER']
 current_run_dim = ['2']
 
 current_run_names = []
@@ -118,8 +118,6 @@ for name in current_run_names:
     all_runtimes_T_dict = {}
     all_runtimes_Qn_dict = {}
     all_runtimes_tot_n_dict = {}
-    # all_runtimes_Qa_dict = {}
-    # all_runtimes_tot_a_dict = {}
         
     ### Connect to Neo4j
     
@@ -150,8 +148,8 @@ for name in current_run_names:
             
             # Initialize the runtimes' lists
             T_rts = []
-            Qn_rts, Qa_rts = [], []
-            tot_n_rts, tot_a_rts = [], []
+            Qn_rts = []
+            tot_n_rts = [], []
             
             its = len(X_instances)   # number of iterations (inputs) for the pair
             
@@ -177,15 +175,7 @@ for name in current_run_names:
                 # Native
                 graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
                 end_Qn = time.time()
-                
-                # Partial reset
-                graph_db.run(query_dcollision_partial_reset)
-                
-                # # APOC
-                # start_Qa = time.time()
-                # graph_db.run(query_dcollision_4of4_apoc, parameters=params_Q).evaluate()
-                # end_Qa = time.time()
-                
+                   
                 # Reset
                 graph_db.run(query_dcollision_reset)
             
@@ -193,14 +183,11 @@ for name in current_run_names:
                 T_rt = end_T - start_T; T_rts.append(T_rt)
                 Qn_rt = end_Qn - end_T; Qn_rts.append(Qn_rt)
                 tot_n_rt = T_rt + Qn_rt; tot_n_rts.append(tot_n_rt)
-                # Qa_rt = end_Qa - start_Qa; Qa_rts.append(Qa_rt)
-                # tot_a_rt = T_rt + Qa_rt; tot_a_rts.append(tot_a_rt)
+
                 
                 all_runtimes_T_dict[pair] = T_rts
                 all_runtimes_Qn_dict[pair] = Qn_rts
                 all_runtimes_tot_n_dict[pair] = tot_n_rts
-                # all_runtimes_Qa_dict[pair] = Qa_rts
-                # all_runtimes_tot_a_dict[pair] = tot_a_rts
             
                 # Save to disk
                 
@@ -212,12 +199,6 @@ for name in current_run_names:
             
                 with open(all_runtimes_dir / f"S_all_runtimes_tot_n_{name}.pkl", "wb") as f:
                     pickle.dump(all_runtimes_tot_n_dict, f)
-                    
-                # with open(all_runtimes_dir / "S_all_runtimes_Qa_{name}.pkl", "wb") as f:
-                #     pickle.dump(all_runtimes_Qa_dict, f)
-            
-                # with open(all_runtimes_dir / "S_all_runtimes_tot_a_{name}.pkl", "wb") as f:
-                #     pickle.dump(all_runtimes_tot_a_dict, f)
                     
                 to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
                 file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}")#"; A: {Qa_rt}\n")

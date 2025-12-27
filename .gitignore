@@ -15,4 +15,3 @@ nohup.out
 .ipynb_checkpoints/
 
 # Data / binaries
-*.pkl

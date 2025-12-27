@@ -34,37 +34,41 @@ BASE = Path(__file__).resolve().parent.parent.parent
 
 # Path to subfolder
 RW_dags_dir   = BASE / "DAGs/Real_world_dags"
+# Directory where to save
+inputs_dir = BASE / "Results/Inputs"
+inputs_dir.mkdir(exist_ok=True)  # does not create it if it does not exist
 
-# === 1. Load DAG from BIF file ===
+######## Load Real World DAGs ########
 
-names_of_graphs = ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN', 'SMALLCOVID', 'REDUCEDCOVID', 'COVID', 'CNSAMPLEDAG']
+names_of_graphs = ['SACHS', 'C01', 'C02', 'CHILD', 'COVID', 'BARLEY', 'WIN95PTS', 'CNSDAG', 'LINK', 'MUNIN']
 
 path_to_sachs = RW_dags_dir / "sachs.bif"
+path_to_c01 = RW_dags_dir / "c01.json"
+path_to_c02 = RW_dags_dir / "c02.json"
 path_to_child = RW_dags_dir / "child.bif"
+path_to_covid19 = RW_dags_dir / "covid19.json"
 path_to_barley = RW_dags_dir / "barley.bif"
 path_to_win95pts = RW_dags_dir / "win95pts.bif"
+path_to_cnsdag = RW_dags_dir / "cnsdag.json"
 path_to_link = RW_dags_dir / "link.bif"
 path_to_munin = RW_dags_dir / "munin.bif"
-path_to_smallcovid19 = RW_dags_dir / "smallcovid19.json"
-path_to_reducedcovid = RW_dags_dir / "reducedcovid.json"
-path_to_covid19 = RW_dags_dir / "covid19.json"
-path_to_cnsampledag = RW_dags_dir / "cnsampledag.json"
 
-all_paths_to_data = [path_to_sachs,
+all_paths_to_dags = [path_to_sachs,
+                     path_to_c01,
+                     path_to_c02,
                      path_to_child,
+                     path_to_covid19,
                      path_to_barley,
                      path_to_win95pts,
+                     path_to_cnsdag,
                      path_to_link,
-                     path_to_munin,
-                     path_to_smallcovid19,
-                     path_to_reducedcovid,
-                     path_to_covid19,
-                     path_to_cnsampledag]
+                     path_to_munin
+                     ]
 
-data_files = dict(zip(names_of_graphs, all_paths_to_data))
+data_files = dict(zip(names_of_graphs, all_paths_to_dags))
 
 
-RW_X_inputs, Z_inputs = dict(), dict()
+RW_X_inputs, RW_Z_inputs = dict(), dict()
 range_10 = list(range(10))
 range_frac = [ r / 10 for r in range_10]
 
@@ -92,7 +96,7 @@ for name in names_of_graphs:
 
     # -------
 
-    N_nodes = len(G.nodes())
+    N_nodes = len(G.nodes()) # number of nodes in the graph
     
     range_ = [int(N_nodes * f) for f in range_frac]
     to_be_added_X = [1,2,5,10,20,50]
@@ -103,7 +107,8 @@ for name in names_of_graphs:
             to_be_added_X = to_be_added_X[:ind]
             to_be_added_Z = to_be_added_Z[:ind]
             break
-    
+    ### Compute inputs dimension
+    #
     range_X, range_Z = range_.copy(), range_.copy()
     range_X = range_X + to_be_added_X; range_Z = range_Z + to_be_added_Z
     range_Z = list(set(range_Z)); range_Z.sort()
@@ -116,10 +121,16 @@ for name in names_of_graphs:
     )
     
     rts_df = temp_df.pivot(index="|X|", columns="|Z|", values="value")
-
+    #
+    
+    # Number of input dimensions
     tot_pairs = rts_df.count().sum()
     
-    RW_X_inputs[name], Z_inputs[name] = {}, {}
+    ########--------------- Generate inputs ---------------########
+    
+    RW_X_inputs[name], RW_Z_inputs[name] = {}, {}
+    random.seed(2026)
+
     for card_X in range_X:
         for card_Z in range_Z:
             card_union = card_X + card_Z
@@ -132,15 +143,13 @@ for name in names_of_graphs:
                     Z_instances[h] = list(sample_nodes[card_X:])
                     
                 RW_X_inputs[name][(card_X, card_Z)] = X_instances
-                Z_inputs[name][(card_X, card_Z)] = Z_instances
+                RW_Z_inputs[name][(card_X, card_Z)] = Z_instances
 
-# Directory where to save
-save_dir = BASE / "Results/Inputs"
-save_dir.mkdir(exist_ok=True)  # does not create it if it does not exist
+
 
 # Save files
-with open(save_dir / "RW_X_inputs.pkl", "wb") as f:
+with open(inputs_dir / "RW_X_inputs.pkl", "wb") as f:
     pickle.dump(RW_X_inputs, f)
 
-with open(save_dir / "RW_Z_inputs.pkl", "wb") as f:
-    pickle.dump(Z_inputs, f)           
+with open(inputs_dir / "RW_Z_inputs.pkl", "wb") as f:
+    pickle.dump(RW_Z_inputs, f)           
