@@ -41,6 +41,7 @@ BASE = Path(__file__).resolve().parent.parent.parent
 # Path to subfolders
 RW_dags_dir   = BASE / "DAGs/Real_world_dags"
 inputs_dir = BASE / "Results/Inputs"
+results_dir = BASE / "Results"
 all_runtimes_dir = BASE /"Results/Runtimes/All_runtimes"
 
 # Get queries
@@ -141,7 +142,6 @@ for name in names_of_graphs:
     print(to_be_printed)
 
     ### Connect to Neo4j
-    
     graph_db = Graph(host, auth=(username, neo4j_psw))
     
     # Clear database 
@@ -234,26 +234,20 @@ for name in names_of_graphs:
             end_T = time.time()
             
             # Native
-            Y_all = graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
+            Y_all_n = graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
             end_Qn = time.time()
-            
-            print(X, Z, Y_all, len(Y_all))
             
             # Partial reset
             graph_db.run(query_dcollision_partial_reset)
             
             # APOC
             start_Qa = time.time()
-            graph_db.run(query_dcollision_4of4_apoc, parameters=params_Q).evaluate()
+            Y_all_a = graph_db.run(query_dcollision_4of4_apoc, parameters=params_Q).evaluate()
             end_Qa = time.time()
-            
+
             # Reset
             graph_db.run(query_dcollision_reset)
             
-            
-            Y_all_dict[pair].add(Y_all)
-            # Y_con = list(G.nodes() - Y_all - set(X) - set(Z))
-        
             # Save iteration's runtimes
             T_rt = end_T - start_T; T_rts.append(T_rt)
             Qn_rt = end_Qn - end_T; Qn_rts.append(Qn_rt)
@@ -266,6 +260,7 @@ for name in names_of_graphs:
             all_runtimes_tot_n_dict[name][pair] = tot_n_rts
             all_runtimes_Qa_dict[name][pair] = Qa_rts
             all_runtimes_tot_a_dict[name][pair] = tot_a_rts
+            Y_all_dict[pair].append(Y_all_n)
         
             # Save to disk
             
@@ -284,8 +279,8 @@ for name in names_of_graphs:
             with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "wb") as f:
                 pickle.dump(all_runtimes_tot_a_dict, f)
                 
-            with open(all_runtimes_dir / f"RW_Y_all_dict_{name}.pkl", "wb") as f:
-                pickle.dump(all_runtimes_tot_a_dict, f)
+            with open(results_dir / f"RW_Y_all_dict_{name}.pkl", "wb") as f:
+                pickle.dump(Y_all_dict, f)
                 
             to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
             text_file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}; A: {Qa_rt}\n")
