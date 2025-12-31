@@ -71,11 +71,11 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 ## Read mean transformation runtimes
 
 # All
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_T_dict.pkl", "rb") as f:
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_dict.pkl", "rb") as f:
     RW_all_mean_runtimes_WO_T_dict = pickle.load(f)
     
 # |Z| fixed
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_T_Zfix.pkl", "rb") as f:
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_Zfix.pkl", "rb") as f:
     RW_all_mean_runtimes_WO_T_Zfix = pickle.load(f)
 
 ## Read mean query runtimes

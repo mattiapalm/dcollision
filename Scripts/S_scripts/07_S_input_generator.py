@@ -41,7 +41,6 @@ inputs_dir.mkdir(exist_ok=True)  # does not create it if it does not exist
 
 graph_names = []
 graph_types = ['BA','ER','LF','TR']
-current_run_types = ['ER']
 
 for dag in S_dags_dir.iterdir():
     if dag.is_file() and dag.suffix == ".pkl":
@@ -58,7 +57,7 @@ its = 30
 text_file = open("S_Inputs_execution.txt", "w")
 time0=time.time()
 
-for t in current_run_types:
+for t in graph_types:
     prefix = t
 
 ######## Load synthetic DAGs ########
@@ -134,7 +133,7 @@ for t in current_run_types:
 text_file.write(f"Total time = {time2-time0}\n")
 text_file.flush()
 text_file.close()
-        
+
             
         
         

@@ -28,11 +28,17 @@ Relationship = require("py2neo", "py2neo").Relationship
 time = require("time")
 pickle = require("pickle")
 
+# Neo4j connection settings
+host = "bolt://localhost:7687"
+username = "neo4j"
+neo4j_psw = "graph000"
+
 # Base path
 BASE = Path(__file__).resolve().parent.parent.parent
 
 # Path to subfolders
 RW_dags_dir   = BASE / "DAGs/Real_world_dags"
+inputs_dir = BASE / "Results/Inputs"
 
 
 ########--------------- Retrieve DAGs' path ---------------########
@@ -62,7 +68,17 @@ all_paths_to_dags = [path_to_sachs,
                      path_to_munin
                      ]
 
+names_of_graphs = ['C02']
+all_paths_to_dags = [path_to_c02]
+
+
 data_files = dict(zip(names_of_graphs, all_paths_to_dags))
+
+with open(inputs_dir / "RW_X_inputs.pkl", "rb") as f:
+    RW_X_inputs = pickle.load(f)
+
+with open(inputs_dir / "RW_Z_inputs.pkl", "rb") as f:
+    RW_Z_inputs = pickle.load(f)
 
 dim_dict = {}
 
@@ -92,13 +108,32 @@ for name in names_of_graphs:
     N_nodes = len(G.nodes())   # Number of nodes in the DAG
     E_edges = len(G.edges())
     
+    ### Connect to Neo4j
+    graph_db = Graph(host, auth=(username, neo4j_psw))
+    
+    # Clear database 
+    graph_db.delete_all()
+    
+    ### Push nodes and edges into Neo4j
+    
+    # Push nodes
+    for node in G.nodes():
+        graph_db.merge(Node("Variable", name=node), "Variable", "name")
+    
+    # Push edges
+    for u, v in G.edges():
+        node_u = graph_db.nodes.match("Variable", name=u).first()
+        node_v = graph_db.nodes.match("Variable", name=v).first()
+        rel = Relationship(node_u, "CAUSES", node_v)
+        graph_db.merge(rel)
+    
     range_ = [int(N_nodes * f) for f in range_frac]
     
     dim_dict[name] = {'V': N_nodes, 'E' : E_edges, '0': (1,0)}
     for i in range(9):
         k = i+1
         dim_dict[name][k] = (range_[i], range_[i])
-        
+    
 
     to_be_printed = f"The graph {name} has {N_nodes} nodes and {E_edges} edges"
     print(to_be_printed)
@@ -107,4 +142,9 @@ for name in names_of_graphs:
 # with open(BASE / "Results/dim_dict.pkl", "wb") as f:
 #     pickle.dump(dim_dict, f)
 
+name = 'C02'
+pair = 1,0
+h = 13
+X, Z = RW_X_inputs[name][pair][h], RW_Z_inputs[name][pair][h]
+print(f"X = {X}, Z= {Z}")
 

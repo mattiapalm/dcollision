@@ -52,8 +52,9 @@ def filter_by_mod_zscore(values, threshold=3.5):
         mzs_values = 0.6745 * (values - median) / mad
     
     mzs_abs_values = np.abs(mzs_values)
-    filtered_rts = [rt for rt, z in zip(values, mzs_abs_values) if z <= threshold]
-    return filtered_rts
+    filtered_idx = [i for i, z in enumerate(mzs_abs_values) if z <= threshold]
+    #filtered_rts = [rt for rt, z in zip(values, mzs_abs_values) if z <= threshold]
+    return filtered_idx
 
 ##### ====== #####
 
@@ -294,7 +295,8 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_baseline_dict.pkl", "wb") as f
 
     
 
-RW_all_runtimes_WO_T_dict = copy.deepcopy(RW_all_runtimes_T_dict)
+RW_all_runtimes_WO_Tn_dict = copy.deepcopy(RW_all_runtimes_T_dict)
+RW_all_runtimes_WO_Ta_dict = copy.deepcopy(RW_all_runtimes_T_dict)
 RW_all_runtimes_WO_Qn_dict = copy.deepcopy(RW_all_runtimes_Qn_dict)
 RW_all_runtimes_WO_tot_n_dict = copy.deepcopy(RW_all_runtimes_tot_n_dict)
 RW_all_runtimes_WO_Qa_dict = copy.deepcopy(RW_all_runtimes_Qa_dict)
@@ -302,48 +304,57 @@ RW_all_runtimes_WO_tot_a_dict = copy.deepcopy(RW_all_runtimes_tot_a_dict)
 RW_all_runtimes_WO_baseline_dict = copy.deepcopy(RW_all_runtimes_baseline_dict)
 
 for name in graph_names:
-    for pair in RW_all_runtimes_WO_T_dict[name].keys():
-        RW_all_runtimes_WO_T_dict[name][pair] = filter_by_mod_zscore(RW_all_runtimes_WO_T_dict[name][pair])
-        RW_all_runtimes_WO_Qn_dict[name][pair] = filter_by_mod_zscore(RW_all_runtimes_WO_Qn_dict[name][pair])
-        RW_all_runtimes_WO_tot_n_dict[name][pair] = filter_by_mod_zscore(RW_all_runtimes_WO_tot_n_dict[name][pair])
-        RW_all_runtimes_WO_Qa_dict[name][pair] = filter_by_mod_zscore(RW_all_runtimes_WO_Qa_dict[name][pair])
-        RW_all_runtimes_WO_tot_a_dict[name][pair] = filter_by_mod_zscore(RW_all_runtimes_WO_tot_a_dict[name][pair])
+    for pair in RW_all_runtimes_WO_tot_n_dict[name].keys():
+        idx_n = filter_by_mod_zscore(RW_all_runtimes_WO_tot_n_dict[name][pair])
+        RW_all_runtimes_WO_tot_n_dict[name][pair] = [RW_all_runtimes_WO_tot_n_dict[name][pair][i] for i in idx_n]
+        RW_all_runtimes_WO_Tn_dict[name][pair] = [RW_all_runtimes_WO_Tn_dict[name][pair][i] for i in idx_n]
+        RW_all_runtimes_WO_Qn_dict[name][pair] = [RW_all_runtimes_WO_Qn_dict[name][pair][i] for i in idx_n]
+        idx_a = filter_by_mod_zscore(RW_all_runtimes_WO_tot_a_dict[name][pair])
+        RW_all_runtimes_WO_tot_a_dict[name][pair] = [RW_all_runtimes_WO_tot_a_dict[name][pair][i] for i in idx_a]
+        RW_all_runtimes_WO_Ta_dict[name][pair] = [RW_all_runtimes_WO_Ta_dict[name][pair][i] for i in idx_a]
+        RW_all_runtimes_WO_Qa_dict[name][pair] = [RW_all_runtimes_WO_Qa_dict[name][pair][i] for i in idx_a]
+        
+
+
 
 # Initialization
-RW_all_mean_runtimes_WO_T_dict = {}
+RW_all_mean_runtimes_WO_Tn_dict, RW_all_mean_runtimes_WO_Ta_dict = {}, {}
 RW_all_mean_runtimes_WO_Qn_dict, RW_all_mean_runtimes_WO_tot_n_dict = {}, {}
 RW_all_mean_runtimes_WO_Qa_dict, RW_all_mean_runtimes_WO_tot_a_dict = {}, {}
 RW_all_mean_runtimes_WO_baseline_dict = {}
-RW_all_var_runtimes_WO_T_dict = {}
+RW_all_var_runtimes_WO_Tn_dict, RW_all_var_runtimes_WO_Ta_dict = {}, {}
 RW_all_var_runtimes_WO_Qn_dict, RW_all_var_runtimes_WO_tot_n_dict = {}, {}
 RW_all_var_runtimes_WO_Qa_dict, RW_all_var_runtimes_WO_tot_a_dict = {}, {}
 RW_all_var_runtimes_WO_baseline_dict = {}
 
 
 RW_all_runtimes_WO_list = [
-                          RW_all_runtimes_WO_T_dict,
+                          RW_all_runtimes_WO_Tn_dict,
                           RW_all_runtimes_WO_Qn_dict,
                           RW_all_runtimes_WO_tot_n_dict,
+                          RW_all_runtimes_WO_Ta_dict,
                           RW_all_runtimes_WO_Qa_dict,
                           RW_all_runtimes_WO_tot_a_dict,
                           ]
 
 # Parallel lists for iteration
 means_WO_dict_list = [
-    RW_all_mean_runtimes_WO_T_dict,
+    RW_all_mean_runtimes_WO_Tn_dict,
     RW_all_mean_runtimes_WO_Qn_dict,
     RW_all_mean_runtimes_WO_tot_n_dict,
+    RW_all_mean_runtimes_WO_Ta_dict,
     RW_all_mean_runtimes_WO_Qa_dict,
-    RW_all_mean_runtimes_WO_tot_a_dict,
+    RW_all_mean_runtimes_WO_tot_a_dict
     ]
 
 vars_WO_dict_list = [
-    RW_all_var_runtimes_WO_T_dict,
+    RW_all_var_runtimes_WO_Tn_dict,
     RW_all_var_runtimes_WO_Qn_dict,
     RW_all_var_runtimes_WO_tot_n_dict,
+    RW_all_var_runtimes_WO_Ta_dict,
     RW_all_var_runtimes_WO_Qa_dict,
     RW_all_var_runtimes_WO_tot_a_dict
-]
+    ]
 
 for algo_runtimes, mean_dict, var_dict in zip(RW_all_runtimes_WO_list, means_WO_dict_list, vars_WO_dict_list):
         
@@ -405,20 +416,31 @@ for name in baseline_graph_names:
 # Retrieve means and variances of the runtimes for the transformation with |Z| fixed
 
 # Means
-T_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WO_T_dict.items()}
-RW_all_mean_runtimes_WO_T_Zfix = pd.DataFrame(T_means)
-RW_all_mean_runtimes_WO_T_Zfix = RW_all_mean_runtimes_WO_T_Zfix.sort_index()
+Tn_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WO_Tn_dict.items()}
+RW_all_mean_runtimes_WO_Tn_Zfix = pd.DataFrame(Tn_means)
+RW_all_mean_runtimes_WO_Tn_Zfix = RW_all_mean_runtimes_WO_Tn_Zfix.sort_index()
+
+Ta_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WO_Ta_dict.items()}
+RW_all_mean_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_means)
+RW_all_mean_runtimes_WO_Ta_Zfix = RW_all_mean_runtimes_WO_Ta_Zfix.sort_index()
 
 # Variances
-T_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WO_T_dict.items()}
-RW_all_var_runtimes_WO_T_Zfix = pd.DataFrame(T_vars)
-RW_all_var_runtimes_WO_T_Zfix = RW_all_var_runtimes_WO_T_Zfix.sort_index()
+Tn_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WO_Tn_dict.items()}
+RW_all_var_runtimes_WO_Tn_Zfix = pd.DataFrame(Tn_vars)
+RW_all_var_runtimes_WO_Tn_Zfix = RW_all_var_runtimes_WO_Tn_Zfix.sort_index()
+
+Ta_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WO_Ta_dict.items()}
+RW_all_var_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_vars)
+RW_all_var_runtimes_WO_Ta_Zfix = RW_all_var_runtimes_WO_Ta_Zfix.sort_index()
     
     
 # Means
 
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_T_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WO_T_dict, f)
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_WO_Tn_dict, f)
+    
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Ta_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_WO_Ta_dict, f)
 
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_Qn_dict, f)
@@ -432,16 +454,22 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qa_dict.pkl", "wb") as f:
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_a_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_tot_a_dict, f)
     
-with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WO_T_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WO_T_Zfix, f)
+with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WO_Tn_Zfix.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_WO_Tn_Zfix, f)
+    
+with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
+    pickle.dump(RW_all_mean_runtimes_WO_Ta_Zfix, f)
     
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_baseline_dict, f)
     
 # Variances    
 
-with open(var_runtimes_dir / "RW_all_var_runtimes_WO_T_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WO_T_dict, f)
+with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Tn_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_WO_Tn_dict, f)
+    
+with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Ta_dict.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_WO_Ta_dict, f)
 
 with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_Qn_dict, f)
@@ -455,41 +483,13 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Qa_dict.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_var_runtimes_WO_tot_a_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_tot_a_dict, f)
     
-with open(var_runtimes_dir/ "RW_all_var_runtimes_WO_T_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WO_T_Zfix, f)
+with open(var_runtimes_dir/ "RW_all_var_runtimes_WO_Tn_Zfix.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_WO_Tn_Zfix, f)
+    
+with open(var_runtimes_dir/ "RW_all_var_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
+    pickle.dump(RW_all_var_runtimes_WO_Ta_Zfix, f)
     
 with open(var_runtimes_dir / "RW_all_var_runtimes_WO_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_baseline_dict, f)
         
         
-####
-
-runtimes1 = RW_all_runtimes_Qn_dict['C02'][(1,1)]
-
-plt.hist(runtimes1, bins=60)
-plt.xlabel("Runtime")
-plt.ylabel("Count")
-plt.title("Runtime Distribution")
-plt.show()
-
-sns.violinplot(x=runtimes1)
-plt.xlabel("Runtime")
-plt.title("Runtime Violin Plot")
-plt.show()
-
-
-
-runtimes2 = RW_all_runtimes_WO_Qn_dict['C02'][(1,1)]
-print(len(runtimes2))
-
-plt.hist(runtimes2, bins=30)
-plt.xlabel("Runtime")
-plt.ylabel("Count")
-plt.title("Runtime Distribution")
-plt.show()
-
-
-sns.violinplot(x=runtimes2)
-plt.xlabel("Runtime")
-plt.title("Runtime Violin Plot")
-plt.show()

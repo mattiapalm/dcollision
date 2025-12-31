@@ -88,7 +88,7 @@ text_file = open("RW_Baseline_execution.txt", "w")
 ### Open the DAG
 
 for name in names_of_graphs:
-    if name in ['SACHS', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN']:
+    if name in ['SACHS', 'CHILD', 'BARLEY', 'WIN95PTS', 'LINK', 'MUNIN']:
         reader = BIFReader(data_files[name])
         model = reader.get_model()
         G = nx.DiGraph()
