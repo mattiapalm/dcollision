@@ -146,7 +146,7 @@ for name in current_run_names:
             # Initialize the runtimes' lists
             T_rts = []
             Qn_rts = []
-            tot_n_rts = [], []
+            tot_n_rts = []
             
             its = len(X_instances)   # number of iterations (inputs) for the pair
             
