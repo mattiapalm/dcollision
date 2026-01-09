@@ -186,7 +186,7 @@ for name in current_run_names:
                 all_runtimes_Qn_dict[pair] = Qn_rts
                 all_runtimes_tot_n_dict[pair] = tot_n_rts
             
-                """# Save to disk
+                # Save to disk
                 
                 with open(all_runtimes_dir / f"S_all_runtimes_T_{name}.pkl", "wb") as f:
                     pickle.dump(all_runtimes_T_dict, f)
@@ -200,7 +200,7 @@ for name in current_run_names:
                 to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
                 file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}")#"; A: {Qa_rt}\n")
                 file.flush()
-                print(to_be_printed)"""
+                print(to_be_printed)
                 
             n_pair += 1
             
