@@ -33,11 +33,12 @@ pickle = require("pickle")
 BASE = Path(__file__).resolve().parent.parent.parent
 
 # Path to subfolders
-S_dags_dir   = BASE / "DAGs/Synthetic_dags/Previous"
+S_dags_dir   = BASE / "DAGs/Synthetic_dags"
+S_dags_dir_pr   = BASE / "DAGs/Synthetic_dags/Previous"
 inputs_dir = BASE / "Results/Inputs"
 all_runtimes_dir = BASE /"Results/Runtimes/All_runtimes"
 
-graph_names = []
+"""graph_names = []
 
 for dag in S_dags_dir.iterdir():
     if dag.is_file() and dag.suffix == ".pkl":
@@ -58,43 +59,27 @@ with open(inputs_dir / f"Previous/S_Z_inputs_{name1}.pkl", "rb") as f:
     PZ_inputs = pickle.load(f)
     
 print(X_inputs == PX_inputs)
-print(Z_inputs == PZ_inputs)
+print(Z_inputs == PZ_inputs)"""
 
 
 
-name = "BA1"+'.pkl'
+name = "ER0"+'.pkl'
 with open(S_dags_dir / name, "rb") as f:
     G = pickle.load(f)
-    
+
 N_nodes = len(G.nodes())    # Number of nodes in the DAG
 E_edges = len(G.edges())
 D = 2* E_edges / ( N_nodes * (N_nodes -1))
-print("Density= ", D)
+print("Density G= ", D)
 
 largest_cc = max(nx.weakly_connected_components(G), key=len)
 
 to_be_removed = G.nodes() - largest_cc
 G.remove_nodes_from(to_be_removed)
 
-print('The graph', name, 'has', len(G.nodes()), 'nodes and', len(G.edges()), 'edges')
-"""
-name = "ER0"+'.pkl'
-with open(S_dags_dir / name, "rb") as f:
-    G2 = pickle.load(f)
-    
-print(G == G2)
-    
-N_nodes = len(G.nodes())    # Number of nodes in the DAG
-E_edges = len(G.edges())
-D = 2* E_edges / ( N_nodes * (N_nodes -1))
-print("Density= ", D)
-
-largest_cc = max(nx.weakly_connected_components(G), key=len)
-
-to_be_removed = G.nodes() - largest_cc
-G2.remove_nodes_from(to_be_removed)
-
-"""
+to_be_saved = f"ER0.pkl"
+with open(S_dags_dir / to_be_saved, "wb") as f:
+    pickle.dump(G, f)
 
 """## Read transformation runtimes
 with open(all_runtimes_dir / f"S_all_runtimes_T_{name[:-4]}.pkl", "rb") as f:

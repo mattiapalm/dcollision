@@ -51,10 +51,7 @@ from queries import (
     query_dcollision_partial_reset,
     query_dcollision_1of4,
     query_dcollision_2of4,
-    query_dcollision_2of4_1,
-    query_dcollision_2of4_2,
     query_dcollision_3of4,
-    query_dcollision_4of4,
     query_dcollision_4of4_1,
     query_dcollision_4of4_2,
     query_dcollision_4of4_3,
@@ -103,15 +100,15 @@ with open(inputs_dir / "RW_Z_inputs.pkl", "rb") as f:
 all_runtimes_T_dict = {}
 all_runtimes_Qn_dict = {}
 all_runtimes_tot_n_dict = {}
-# all_runtimes_Qa_dict = {}
-# all_runtimes_tot_a_dict = {}
+all_runtimes_Qa_dict = {}
+all_runtimes_tot_a_dict = {}
 
 for name in names_of_graphs:
     all_runtimes_T_dict[name] = {}
     all_runtimes_Qn_dict[name] = {}
     all_runtimes_tot_n_dict[name] = {}
-    # all_runtimes_Qa_dict[name] = {}
-    # all_runtimes_tot_a_dict[name] = {}
+    all_runtimes_Qa_dict[name] = {}
+    all_runtimes_tot_a_dict[name] = {}
     
 ########--------------- Iterates over the DAGs ---------------########
     
@@ -167,8 +164,6 @@ for name in names_of_graphs:
     ub = N_nodes-1             # Upper bound on the number of edges in a simple path
     
     # Obtain the DAG-specific query
-    query_dcollision_2of4_complete = (   query_dcollision_2of4_1 + str(ub)
-                                       + query_dcollision_2of4_2 )
     
     query_dcollision_4of4_complete = (   query_dcollision_4of4_1 + str(ub)
                                        + query_dcollision_4of4_2 + str(ub)
@@ -212,10 +207,10 @@ for name in names_of_graphs:
         
         # Initialize the runtimes' lists
         T_rts = []
-        # Qn_rts, Qa_rts = [], []
-        # tot_n_rts, tot_a_rts = [], []
+        Qn_rts, Qa_rts = [], []
+        tot_n_rts, tot_a_rts = [], []
         
-        #Y_all_dict[pair] = []
+        Y_all_dict[pair] = []
         
         its = len(X_instances)   # number of iterations (inputs) for the pair
         
@@ -234,11 +229,11 @@ for name in names_of_graphs:
             # Transformation
             start_T = time.time()
             graph_db.run(query_dcollision_1of4, parameters=params_T)
-            graph_db.run(query_dcollision_2of4_complete)
+            graph_db.run(query_dcollision_2of4)
             graph_db.run(query_dcollision_3of4)
             end_T = time.time()
             
-            """# Native
+            # Native
             Y_all_n = graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
             end_Qn = time.time()
             
@@ -248,47 +243,47 @@ for name in names_of_graphs:
             # APOC
             start_Qa = time.time()
             Y_all_a = graph_db.run(query_dcollision_4of4_apoc, parameters=params_Q).evaluate()
-            end_Qa = time.time()"""
+            end_Qa = time.time()
 
             # Reset
             graph_db.run(query_dcollision_reset)
             
             # Save iteration's runtimes
             T_rt = end_T - start_T; T_rts.append(T_rt)
-            # Qn_rt = end_Qn - end_T; Qn_rts.append(Qn_rt)
-            # tot_n_rt = T_rt + Qn_rt; tot_n_rts.append(tot_n_rt)
-            #Qa_rt = end_Qa - start_Qa; Qa_rts.append(Qa_rt)
-            #tot_a_rt = T_rt + Qa_rt; tot_a_rts.append(tot_a_rt)
+            Qn_rt = end_Qn - end_T; Qn_rts.append(Qn_rt)
+            tot_n_rt = T_rt + Qn_rt; tot_n_rts.append(tot_n_rt)
+            Qa_rt = end_Qa - start_Qa; Qa_rts.append(Qa_rt)
+            tot_a_rt = T_rt + Qa_rt; tot_a_rts.append(tot_a_rt)
             
             all_runtimes_T_dict[name][pair] = T_rts
-            # all_runtimes_Qn_dict[name][pair] = Qn_rts
-            # all_runtimes_tot_n_dict[name][pair] = tot_n_rts
-            #all_runtimes_Qa_dict[name][pair] = Qa_rts
-            #all_runtimes_tot_a_dict[name][pair] = tot_a_rts
-            #Y_all_dict[pair].append(Y_all_n)
+            all_runtimes_Qn_dict[name][pair] = Qn_rts
+            all_runtimes_tot_n_dict[name][pair] = tot_n_rts
+            all_runtimes_Qa_dict[name][pair] = Qa_rts
+            all_runtimes_tot_a_dict[name][pair] = tot_a_rts
+            Y_all_dict[pair].append(Y_all_n)
         
             # Save to disk
             
             with open(all_runtimes_dir / "RW_all_runtimes_T_dict.pkl", "wb") as f:
                 pickle.dump(all_runtimes_T_dict, f)
         
-            # with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "wb") as f:
-            #     pickle.dump(all_runtimes_Qn_dict, f)
+            with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "wb") as f:
+                pickle.dump(all_runtimes_Qn_dict, f)
         
-            # with open(all_runtimes_dir / "RW_all_runtimes_tot_n_dict.pkl", "wb") as f:
-            #     pickle.dump(all_runtimes_tot_n_dict, f)
+            with open(all_runtimes_dir / "RW_all_runtimes_tot_n_dict.pkl", "wb") as f:
+                pickle.dump(all_runtimes_tot_n_dict, f)
                 
-            # with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "wb") as f:
-            #     pickle.dump(all_runtimes_Qa_dict, f)
+            with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "wb") as f:
+                pickle.dump(all_runtimes_Qa_dict, f)
         
-            # with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "wb") as f:
-            #     pickle.dump(all_runtimes_tot_a_dict, f)
+            with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "wb") as f:
+                pickle.dump(all_runtimes_tot_a_dict, f)
                 
-            # with open(results_dir / f"RW_Y_all_dict_{name}.pkl", "wb") as f:
-            #     pickle.dump(Y_all_dict, f)
+            with open(results_dir / f"RW_Y_all_dict_{name}.pkl", "wb") as f:
+                pickle.dump(Y_all_dict, f)
                 
             to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
-            text_file.write(to_be_printed+f"\nT: {T_rt}\n")#; N: {Qn_rt}; A: {Qa_rt}\n")
+            text_file.write(to_be_printed+f"T: {T_rt}; N: {Qn_rt}; A: {Qa_rt}\n")
             text_file.flush()
             print(to_be_printed)
                 

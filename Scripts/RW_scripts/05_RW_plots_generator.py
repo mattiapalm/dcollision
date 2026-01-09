@@ -32,39 +32,41 @@ BASE = Path(__file__).resolve().parent.parent.parent
 # Path to subfolders
 runtimes_dir = BASE / "Results/Runtimes"
 all_runtimes_dir = runtimes_dir / "All_runtimes"
+all_runtimes_dir = BASE / "Results/Previous/1All_runtimes"
+previous = BASE / "Results/Previous/1All_runtimes"
 mean_runtimes_dir = runtimes_dir / "Mean_runtimes"
 var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 
 ########--------------- Load runtimes' files ---------------########
 
-# ### Read all runtimes
+### Read all runtimes
     
-# ## Read transformation runtimes
+## Read transformation runtimes
 
-# with open(all_runtimes_dir / "RW_all_runtimes_WO_T_dict.pkl", "rb") as f:
-#     RW_all_runtimes_WO_T_dict = pickle.load(f)
+with open(all_runtimes_dir / "RW_all_runtimes_WO_T_dict.pkl", "rb") as f:
+    RW_all_runtimes_WO_T_dict = pickle.load(f)
 
-# ## Read query runtimes
+## Read query runtimes
 
-# # Native
-# with open(all_runtimes_dir / "RW_all_runtimes_WO_Qn_dict.pkl", "rb") as f:
-#     RW_all_runtimes_WO_Qn_dict = pickle.load(f)
+# Native
+with open(all_runtimes_dir / "RW_all_runtimes_WO_Qn_dict.pkl", "rb") as f:
+    RW_all_runtimes_WO_Qn_dict = pickle.load(f)
 # # APOC
 # with open(all_runtimes_dir / "RW_all_runtimes_WO_Qa_dict.pkl", "rb") as f:
 #     RW_all_runtimes_WO_Qa_dict = pickle.load(f)
     
-# ## Read total runtimes
+## Read total runtimes
 
-# # Native
-# with open(all_runtimes_dir / "RW_all_runtimes_WO_tot_n_dict.pkl", "rb") as f:
-#     RW_all_runtimes_WO_tot_n_dict = pickle.load(f)
+# Native
+with open(all_runtimes_dir / "RW_all_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+    RW_all_runtimes_WO_tot_n_dict = pickle.load(f)
 # # APOC
 # with open(all_runtimes_dir / "RW_all_runtimes_WO_tot_a_dict.pkl", "rb") as f:
 #     RW_all_runtimes_WO_tot_a_dict = pickle.load(f)
 
-# ## Baseline runtimes
-# with open(all_runtimes_dir / "RW_all_runtimes_WO_baseline_dict.pkl", "rb") as f:
-#     RW_all_runtimes_WO_baseline_dict = pickle.load(f)
+## Baseline runtimes
+with open(all_runtimes_dir / "RW_all_runtimes_WO_baseline_dict.pkl", "rb") as f:
+    RW_all_runtimes_WO_baseline_dict = pickle.load(f)
 
 ### Read mean runtimes
 
@@ -72,11 +74,11 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 
 # All
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_dict.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_T_dict = pickle.load(f)
+    RW_all_mean_runtimes_WO_Tn_dict = pickle.load(f)
     
 # |Z| fixed
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_Zfix.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_T_Zfix = pickle.load(f)
+    RW_all_mean_runtimes_WO_Tn_Zfix = pickle.load(f)
 
 ## Read mean query runtimes
 
@@ -84,9 +86,9 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_Zfix.pkl", "rb") as f:
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qn_dict.pkl", "rb") as f:
     RW_all_mean_runtimes_WO_Qn_dict = pickle.load(f)
 
-# APOC
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qa_dict.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_Qa_dict = pickle.load(f)
+# # APOC
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qa_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_WO_Qa_dict = pickle.load(f)
 
 ## Read mean total runtimes
 
@@ -94,9 +96,9 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qa_dict.pkl", "rb") as f:
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as f:
     RW_all_mean_runtimes_WO_tot_n_dict  = pickle.load(f)
 
-# APOC
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_a_dict.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_tot_a_dict  = pickle.load(f)
+# # APOC
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_a_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_WO_tot_a_dict  = pickle.load(f)
     
 # Baseline
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "rb") as f:
@@ -138,6 +140,42 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "rb")
 # # Baseline
 # with open(var_runtimes_dir / "RW_all_var_runtimes_WO_baseline_dict.pkl", "rb") as f:
 #     RW_all_var_runtimes_WO_baseline_dict  = pickle.load(f) 
+
+### Read standard deviations of the runtimes
+
+## Read standard deviations of transformation runtimes
+
+# All
+with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Tn_dict.pkl", "rb") as f:
+    RW_all_sd_runtimes_WO_Tn_dict = pickle.load(f)
+    
+# |Z| fixed
+with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Tn_Zfix.pkl", "rb") as f:
+    RW_all_sd_runtimes_WO_T_Zfix = pickle.load(f)
+
+## Read variances of query runtimes
+
+# Native
+with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qn_dict.pkl", "rb") as f:
+    RW_all_sd_runtimes_WO_Qn_dict = pickle.load(f)
+
+# APOC
+with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qa_dict.pkl", "rb") as f:
+    RW_all_sd_runtimes_WO_Qa_dict = pickle.load(f)
+
+## Read variances of total runtimes
+
+# Native
+with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+    RW_all_sd_runtimes_WO_tot_n_dict  = pickle.load(f)
+
+# APOC
+with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_a_dict.pkl", "rb") as f:
+    RW_all_sd_runtimes_WO_tot_a_dict  = pickle.load(f)
+    
+# Baseline
+with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_baseline_dict.pkl", "rb") as f:
+    RW_all_sd_runtimes_WO_baseline_dict  = pickle.load(f) 
 
     
 ##########========================================================############
@@ -494,7 +532,7 @@ with open(BASE / "Results/dim_dict.pkl", "rb") as f:
     dim_dict = pickle.load(f)
     
 
-rrts_idx = RW_all_mean_runtimes_WO_T_Zfix.columns
+rrts_idx = RW_all_mean_runtimes_WO_Tn_Zfix.columns
 rrts_cols0 = [0,1,2,3,4]
 range_frac = [n/10 for n in range(0,5)]
 relevant_rts0 = pd.DataFrame(
@@ -580,7 +618,7 @@ Tdf = pd.DataFrame(
     columns=Tdf_cols
 )
 for r in Tdf.index:
-    df = RW_all_mean_runtimes_WO_T_dict[r]
+    df = RW_all_mean_runtimes_WO_Tn_dict[r]
     for c in Tdf_cols:
         if c == 0:
             mu = float(np.mean(df.loc[:, 0]))
@@ -592,6 +630,23 @@ for r in Tdf.index:
         Tdf.loc[r,c] = round(mu, 3)    
 Tdf.rename(columns={0: '0%', 5: '50%', 8: '80%'}, inplace=True)
 
+"""Tdf_sd = pd.DataFrame(
+    index=Tdf_idx,
+    columns=Tdf_cols
+)
+for r in Tdf_sd.index:
+    df = RW_all_sd_runtimes_WO_Tn_dict[r]
+    for c in Tdf_cols:
+        if c == 0:
+            sd = df.loc[1,0]
+        elif c == 5 or c==8:
+            n = dim_dict[r][c][0]
+            sd = df.loc[, n]
+        else:
+            mu = float(np.mean(df))
+        Tdf_sd.loc[r,c] = round(mu, 3)    
+Tdf.rename(columns={0: '0%', 5: '50%', 8: '80%'}, inplace=True)"""
+
 
 Tdf_idx = graph_names
 Tdf2_cols = [0, 'Mean', 'Slowest']
@@ -600,7 +655,7 @@ Tdf2 = pd.DataFrame(
     columns=Tdf2_cols
 )
 for r in Tdf2.index:
-    df = RW_all_mean_runtimes_WO_T_dict[r]
+    df = RW_all_mean_runtimes_WO_Tn_dict[r]
     for c in Tdf2_cols:
         if c == 0:
             v = df.loc[1,0]
@@ -644,8 +699,8 @@ for col in df1.columns:
         x = xti
     else:
         x = df1.index
-    plt.bar(x, df1[col], label = 'Identification')
-    plt.bar(x, df2[col], label = 'Transformation')
+    plt.bar(x, df1[col], label = 'DSEP Identification')
+    plt.bar(x, df2[col], label = 'DCG Generation')
     plt.xticks(rotation=45)   # 45 degrees
     plt.tight_layout()
     if col == (1,0):
@@ -655,5 +710,5 @@ for col in df1.columns:
     else:
         tit = "Slowest mean runtimes"
     plt.title(tit)
-    plt.legend()
+    plt.legend(loc='upper center', bbox_to_anchor=(0.0003, 0.8, 1.1, 0.2), reverse=True)
     plt.show()

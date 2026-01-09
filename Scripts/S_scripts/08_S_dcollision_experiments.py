@@ -46,20 +46,17 @@ all_runtimes_dir = BASE /"Results/Runtimes/All_runtimes"
 sys.path.append(str(BASE / "Scripts"))
 from queries import (
     query_dcollision_reset,
-    query_dcollision_partial_reset,
     query_dcollision_1of4,
     query_dcollision_2of4,
     query_dcollision_3of4,
-    query_dcollision_4of4,
     query_dcollision_4of4_1,
     query_dcollision_4of4_2,
-    query_dcollision_4of4_3,
-    query_dcollision_4of4_apoc
+    query_dcollision_4of4_3
 )
 
 graph_types = ['BA', 'ER', 'LF', 'TR']
 current_run_types = ['ER']
-current_run_dim = ['2']
+current_run_dim = ['0']
 
 current_run_names = []
 for t in current_run_types:
@@ -83,8 +80,8 @@ for name in current_run_names:
     N_nodes = len(G.nodes())    # Number of nodes in the DAG
 
     to_be_printed = f"The graph {name} has {N_nodes} nodes and {len(G.edges())} edges"
-    file.write(to_be_printed+'\n')
-    file.flush()
+    """file.write(to_be_printed+'\n')
+    file.flush()"""
     print(to_be_printed)
         
 # -------
@@ -189,7 +186,7 @@ for name in current_run_names:
                 all_runtimes_Qn_dict[pair] = Qn_rts
                 all_runtimes_tot_n_dict[pair] = tot_n_rts
             
-                # Save to disk
+                """# Save to disk
                 
                 with open(all_runtimes_dir / f"S_all_runtimes_T_{name}.pkl", "wb") as f:
                     pickle.dump(all_runtimes_T_dict, f)
@@ -203,7 +200,7 @@ for name in current_run_names:
                 to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
                 file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}")#"; A: {Qa_rt}\n")
                 file.flush()
-                print(to_be_printed)
+                print(to_be_printed)"""
                 
             n_pair += 1
             

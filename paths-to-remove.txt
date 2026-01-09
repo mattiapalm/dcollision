@@ -1,9 +1,0 @@
-DAGs/Synthetic_dags/BA5.pkl
-DAGs/Synthetic_dags/BA6.pkl
-DAGs/Synthetic_dags/BA7.pkl
-DAGs/Synthetic_dags/LF5.pkl
-DAGs/Synthetic_dags/LF6.pkl
-DAGs/Synthetic_dags/LF7.pkl
-DAGs/Synthetic_dags/TR5.pkl
-DAGs/Synthetic_dags/TR6.pkl
-DAGs/Synthetic_dags/TR7.pkl

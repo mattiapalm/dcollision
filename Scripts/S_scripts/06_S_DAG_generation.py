@@ -25,7 +25,6 @@ np = require("numpy")
 pickle = require("pickle")
 time = require("time")
 
-
 ##### ====== #####
 
 # Base path
@@ -180,20 +179,15 @@ def layered_dag(nodes_per_layer, p, seed=None):
 graph_types = ['ER', 'BA', 'LF', 'TR']
 
 # Initialise the dictionaries of DAGs
-all_graphs_dict = {}
-for t in graph_types:
-    all_graphs_dict[t] = {}
 
-card_V_list0 = [10**3, 10**4, 2*10**4]
-card_V_list1 = [10**3, 10**4]
+card_V_list = [10**3, 10**4, 2*10**4]
 
 D = 0.0025
-seed = 2026
-random.seed(seed)
+seed = None
 
-for N in card_V_list1:
+for N in card_V_list:
     
-    index = card_V_list0.index(N)
+    index = card_V_list.index(N)
     
     ########--------------- BARABASI-ALBERT ---------------########
     
@@ -202,22 +196,21 @@ for N in card_V_list1:
     
     print(f"BA {N} has {len(DAG_ba.edges())} edges.")
     print("BA Is DAG:", nx.is_directed_acyclic_graph(DAG_ba))        
-    #all_graphs_dict['BA'][N] = DAG_ba
     
     to_be_saved = f"BA{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
-         pickle.dump(DAG_ba, f)
+          pickle.dump(DAG_ba, f)
 
     
     ########--------------- ERDOS-RENYI ---------------########
+# %%
     
-    start = time.time()
+
     G_er = nx.erdos_renyi_graph(n=N, p=D, directed=False)
     DAG_er = transform_into_DAG(G_er, seed)
     
-    #print(f"ER {N} has {len(DAG_er.edges())} edges.")
-    #print("ER Is DAG:", nx.is_directed_acyclic_graph(DAG_er))
-    #all_graphs_dict['ER'][N] = DAG_er
+    print(f"ER {N} has {len(DAG_er.edges())} edges.")
+    print("ER Is DAG:", nx.is_directed_acyclic_graph(DAG_er))
     
     largest_cc = max(nx.weakly_connected_components(DAG_er), key=len)
 
@@ -227,12 +220,9 @@ for N in card_V_list1:
     to_be_saved = f"ER{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
         pickle.dump(DAG_er, f)
-    end = time.time()
-    
+
     
     print('The graph ER  has', len(DAG_er.nodes()), 'nodes and', len(DAG_er.edges()), 'edges')
-
-    #print(f"{index} ", end-start)
     
     ########--------------- LAYERED / FEED-FORWARD ---------------########
     
@@ -245,7 +235,6 @@ for N in card_V_list1:
     
     print(f"LF {N} has {len(DAG_lf.edges())} edges.")
     print("LF Is DAG:", nx.is_directed_acyclic_graph(DAG_lf))
-    #all_graphs_dict['LF'][N] = DAG_lf
     
     to_be_saved = f"LF{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
@@ -259,7 +248,6 @@ for N in card_V_list1:
     
     print(f"TR {N} has {len(DAG_tr.edges())} edges.")
     print("TR Is DAG:", nx.is_directed_acyclic_graph(DAG_tr))
-    #all_graphs_dict['TR'][N] = DAG_tr
     
     to_be_saved = f"TR{index}.pkl"
     with open(synthetic_dags_dir / to_be_saved, "wb") as f:
