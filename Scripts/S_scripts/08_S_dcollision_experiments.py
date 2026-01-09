@@ -198,7 +198,7 @@ for name in current_run_names:
                     pickle.dump(all_runtimes_tot_n_dict, f)
                     
                 to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
-                file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}")#"; A: {Qa_rt}\n")
+                file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}")
                 file.flush()
                 print(to_be_printed)
                 
