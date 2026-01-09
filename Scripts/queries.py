@@ -74,7 +74,7 @@ n.in_A = FALSE
 query_dcollision_2of4 = """
 // Step 1: Find the ancestors of the nodes in Z, and set the properties
 MATCH (a)
-WHERE EXISTS {(a)-[:CAUSES*0..]->{({in_Z:TRUE})}
+WHERE EXISTS {(a)-[:CAUSES*0..]->({in_Z:TRUE})}
 SET a.in_A = TRUE
 """
 
