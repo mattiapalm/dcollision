@@ -32,41 +32,13 @@ BASE = Path(__file__).resolve().parent.parent.parent
 # Path to subfolders
 runtimes_dir = BASE / "Results/Runtimes"
 all_runtimes_dir = runtimes_dir / "All_runtimes"
-all_runtimes_dir = BASE / "Results/Previous/1All_runtimes"
-previous = BASE / "Results/Previous/1All_runtimes"
 mean_runtimes_dir = runtimes_dir / "Mean_runtimes"
-var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
+var_runtimes_dir = runtimes_dir / "Vars_and_sds"
+proportions_dir = runtimes_dir / "Proportions"
+
 
 ########--------------- Load runtimes' files ---------------########
 
-### Read all runtimes
-    
-## Read transformation runtimes
-
-with open(all_runtimes_dir / "RW_all_runtimes_WO_T_dict.pkl", "rb") as f:
-    RW_all_runtimes_WO_T_dict = pickle.load(f)
-
-## Read query runtimes
-
-# Native
-with open(all_runtimes_dir / "RW_all_runtimes_WO_Qn_dict.pkl", "rb") as f:
-    RW_all_runtimes_WO_Qn_dict = pickle.load(f)
-# # APOC
-# with open(all_runtimes_dir / "RW_all_runtimes_WO_Qa_dict.pkl", "rb") as f:
-#     RW_all_runtimes_WO_Qa_dict = pickle.load(f)
-    
-## Read total runtimes
-
-# Native
-with open(all_runtimes_dir / "RW_all_runtimes_WO_tot_n_dict.pkl", "rb") as f:
-    RW_all_runtimes_WO_tot_n_dict = pickle.load(f)
-# # APOC
-# with open(all_runtimes_dir / "RW_all_runtimes_WO_tot_a_dict.pkl", "rb") as f:
-#     RW_all_runtimes_WO_tot_a_dict = pickle.load(f)
-
-## Baseline runtimes
-with open(all_runtimes_dir / "RW_all_runtimes_WO_baseline_dict.pkl", "rb") as f:
-    RW_all_runtimes_WO_baseline_dict = pickle.load(f)
 
 ### Read mean runtimes
 
@@ -102,7 +74,24 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as
     
 # Baseline
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_baseline_dict  = pickle.load(f) 
+    RW_all_mean_runtimes_WO_baseline_dict  = pickle.load(f)
+    
+# Overall means
+
+with open(mean_runtimes_dir / "RW_overall_means_WO_dict.pkl", "rb") as f:
+    RW_overall_means_WO_dict  = pickle.load(f)
+    
+# Means over dimension
+
+with open(mean_runtimes_dir / "RW_means_over_dim_WO.pkl", "rb") as f:
+    RW_means_over_dim_WO  = pickle.load(f)
+    
+with open(mean_runtimes_dir / "RW_means_over_dim_Qn_WO.pkl", "rb") as f:
+    RW_means_over_dim_Qn_WO  = pickle.load(f)
+    
+with open(mean_runtimes_dir / "RW_means_over_dim_Zfix_WO.pkl", "rb") as f:
+    RW_means_over_dim_Zfix_WO  = pickle.load(f)
+    
 
 
 # ### Read variances of the runtimes
@@ -143,7 +132,7 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "rb")
 
 ### Read standard deviations of the runtimes
 
-## Read standard deviations of transformation runtimes
+## Load standard deviations of transformation runtimes
 
 # All
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Tn_dict.pkl", "rb") as f:
@@ -153,7 +142,7 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Tn_dict.pkl", "rb") as f:
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Tn_Zfix.pkl", "rb") as f:
     RW_all_sd_runtimes_WO_T_Zfix = pickle.load(f)
 
-## Read variances of query runtimes
+## Load standard deviations of query runtimes
 
 # Native
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qn_dict.pkl", "rb") as f:
@@ -163,7 +152,7 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qn_dict.pkl", "rb") as f:
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qa_dict.pkl", "rb") as f:
     RW_all_sd_runtimes_WO_Qa_dict = pickle.load(f)
 
-## Read variances of total runtimes
+## Load standard deviations of total runtimes
 
 # Native
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_n_dict.pkl", "rb") as f:
@@ -175,8 +164,27 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_a_dict.pkl", "rb") as f:
     
 # Baseline
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_baseline_dict.pkl", "rb") as f:
-    RW_all_sd_runtimes_WO_baseline_dict  = pickle.load(f) 
+    RW_all_sd_runtimes_WO_baseline_dict  = pickle.load(f)
+    
+# Overall standard deviations
+    
+with open(var_runtimes_dir / "RW_overall_sd_WO_dict.pkl", "rb") as f:
+    RW_overall_sd_WO_dict  = pickle.load(f)
 
+
+## Load proportions of WO runtimes
+
+# Native
+with open(proportions_dir / "RW_WO_proportions_n.pkl", "rb") as f:
+    RW_WO_proportions_n  = pickle.load(f)
+
+# APOC
+with open(proportions_dir / "RW_WO_proportions_a.pkl", "rb") as f:
+    RW_WO_proportions_a  = pickle.load(f)
+    
+# Baseline
+with open(proportions_dir / "RW_WO_proportions_b.pkl", "rb") as f:
+    RW_WO_proportions_b  = pickle.load(f)
     
 ##########========================================================############
 
@@ -526,39 +534,43 @@ for name in graph_names:
     plt.grid(True)
     plt.legend()
     plt.show()
+    
+    rrts_idx = RW_all_mean_runtimes_WO_Tn_Zfix.columns
+    rrts_cols0 = [0,1,2,3,4]
+    range_frac = [n/10 for n in range(0,5)]
+    relevant_rts0 = pd.DataFrame(
+        index=rrts_idx,
+        columns=rrts_cols0
+    )
+    for r in rrts_idx:
+        df = RW_all_mean_runtimes_WO_tot_n_dict[r]
+        N = dim_dict[r]['V']
+        range_X = [int(N*f) for f in range_frac]
+        for c in rrts_cols0:
+            if c == 0:
+                relevant_rts0.loc[r,c] = df.loc[(1,0)]  
+            elif c in range(1,5):
+                C = range_X[c]
+                if C != 0:
+                    c1, c2 = C, C
+                else:
+                    c1, c2 = 1, 0
+                relevant_rts0.loc[r,c] = df.loc[(c1,c2)]
+                
+    relevant_rts0.rename(columns={0: (1,0), 1: '(10%,10%)', 2: '(20%,20%)', 3:'(30%,30%)', 4:'(40%,40%)'}, inplace=True)
 
 """
 with open(BASE / "Results/dim_dict.pkl", "rb") as f:
     dim_dict = pickle.load(f)
     
+new_cols = {n: n/100 for n in range(0,91,10)}
+new_cols[0] = '0'
+new_cols2 = new_cols.copy()
+new_cols2[0] = (1,0)
+
 
 rrts_idx = RW_all_mean_runtimes_WO_Tn_Zfix.columns
-rrts_cols0 = [0,1,2,3,4]
-range_frac = [n/10 for n in range(0,5)]
-relevant_rts0 = pd.DataFrame(
-    index=rrts_idx,
-    columns=rrts_cols0
-)
-for r in rrts_idx:
-    df = RW_all_mean_runtimes_WO_tot_n_dict[r]
-    N = dim_dict[r]['V']
-    range_X = [int(N*f) for f in range_frac]
-    for c in rrts_cols0:
-        if c == 0:
-            relevant_rts0.loc[r,c] = df.loc[(1,0)]  
-        elif c in range(1,5):
-            C = range_X[c]
-            if C != 0:
-                c1, c2 = C, C
-            else:
-                c1, c2 = 1, 0
-            relevant_rts0.loc[r,c] = df.loc[(c1,c2)]
-            
-relevant_rts0.rename(columns={0: (1,0), 1: '(10%,10%)', 2: '(20%,20%)', 3:'(30%,30%)', 4:'(40%,40%)'}, inplace=True)
-
-
-
-rrts_cols1 = [0,'Mean','Slowest']
+rrts_cols1 = [0,'Mean','Largest']
 relevant_rts1 = pd.DataFrame(
     index=rrts_idx,
     columns=rrts_cols1
@@ -576,11 +588,11 @@ for r in rrts_idx:
             w = float(np.max(df))
             matches = df.where(df == w).stack()
             i = list(matches.index)[0]
-            relevant_rts1.loc[r,c] = (w, i)
-            
-relevant_rts1.rename(columns={0: (1,0)}, inplace=True)
+            relevant_rts1.loc[r,c] = (w, i)            
+relevant_rts1.rename(columns=new_cols, inplace=True)
 
-df = relevant_rts0
+df = RW_means_over_dim_WO
+df.rename(columns=new_cols2, inplace=True)
 x = df.columns.astype(str)   # convert tuple → string
 
 plt.figure(figsize= (8,6))
@@ -589,11 +601,44 @@ for name in graph_names:
     plt.plot(x, y, marker='o', label=name)
 
 plt.title("Trend of the mean total runtime")
-plt.xlabel("Sizes of X and Z")
+plt.xlabel("Sizes of the input $X \cup Z$")
+plt.ylabel("Mean runtime")
 plt.grid(True)
 plt.legend()
 plt.show()
 
+
+
+df = RW_means_over_dim_Qn_WO
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+
+plt.title("Mean runtimes of the d-separated nodes identification phase")
+plt.xlabel("Proportion of nodes in the input $X \cup Z$")
+plt.ylabel("Mean runtime")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+
+df = RW_means_over_dim_Zfix_WO
+df.rename(columns=new_cols, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+plt.title("Mean runtimes of the d-collision graph generation phase")
+plt.xlabel("Proportion of nodes in the input $Z$")
+plt.ylabel("Mean runtime")
+plt.grid(True)
+plt.legend()
+plt.show()
 
 bs_cols = [0,'Mean']
 relevant_bs = pd.DataFrame(
@@ -601,13 +646,20 @@ relevant_bs = pd.DataFrame(
     columns=bs_cols
 )
 for r in baseline_graph_names:
-    df = RW_all_mean_runtimes_WO_baseline_dict[r]
+    df_means = RW_all_mean_runtimes_WO_baseline_dict[r]
+    df_sds = RW_all_sd_runtimes_WO_baseline_dict[r]
+    df_props = RW_WO_proportions_b[r]
     for c in bs_cols:
         if c == 0:
-            relevant_bs.loc[r,c] = round(df.loc[1,0], 3)
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            prop = df_props.loc[1,0]
+            relevant_bs.loc[r,c] = (mu, sd, prop)
         elif c == 'Mean':
-           mu = float(np.mean(df))
-           relevant_bs.loc[r,c] = round(mu, 3)
+           mu = round(RW_overall_means_WO_dict[r]['b'],3)
+           sd = round(RW_overall_sd_WO_dict[r]['b'],3)
+           prop = round(np.mean(df_props),3)
+           relevant_bs.loc[r,c] = (mu, sd, prop)
 relevant_bs.rename(columns={0: (1,0)}, inplace=True)
 
 
@@ -649,7 +701,7 @@ Tdf.rename(columns={0: '0%', 5: '50%', 8: '80%'}, inplace=True)"""
 
 
 Tdf_idx = graph_names
-Tdf2_cols = [0, 'Mean', 'Slowest']
+Tdf2_cols = [0, 'Mean', 'Largest']
 Tdf2 = pd.DataFrame(
     index=Tdf_idx,
     columns=Tdf2_cols
@@ -662,14 +714,14 @@ for r in Tdf2.index:
         elif c == 'Mean':
             v = float(np.mean(df))
         else:
-            i = relevant_rts1.loc[r,'Slowest'][1]
+            i = relevant_rts1.loc[r,'Largest'][1]
             v = df.loc[i[0], i[1]]
         Tdf2.loc[r,c] = round(v, 3)    
 Tdf2.rename(columns={0: (1,0)}, inplace=True)
 
 
 totn_idx = graph_names
-totn_cols = [0, 'Mean', 'Slowest']
+totn_cols = [0, 'Mean', 'Largest']
 totn = pd.DataFrame(
     index=totn_idx,
     columns=totn_cols
@@ -682,12 +734,12 @@ for r in totn.index:
         elif c == 'Mean':
             v = float(np.mean(df))
         else:
-            i = relevant_rts1.loc[r,'Slowest'][1]
+            i = relevant_rts1.loc[r,'Largest'][1]
             v = df.loc[i[0], i[1]]
         totn.loc[r,c] = round(v, 3)    
 totn.rename(columns={0: (1,0)}, inplace=True)
 
-xti = [f"{dag}\n {relevant_rts1.loc[dag,'Slowest'][1]}" for dag in graph_names]
+xti = [f"{dag}\n {relevant_rts1.loc[dag,'Largest'][1]}" for dag in graph_names]
 graph_names = ['SACHS', 'C01', 'C02', 'COVID', 'BARLEY', 'WIN95PTS', 'CNSDAG', 'LINK', 'MUNIN']
 
 df1 = totn
@@ -695,12 +747,12 @@ df2 = Tdf2
 
 for col in df1.columns:
     plt.figure()
-    if col == 'Slowest':
+    if col == 'Largest':
         x = xti
     else:
         x = df1.index
-    plt.bar(x, df1[col], label = 'DSEP Identification')
-    plt.bar(x, df2[col], label = 'DCG Generation')
+    plt.bar(x, df1[col], label = 'd-sep. nodes id.')
+    plt.bar(x, df2[col], label = 'd-coll. gr. gen.')
     plt.xticks(rotation=45)   # 45 degrees
     plt.tight_layout()
     if col == (1,0):
@@ -708,7 +760,7 @@ for col in df1.columns:
     elif col == "Mean":
         tit = "Overall mean runtimes"
     else:
-        tit = "Slowest mean runtimes"
+        tit = "Largest mean runtimes"
     plt.title(tit)
-    plt.legend(loc='upper center', bbox_to_anchor=(0.0003, 0.8, 1.1, 0.2), reverse=True)
+    plt.legend(loc='upper center', bbox_to_anchor=(0, 0.8, 0.6, 0.2), reverse=True)
     plt.show()

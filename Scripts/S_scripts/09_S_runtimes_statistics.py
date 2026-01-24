@@ -28,6 +28,35 @@ copy = require("copy")
 
 ##### ====== #####
 
+def filter_by_mod_zscore(values, threshold=10):
+    """
+    Compute the list of values without otliers
+    
+    Parameters
+    ----------
+    values: list of floats
+    threshold: float
+    
+    Returns
+    -------
+    filtered_rts: array of floats
+        
+    """
+    values = np.asarray(values)
+    median = np.median(values)
+    mad = np.median(np.abs(values - median))
+
+    if mad == 0:
+        mzs_values = np.zeros_like(values, dtype=float)
+    else:
+        mzs_values = 0.6745 * (values - median) / mad
+    
+    mzs_abs_values = np.abs(mzs_values)
+    filtered_idx = [i for i, z in enumerate(mzs_abs_values) if z <= threshold]
+    return filtered_idx
+
+##### ====== #####
+
 # Base path
 BASE = Path(__file__).resolve().parent.parent.parent
 
@@ -35,15 +64,16 @@ BASE = Path(__file__).resolve().parent.parent.parent
 runtimes_dir = BASE / "Results/Runtimes"
 all_runtimes_dir = runtimes_dir / "All_runtimes"
 mean_runtimes_dir = runtimes_dir / "Mean_runtimes"
-var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
+var_runtimes_dir = runtimes_dir / "Vars_and_sds"
 
 ##### ====== #####
 
 ### Graphs' names
 
 graph_types = ['BA', 'ER', 'LF', 'TR']
-current_run_types = ['BA', 'LF', 'TR']
-current_run_dim = ['3', '4']
+current_run_types = ['BA', 'ER', 'LF', 'TR']
+current_run_dim = ['0', '1', '2']
+graph_names = ['ER0', 'BA0', 'LF0', 'TR0', 'ER1', 'BA1', 'LF1', 'TR1', 'ER2', 'BA2', 'LF2', 'TR2']
 
 current_run_names = []
 for t in current_run_types:
@@ -76,39 +106,48 @@ for name in current_run_names:
         S_all_runtimes_tot_n_dict[name] = pickle.load(f)
     
  
-    ########--------------- Retrieve statistics ---------------########
-    
-    
-    ## Retrieve means and variances of runtimes per each (|X|, |Z|)
-    
-    # Initialization
-    S_all_mean_runtimes_T_dict = {}
-    S_all_mean_runtimes_Qn_dict, S_all_mean_runtimes_tot_n_dict = {}, {}
-    S_all_var_runtimes_T_dict = {}
-    S_all_var_runtimes_Qn_dict, S_all_var_runtimes_tot_n_dict = {}, {}
-    
-    S_all_runtimes_list = [
-                              S_all_runtimes_T_dict,
-                              S_all_runtimes_Qn_dict,
-                              S_all_runtimes_tot_n_dict,
-                           ]
-    
-    # Parallel lists for iteration
-    means_dict_list = [
-        S_all_mean_runtimes_T_dict,
-        S_all_mean_runtimes_Qn_dict,
-        S_all_mean_runtimes_tot_n_dict,
-    ]
-    
-    vars_dict_list = [
-        S_all_var_runtimes_T_dict,
-        S_all_var_runtimes_Qn_dict,
-        S_all_var_runtimes_tot_n_dict,
-    ]
+########--------------- Retrieve statistics ---------------########
+
+
+## Retrieve means and variances of runtimes per each (|X|, |Z|)
+
+# Initialization
+S_all_mean_runtimes_T_dict = {}
+S_all_mean_runtimes_Qn_dict, S_all_mean_runtimes_tot_n_dict = {}, {}
+S_all_var_runtimes_T_dict = {}
+S_all_var_runtimes_Qn_dict, S_all_var_runtimes_tot_n_dict = {}, {}
+S_all_sd_runtimes_T_dict = {}
+S_all_sd_runtimes_Qn_dict, S_all_sd_runtimes_tot_n_dict = {}, {}
+S_overall_means_dict, S_overall_sd_dict = {}, {}
+
+S_all_runtimes_list = [
+                          S_all_runtimes_T_dict,
+                          S_all_runtimes_Qn_dict,
+                          S_all_runtimes_tot_n_dict,
+                      ]
+
+# Parallel lists for iteration
+S_means_dict_list = [
+    S_all_mean_runtimes_T_dict,
+    S_all_mean_runtimes_Qn_dict,
+    S_all_mean_runtimes_tot_n_dict,
+]
+
+S_vars_dict_list = [
+    S_all_var_runtimes_T_dict,
+    S_all_var_runtimes_Qn_dict,
+    S_all_var_runtimes_tot_n_dict,
+]
+
+S_sd_dict_list = [
+    S_all_sd_runtimes_T_dict,
+    S_all_sd_runtimes_Qn_dict,
+    S_all_sd_runtimes_tot_n_dict,
+]
 
 # Compute mean and variance DataFrames
 
-for algo_runtimes, mean_dict, var_dict in zip(S_all_runtimes_list, means_dict_list, vars_dict_list):
+for algo_runtimes, mean_dict, var_dict, sd_dict in zip(S_all_runtimes_list, S_means_dict_list, S_vars_dict_list, S_sd_dict_list):
         
     for name in current_run_names:
         
@@ -121,23 +160,44 @@ for algo_runtimes, mean_dict, var_dict in zip(S_all_runtimes_list, means_dict_li
         # Initialize DataFrames
         df_mean = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
         df_var = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
+        df_sd = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
         
         # Fill with mean and variance
         for (i, j), runtimes in subdict.items():
             if len(runtimes) > 0:
                 df_mean.loc[i, j] = np.mean(runtimes)
                 df_var.loc[i, j] = np.var(runtimes, ddof=1)  # sample variance
+                df_sd.loc[i, j] = np.std(runtimes, ddof=1)
             else:
                 df_mean.loc[i, j] = np.nan
                 df_var.loc[i, j] = np.nan
+                df_sd.loc[i, j] = np.nan
         
         # Store results
         mean_dict[name] = df_mean
         var_dict[name] = df_var
+        sd_dict[name] = df_sd
 
 
 ###
 
+
+for name in current_run_names:
+    S_overall_means_dict[name] = {}
+    S_overall_sd_dict[name] = {}
+    ov_mu_T = np.mean(S_all_mean_runtimes_T_dict[name])
+    ov_mu_Qn = np.mean(S_all_mean_runtimes_Qn_dict[name])
+    ov_mu_tot_n = np.mean(S_all_mean_runtimes_tot_n_dict[name])
+    ov_sd_T = np.nanstd(S_all_mean_runtimes_T_dict[name].to_numpy())
+    ov_sd_Qn = np.nanstd(S_all_mean_runtimes_Qn_dict[name].to_numpy())
+    ov_sd_tot_n = np.nanstd(S_all_mean_runtimes_tot_n_dict[name].to_numpy())
+    S_overall_means_dict[name]['T'] = ov_mu_T
+    S_overall_means_dict[name]['Qn'] = ov_mu_Qn
+    S_overall_means_dict[name]['tot_n'] = ov_mu_tot_n
+    S_overall_sd_dict[name]['T'] = ov_sd_T
+    S_overall_sd_dict[name]['Qn'] = ov_sd_Qn
+    S_overall_sd_dict[name]['tot_n'] = ov_sd_tot_n
+    
 # Retrieve means and variances of the runtimes for the transformation with |Z| fixed
 
 # Means
@@ -150,15 +210,198 @@ T_vars = {name: df.mean(axis=0) for name, df in S_all_var_runtimes_T_dict.items(
 S_all_var_runtimes_T_Zfix = pd.DataFrame(T_vars)
 S_all_var_runtimes_T_Zfix = S_all_var_runtimes_T_Zfix.sort_index()
 
-print(S_all_mean_runtimes_T_Zfix)
+# Standard deviations
+T_sds = {name: df.mean(axis=0) for name, df in S_all_sd_runtimes_T_dict.items()}
+S_all_sd_runtimes_T_Zfix = pd.DataFrame(T_vars)
+S_all_sd_runtimes_T_Zfix = S_all_sd_runtimes_T_Zfix.sort_index()
+    
+    
+# Mean total runtimes with |X U Z| fixed to be plotted
 
-# S_all_mean_runtimes_T_Zfix_dict, S_all_var_runtimes_T_Zfix_dict = {}, {}
+rrts_idx = S_all_mean_runtimes_T_Zfix.columns
+X_percs, Z_percs = [1,2,5,10,20,50,80], [0,1,2,5,10,20,50,80]
+X_frac, Z_frac = [n/100 for n in X_percs], [n/100 for n in Z_percs]
+X_dims = [1, 2, '1%', '2%', '5%','10%','20%','50%','80%']
+Z_dims = [0, 1, 2, '1%', '2%', '5%', '10%', '20%', '50%', '80%']
 
-# for name in graph_names:
-#     S_all_mean_runtimes_T_dict.setdefault(name, pd.DataFrame())
-#     S_all_var_runtimes_T_dict.setdefault(name, pd.DataFrame())
-#     S_all_mean_runtimes_T_Zfix_dict[name] = S_all_mean_runtimes_T_dict[name].mean(axis=0)
-#     S_all_var_runtimes_T_Zfix_dict[name] = S_all_var_runtimes_T_dict[name].mean(axis=0)
+"""S_means_over_dim = pd.DataFrame(
+    index=rrts_idx,
+    columns=input_sizes
+)
+for r in rrts_idx:
+    df = S_all_mean_runtimes_tot_n_dict[r]
+    if r == 'ER0':
+        N = 903
+    elif r[2] == 0:
+        N = 1000
+    elif r[2] == 1:
+        N = 10000
+    else:
+        N = 20000
+    range_X = [int(N*f) for f in X_frac]
+    range_Z = [0]+[int(N*f) for f in Z_frac]
+    for C in input_sizes:
+        if C == 1:
+            S_means_over_dim.loc[r,C] = df.loc[(1,0)]
+        elif type(C)==int:
+            m = 0
+            tot = 0
+            for x in list(range(1,C+1)):
+                if x in [1,2]:
+                    z = C-x
+                    if z in [0,1,2]:
+                        s = df.loc[x, z]
+                        tot += s
+                        m += 1
+                        print('C=', C, 'x=', x,'z=', z, 's=', s, 'tot=', tot, 'm=', m)
+            print('tot=', tot, 'm=', m)
+            mu = round(tot/m, 3)
+            S_means_over_dim.loc[r,C] = mu
+        else:
+            c = int(int(C[:-1])/10)
+            m = 0
+            tot = 0
+            print(c)
+            for c1 in range(1,c+1):
+                c2 = c-c1
+                C1, C2 = c1*10, c2*10
+                print('C1=', C1, 'C2=', C2)
+                if C1 in X_percs and C2 in Z_percs:
+                    x = int(N*(c1/10))
+                    z = int(N*(c2/10))
+                    s = df.loc[x, z]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            S_means_over_dim.loc[r,C] = mu"""
+
+
+# Mean runtimes of Qn phase with |X U Z| fixed to be plotted
+            
+"""S_means_over_dim_Qn = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+for r in rrts_idx:
+    df = S_all_mean_runtimes_Qn_dict[r]
+    for r in rrts_idx:
+        df = S_all_mean_runtimes_tot_n_dict[r]
+        if r == 'ER0':
+            N = 903
+        elif r[2] == 0:
+            N = 1000
+        elif r[2] == 1:
+            N = 10000
+        else:
+            N = 20000
+    range_X = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        if C == 0:
+            S_means_over_dim.loc[r,C] = df.loc[(1,0)]  
+        else:
+            c = int(C/10)
+            m = 0
+            tot = 0
+            for c1 in range(c+1):
+                c2 = c-c1
+                C1, C2 = range_X[c1], range_X[c2]
+                if C1 == 0: C1 = 1
+                if C1+C2 < N:
+                    s = df.loc[C1, C2]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            S_means_over_dim_Qn.loc[r,C] = mu"""
+            
+# Mean runtimes of T phase with |Z| fixed to be plotted
+
+S_means_over_dim_Zfix = pd.DataFrame(
+    index=graph_names,
+    columns=Z_dims
+)
+df = S_all_mean_runtimes_T_Zfix
+for r in graph_names:
+    if r == 'ER0':
+        N = 903
+    elif int(r[2]) == 0:
+        N = 1000
+    elif int(r[2]) == 1:
+        N = 10000
+    else:
+        N = 20000
+    for C in Z_dims:
+        if type(C) == int:
+            size_Z = C
+        else:
+            f = int(C[:-1])/100
+            size_Z = int(N*f)
+        t = round(df.loc[size_Z, r], 3)
+        S_means_over_dim_Zfix.loc[r,C] = t
+        
+        
+# Mean runtimes of Qn phase with |X|=1 fixed to be plotted
+
+S_means_Qn_over_Z_X1 = pd.DataFrame(
+    index=graph_names,
+    columns=Z_dims
+)
+for r in graph_names:
+    row = S_all_mean_runtimes_Qn_dict[r].loc[1]
+    row = [round(s,3) for s in row]
+    S_means_Qn_over_Z_X1.loc[r] = list(row)
+    
+# Mean runtimes of Qn phase with |X|= 0.01*|V| fixed to be plotted
+
+S_means_Qn_over_Z_X1perc = pd.DataFrame(
+    index=graph_names,
+    columns=Z_dims
+)
+for r in graph_names:
+    if r == 'ER0':
+        N = 903
+    elif int(r[2]) == 0:
+        N = 1000
+    elif int(r[2]) == 1:
+        N = 10000
+    else:
+        N = 20000
+    idx = int(N*0.01)
+    row = S_all_mean_runtimes_Qn_dict[r].loc[idx]
+    row = [round(s,3) for s in row]
+    S_means_Qn_over_Z_X1perc.loc[r] = list(row)
+
+    
+# Mean runtimes of Qn phase with |Z|=1 fixed to be plotted
+
+S_means_Qn_over_X_Z1 = pd.DataFrame(
+    index=graph_names,
+    columns=X_dims
+)
+for r in graph_names:
+    col = S_all_mean_runtimes_Qn_dict[r][1]
+    col = [round(s,3) for s in col]
+    S_means_Qn_over_X_Z1.loc[r] = list(col)
+    
+# Mean runtimes of Qn phase with |Z|= 0.01*|V| fixed to be plotted
+
+S_means_Qn_over_X_Z1perc = pd.DataFrame(
+    index=graph_names,
+    columns=X_dims
+)
+for r in graph_names:
+    if r == 'ER0':
+        N = 903
+    elif int(r[2]) == 0:
+        N = 1000
+    elif int(r[2]) == 1:
+        N = 10000
+    else:
+        N = 20000
+    idx = int(N*0.01)
+    col = S_all_mean_runtimes_Qn_dict[r][idx]
+    col = [round(s,3) for s in col]
+    S_means_Qn_over_X_Z1perc.loc[r] = list(col)
+
     
     
 ########--------------- Save to disks ---------------########
@@ -178,6 +421,23 @@ with open(mean_runtimes_dir / "S_all_mean_runtimes_tot_n_dict.pkl", "wb") as f:
 with open(mean_runtimes_dir/ "S_all_mean_runtimes_T_Zfix.pkl", "wb") as f:
     pickle.dump(S_all_mean_runtimes_T_Zfix, f)
     
+# with open(mean_runtimes_dir / "S_means_over_dim.pkl", "wb") as f:
+#     pickle.dump(S_means_over_dim, f)
+
+with open(mean_runtimes_dir / "S_means_over_dim_Zfix.pkl", "wb") as f:
+    pickle.dump(S_means_over_dim_Zfix, f)
+    
+with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_Z_X1, f)
+
+with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1perc.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_Z_X1perc, f)
+    
+with open(mean_runtimes_dir / "S_means_Qn_over_X_Z1.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_Z_X1, f)
+
+with open(mean_runtimes_dir / "S_means_Qn_over_X_Z1perc.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_X_Z1perc, f)
     
 # Variances    
 
@@ -193,44 +453,25 @@ with open(var_runtimes_dir / "S_all_var_runtimes_tot_n_dict.pkl", "wb") as f:
 with open(var_runtimes_dir/ "S_all_var_runtimes_T_Zfix.pkl", "wb") as f:
     pickle.dump(S_all_var_runtimes_T_Zfix, f)
     
+# Standard deviations    
+
+with open(var_runtimes_dir / "S_all_sd_runtimes_T_dict.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_T_dict, f)
+
+with open(var_runtimes_dir / "S_all_sd_runtimes_Qn_dict.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_Qn_dict, f)
+    
+with open(var_runtimes_dir / "S_all_sd_runtimes_tot_n_dict.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_tot_n_dict, f)
+    
+with open(var_runtimes_dir/ "S_all_sd_runtimes_T_Zfix.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_T_Zfix, f)
+    
 
     
-# for name in names:
-#     all_mean_runtimes_T_Zfix_APOC[name].to_excel("all_mean_runtimes_T_Zfix_APOC_"+name+".xlsx", index=False)
-#     all_mean_runtimes_T_Zfix_Native[name].to_excel("all_mean_runtimes_T_Zfix_Native_"+name+".xlsx", index=False)    
-
-# all_mean_runtimes_T_Zfix_APOC.to_excel("all_mean_runtimes_T_Zfix_APOC_.xlsx", index=False)
-# all_mean_runtimes_T_Zfix_Native.to_excel("all_mean_runtimes_T_Zfix_Native_.xlsx", index=False)    """
 
 
 ########--------------- Without Outliers ---------------########
-
-def filter_by_mod_zscore(values, threshold=3.5):
-    """
-    Compute the list of values without otliers
-    
-    Parameters
-    ----------
-    values: list of floats
-    threshold: float
-    
-    Returns
-    -------
-    filtered_rts: array of floats
-        
-    """
-    values = np.asarray(values)
-    median = np.median(values)
-    mad = np.median(np.abs(values - median))
-
-    if mad == 0:
-        mzs_values = np.zeros_like(values, dtype=float)
-    else:
-        mzs_values = 0.6745 * (values - median) / mad
-    
-    mzs_abs_values = np.abs(mzs_values)
-    filtered_rts = [rt for rt, z in zip(values, mzs_abs_values) if z <= threshold]
-    return filtered_rts
     
 
 S_all_runtimes_WO_T_dict = copy.deepcopy(S_all_runtimes_T_dict)
@@ -239,9 +480,12 @@ S_all_runtimes_WO_tot_n_dict = copy.deepcopy(S_all_runtimes_tot_n_dict)
 
 for name in current_run_names:
     for pair in S_all_runtimes_WO_T_dict[name].keys():
-        S_all_runtimes_WO_T_dict[name][pair] = filter_by_mod_zscore(S_all_runtimes_WO_T_dict[name][pair])
-        S_all_runtimes_WO_Qn_dict[name][pair] = filter_by_mod_zscore(S_all_runtimes_WO_Qn_dict[name][pair])
-        S_all_runtimes_WO_tot_n_dict[name][pair] = filter_by_mod_zscore(S_all_runtimes_WO_tot_n_dict[name][pair])
+        idx_n = filter_by_mod_zscore(S_all_runtimes_WO_tot_n_dict[name][pair])
+        # if len(idx_n) < 30:
+        #     print(name, pair, len(idx_n))
+        S_all_runtimes_WO_tot_n_dict[name][pair] = [S_all_runtimes_WO_tot_n_dict[name][pair][i] for i in idx_n]
+        S_all_runtimes_WO_T_dict[name][pair] = [S_all_runtimes_WO_T_dict[name][pair][i] for i in idx_n]
+        S_all_runtimes_WO_Qn_dict[name][pair] = [S_all_runtimes_WO_Qn_dict[name][pair][i] for i in idx_n]
     
 
 # Initialization
@@ -249,7 +493,9 @@ S_all_mean_runtimes_WO_T_dict = {}
 S_all_mean_runtimes_WO_Qn_dict, S_all_mean_runtimes_WO_tot_n_dict = {}, {}
 S_all_var_runtimes_WO_T_dict = {}
 S_all_var_runtimes_WO_Qn_dict, S_all_var_runtimes_WO_tot_n_dict = {}, {}
-
+S_all_sd_runtimes_WO_T_dict= {}
+S_all_sd_runtimes_WO_Qn_dict, S_all_sd_runtimes_WO_tot_n_dict = {}, {}
+S_overall_means_WO_dict, S_overall_sd_WO_dict = {}, {}
 
 S_all_runtimes_WO_list = [
                           S_all_runtimes_WO_T_dict,
@@ -270,7 +516,13 @@ vars_WO_dict_list = [
     S_all_var_runtimes_WO_tot_n_dict,
 ]
 
-for algo_runtimes, mean_dict, var_dict in zip(S_all_runtimes_WO_list, means_WO_dict_list, vars_WO_dict_list):
+sds_WO_dict_list = [
+    S_all_sd_runtimes_WO_T_dict,
+    S_all_sd_runtimes_WO_Qn_dict,
+    S_all_sd_runtimes_WO_tot_n_dict,
+]
+
+for algo_runtimes, mean_dict, var_dict, sd_dict in zip(S_all_runtimes_WO_list, means_WO_dict_list, vars_WO_dict_list, sds_WO_dict_list):
         
     for name in current_run_names:
         
@@ -283,19 +535,23 @@ for algo_runtimes, mean_dict, var_dict in zip(S_all_runtimes_WO_list, means_WO_d
         # Initialize DataFrames
         df_mean = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
         df_var = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
+        df_sd = pd.DataFrame(index=X_values, columns=Z_values, dtype=float)
         
         # Fill with mean and variance
         for (i, j), runtimes in subdict.items():
             if len(runtimes) > 0:
                 df_mean.loc[i, j] = np.mean(runtimes)
                 df_var.loc[i, j] = np.var(runtimes, ddof=1)  # sample variance
+                df_sd.loc[i, j] = np.std(runtimes, ddof=1)
             else:
                 df_mean.loc[i, j] = np.nan
                 df_var.loc[i, j] = np.nan
+                df_sd.loc[i, j] = np.nan
         
         # Store results
         mean_dict[name] = df_mean
         var_dict[name] = df_var
+        sd_dict[name] = df_sd
 
 
 # Retrieve means and variances of the runtimes for the transformation with |Z| fixed
@@ -309,7 +565,206 @@ S_all_mean_runtimes_WO_T_Zfix = S_all_mean_runtimes_WO_T_Zfix.sort_index()
 T_vars = {name: df.mean(axis=0) for name, df in S_all_var_runtimes_WO_T_dict.items()}
 S_all_var_runtimes_WO_T_Zfix = pd.DataFrame(T_vars)
 S_all_var_runtimes_WO_T_Zfix = S_all_var_runtimes_WO_T_Zfix.sort_index()
+
+# Standard deviations
+T_sds = {name: df.mean(axis=0) for name, df in S_all_sd_runtimes_WO_T_dict.items()}
+S_all_sd_runtimes_WO_T_Zfix = pd.DataFrame(T_vars)
+S_all_sd_runtimes_WO_T_Zfix = S_all_sd_runtimes_WO_T_Zfix.sort_index()
+
+for name in current_run_names:
+    S_overall_means_WO_dict[name] = {}
+    S_overall_sd_WO_dict[name] = {}
+    ov_mu_T = np.mean(S_all_mean_runtimes_WO_T_dict[name])
+    ov_mu_Qn = np.mean(S_all_mean_runtimes_WO_Qn_dict[name])
+    ov_mu_tot_n = np.mean(S_all_mean_runtimes_WO_tot_n_dict[name])
+    ov_sd_T = np.nanstd(S_all_mean_runtimes_WO_T_dict[name].to_numpy())
+    ov_sd_Qn = np.nanstd(S_all_mean_runtimes_WO_Qn_dict[name].to_numpy())
+    ov_sd_tot_n = np.nanstd(S_all_mean_runtimes_WO_tot_n_dict[name].to_numpy())
+    S_overall_means_WO_dict[name]['T'] = ov_mu_T
+    S_overall_means_WO_dict[name]['Qn'] = ov_mu_Qn
+    S_overall_means_WO_dict[name]['tot_n'] = ov_mu_tot_n
+    S_overall_sd_WO_dict[name]['T'] = ov_sd_T
+    S_overall_sd_WO_dict[name]['Qn'] = ov_sd_Qn
+    S_overall_sd_WO_dict[name]['tot_n'] = ov_sd_tot_n
     
+"""# Mean total runtimes with |X U Z| fixed to be plotted
+
+rrts_idx = S_all_mean_runtimes_WO_T_Zfix.columns
+rrts_cols0 = [0,1,2,5,10,20,50,80]
+range_frac = [n/100 for n in rrts_cols0]
+S_means_over_dim_WO = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+for r in rrts_idx:
+    df = S_all_mean_runtimes_WO_tot_n_dict[r]
+    if r == 'ER0':
+        N = 903
+    elif r[2] == 0:
+        N = 1000
+    elif r[2] == 1:
+        N = 10000
+    else:
+        N = 20000
+    range_X = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        if C == 0:
+            S_means_over_dim_WO.loc[r,C] = df.loc[(1,0)]  
+        else:
+            c = int(C/10)
+            m = 0
+            tot = 0
+            for c1 in range(c+1):
+                c2 = c-c1
+                C1, C2 = range_X[c1], range_X[c2]
+                if C1 == 0: C1 = 1
+                if C1+C2 < N:
+                    s = df.loc[C1, C2]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            S_means_over_dim_WO.loc[r,C] = mu
+
+# Mean runtimes of Qn phase with |X U Z| fixed to be plotted
+            
+S_means_over_dim_Qn_WO = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+for r in rrts_idx:
+    df = S_all_mean_runtimes_WO_Qn_dict[r]
+    for r in rrts_idx:
+        df = S_all_mean_runtimes_WO_tot_n_dict[r]
+        if r == 'ER0':
+            N = 903
+        elif r[2] == 0:
+            N = 1000
+        elif r[2] == 1:
+            N = 10000
+        else:
+            N = 20000
+    range_X = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        if C == 0:
+            S_means_over_dim_WO.loc[r,C] = df.loc[(1,0)]  
+        else:
+            c = int(C/10)
+            m = 0
+            tot = 0
+            for c1 in range(c+1):
+                c2 = c-c1
+                C1, C2 = range_X[c1], range_X[c2]
+                if C1 == 0: C1 = 1
+                if C1+C2 < N:
+                    s = df.loc[C1, C2]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            S_means_over_dim_Qn_WO.loc[r,C] = mu"""
+
+            
+# Mean runtimes of T phase with |Z| fixed to be plotted
+          
+S_means_over_dim_Zfix_WO = pd.DataFrame(
+    index=graph_names,
+    columns=Z_dims
+)
+df = S_all_mean_runtimes_WO_T_Zfix
+for r in graph_names:
+    if r == 'ER0':
+        N = 903
+    elif int(r[2]) == 0:
+        N = 1000
+    elif int(r[2]) == 1:
+        N = 10000
+    else:
+        N = 20000
+    for C in Z_dims:
+        if type(C) == int:
+            size_Z = C
+        else:
+            f = int(C[:-1])/100
+            size_Z = int(N*f)
+        t = round(df.loc[size_Z, r], 3)
+        S_means_over_dim_Zfix_WO.loc[r,C] = t
+        
+# Mean runtimes of Qn phase with |X|=1 fixed to be plotted
+
+S_means_Qn_over_Z_X1_WO = pd.DataFrame(
+    index=graph_names,
+    columns=Z_dims
+)
+for r in graph_names:
+    row = S_all_mean_runtimes_WO_Qn_dict[r].loc[1]
+    row = [round(s,3) for s in row]
+    S_means_Qn_over_Z_X1_WO.loc[r] = list(row)
+        
+# Mean runtimes of Qn phase with |X|= 0.01*|V| fixed to be plotted
+
+S_means_Qn_over_Z_X1perc_WO = pd.DataFrame(
+    index=graph_names,
+    columns=Z_dims
+)
+for r in graph_names:
+    if r == 'ER0':
+        N = 903
+    elif int(r[2]) == 0:
+        N = 1000
+    elif int(r[2]) == 1:
+        N = 10000
+    else:
+        N = 20000
+    idx = int(N*0.01)
+    row = S_all_mean_runtimes_WO_Qn_dict[r].loc[idx]
+    row = [round(s,3) for s in row]
+    S_means_Qn_over_Z_X1perc_WO.loc[r] = list(row)  
+
+
+# Mean runtimes of Qn phase with |Z|=1 fixed to be plotted
+
+S_means_Qn_over_X_Z1_WO = pd.DataFrame(
+    index=graph_names,
+    columns=X_dims
+)
+for r in graph_names:
+    col = S_all_mean_runtimes_Qn_dict[r][1]
+    col = [round(s,3) for s in col]
+    S_means_Qn_over_X_Z1_WO.loc[r] = list(col)
+    
+# Mean runtimes of Qn phase with |Z|= 0.01*|V| fixed to be plotted
+
+S_means_Qn_over_X_Z1perc_WO = pd.DataFrame(
+    index=graph_names,
+    columns=X_dims
+)
+for r in graph_names:
+    if r == 'ER0':
+        N = 903
+    elif int(r[2]) == 0:
+        N = 1000
+    elif int(r[2]) == 1:
+        N = 10000
+    else:
+        N = 20000
+    idx = int(N*0.01)
+    col = S_all_mean_runtimes_Qn_dict[r][idx]
+    col = [round(s,3) for s in col]
+    S_means_Qn_over_X_Z1perc_WO.loc[r] = list(col)   
+        
+### Proportion of instances accounted for the computation of WO statistics
+ 
+S_WO_proportions_n = {}
+for name in current_run_names:
+    df_n = S_all_mean_runtimes_WO_tot_n_dict[name].copy()
+    for idx in df_n.index:
+        for col in df_n.columns:
+            if not np.isnan(df_n.loc[idx,col]):
+                perc_n = len(S_all_runtimes_WO_tot_n_dict[name][(idx, col)]) / 30
+                df_n.loc[idx, col] = perc_n
+    S_WO_proportions_n[name] = df_n
+    
+
+
     
 # Means
 
@@ -324,7 +779,25 @@ with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_tot_n_dict.pkl", "wb") as 
     
 with open(mean_runtimes_dir/ "S_all_mean_runtimes_WO_T_Zfix.pkl", "wb") as f:
     pickle.dump(S_all_mean_runtimes_WO_T_Zfix, f)
+
+# with open(mean_runtimes_dir / "S_means_over_dim_WO.pkl", "wb") as f:
+#     pickle.dump(S_means_over_dim_WO, f)
     
+with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1_WO.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_Z_X1_WO, f)
+    
+with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1perc_WO.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_Z_X1perc_WO, f)
+
+with open(mean_runtimes_dir / "S_means_over_dim_Zfix_WO.pkl", "wb") as f:
+    pickle.dump(S_means_over_dim_Zfix_WO, f)
+    
+with open(mean_runtimes_dir / "S_means_Qn_over_X_Z1_WO.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_X_Z1_WO, f)
+
+with open(mean_runtimes_dir / "S_means_Qn_over_X_Z1perc_WO.pkl", "wb") as f:
+    pickle.dump(S_means_Qn_over_X_Z1perc_WO, f)
+
 # Variances    
 
 with open(var_runtimes_dir / "S_all_var_runtimes_WO_T_dict.pkl", "wb") as f:
@@ -338,17 +811,22 @@ with open(var_runtimes_dir / "S_all_var_runtimes_WO_tot_n_dict.pkl", "wb") as f:
     
 with open(var_runtimes_dir/ "S_all_var_runtimes_WO_T_Zfix.pkl", "wb") as f:
     pickle.dump(S_all_var_runtimes_WO_T_Zfix, f)
+    
+# Standard deviations    
 
-runtimes = S_all_runtimes_Qn_dict['TR3'][(1,1)]
+with open(var_runtimes_dir / "S_all_sd_runtimes_WO_T_dict.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_WO_T_dict, f)
 
-plt.hist(runtimes, bins=30)
-plt.xlabel("Runtime")
-plt.ylabel("Count")
-plt.title("Runtime Distribution")
-plt.show()
+with open(var_runtimes_dir / "S_all_sd_runtimes_WO_Qn_dict.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_WO_Qn_dict, f)
+    
+with open(var_runtimes_dir / "S_all_sd_runtimes_WO_tot_n_dict.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_WO_tot_n_dict, f)
+        
+with open(var_runtimes_dir/ "S_all_sd_runtimes_WO_T_Zfix.pkl", "wb") as f:
+    pickle.dump(S_all_sd_runtimes_WO_T_Zfix, f)
 
+# proportions
 
-sns.violinplot(x=runtimes)
-plt.xlabel("Runtime")
-plt.title("Runtime Violin Plot")
-plt.show()
+with open(runtimes_dir / "Proportions/S_WO_proportions_n.pkl", "wb") as f:
+    pickle.dump(S_WO_proportions_n, f)

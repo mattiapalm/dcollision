@@ -84,7 +84,8 @@ all_paths_to_dags = [path_to_sachs,
                      path_to_link,
                      path_to_munin
                      ]
-
+names_of_graphs = ['SACHS']
+all_paths_to_dags = [path_to_sachs]
 data_files = dict(zip(names_of_graphs, all_paths_to_dags))
 
 ########--------------- Upload the inputs files ---------------########

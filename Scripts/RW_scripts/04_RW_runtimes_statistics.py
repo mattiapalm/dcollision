@@ -27,8 +27,9 @@ plt = require("matplotlib.pyplot")
 sns = require("seaborn")
 sts = require("scipy.stats")
 
+##### ====== #####
 
-def filter_by_mod_zscore(values, threshold=3.5):
+def filter_by_mod_zscore(values, threshold):
     """
     Compute the list of values without otliers
     
@@ -51,9 +52,7 @@ def filter_by_mod_zscore(values, threshold=3.5):
     else:
         mzs_values = 0.6745 * (values - median) / mad
     
-    mzs_abs_values = np.abs(mzs_values)
-    filtered_idx = [i for i, z in enumerate(mzs_abs_values) if z <= threshold]
-    #filtered_rts = [rt for rt, z in zip(values, mzs_abs_values) if z <= threshold]
+    filtered_idx = [i for i, z in enumerate(mzs_values) if z <= threshold]
     return filtered_idx
 
 ##### ====== #####
@@ -64,9 +63,8 @@ BASE = Path(__file__).resolve().parent.parent.parent
 # Path to subfolders
 runtimes_dir = BASE / "Results/Runtimes"
 all_runtimes_dir = runtimes_dir / "All_runtimes"
-all_runtimes_dir = BASE / "Results/Previous/1All_runtimes"
 mean_runtimes_dir = runtimes_dir / "Mean_runtimes"
-var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
+var_runtimes_dir = runtimes_dir / "Vars_and_sds"
 
 ##### ====== #####
 
@@ -77,11 +75,11 @@ baseline_graph_names = ['SACHS', 'C01', 'C02', 'CHILD']
 
 ########--------------- Load the runtimes' files ---------------########
     
-## Read transformation runtimes
+## Load transformation runtimes
 with open(all_runtimes_dir / "RW_all_runtimes_T_dict.pkl", "rb") as f:
     RW_all_runtimes_T_dict = pickle.load(f)
 
-## Read query runtimes
+## Load query runtimes
 
 # Native
 with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "rb") as f:
@@ -90,7 +88,7 @@ with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "rb") as f:
 with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "rb") as f:
     RW_all_runtimes_Qa_dict = pickle.load(f)
     
-## Read total runtimes
+## Load total runtimes
 
 # Native
 with open(all_runtimes_dir / "RW_all_runtimes_tot_n_dict.pkl", "rb") as f:
@@ -102,7 +100,11 @@ with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "rb") as f:
 ## Baseline runtimes
 with open(all_runtimes_dir / "RW_all_runtimes_baseline_dict.pkl", "rb") as f:
     RW_all_runtimes_baseline_dict = pickle.load(f)
-    
+
+### Load inputs dimentions
+
+with open(BASE / "Results/dim_dict.pkl", "rb") as f:
+    dim_dict = pickle.load(f)
     
 all_dicts = [RW_all_runtimes_T_dict,
              RW_all_runtimes_Qn_dict,
@@ -114,7 +116,6 @@ all_dicts = [RW_all_runtimes_T_dict,
 
  
 ########--------------- Retrieve statistics ---------------########
-
 
 ## Retrieve means and variances of runtimes per each (|X|, |Z|)
 
@@ -138,7 +139,7 @@ RW_all_runtimes_list = [
                           RW_all_runtimes_Qn_dict,
                           RW_all_runtimes_tot_n_dict,
                           RW_all_runtimes_Qa_dict,
-                          RW_all_runtimes_tot_a_dict,
+                          RW_all_runtimes_tot_a_dict
                        ]
 
 # Parallel lists for iteration
@@ -147,7 +148,7 @@ means_dict_list = [
     RW_all_mean_runtimes_Qn_dict,
     RW_all_mean_runtimes_tot_n_dict,
     RW_all_mean_runtimes_Qa_dict,
-    RW_all_mean_runtimes_tot_a_dict,
+    RW_all_mean_runtimes_tot_a_dict
 ]
 
 vars_dict_list = [
@@ -233,30 +234,7 @@ for name in baseline_graph_names:
 
 ###
 
-# Retrieve means and variances of the runtimes for the transformation with |Z| fixed
-
-# Means
-T_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_T_dict.items()}
-RW_all_mean_runtimes_T_Zfix = pd.DataFrame(T_means)
-RW_all_mean_runtimes_T_Zfix = RW_all_mean_runtimes_T_Zfix.sort_index()
-
-# Variances
-T_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_T_dict.items()}
-RW_all_var_runtimes_T_Zfix = pd.DataFrame(T_vars)
-RW_all_var_runtimes_T_Zfix = RW_all_var_runtimes_T_Zfix.sort_index()
-
-# Standard deviations
-T_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_T_dict.items()}
-RW_all_sd_runtimes_T_Zfix = pd.DataFrame(T_vars)
-RW_all_sd_runtimes_T_Zfix = RW_all_sd_runtimes_T_Zfix.sort_index()
-
-# RW_all_mean_runtimes_T_Zfix_dict, RW_all_var_runtimes_T_Zfix_dict = {}, {}
-
-# for name in graph_names:
-#     RW_all_mean_runtimes_T_dict.setdefault(name, pd.DataFrame())
-#     RW_all_var_runtimes_T_dict.setdefault(name, pd.DataFrame())
-#     RW_all_mean_runtimes_T_Zfix_dict[name] = RW_all_mean_runtimes_T_dict[name].mean(axis=0)
-#     RW_all_var_runtimes_T_Zfix_dict[name] = RW_all_var_runtimes_T_dict[name].mean(axis=0)
+### Overall means and standard deviations
 
 for name in graph_names:
     RW_overall_means_dict[name] = {}
@@ -287,9 +265,103 @@ for name in baseline_graph_names:
     ov_sd_b = np.std(RW_all_mean_runtimes_baseline_dict[name])
     RW_overall_means_dict[name]['b'] = ov_mu_b
     RW_overall_sd_dict[name]['b'] = ov_sd_b
+
+
+### Retrieve means and variances of the runtimes for the transformation with |Z| fixed
+
+# Means
+T_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_T_dict.items()}
+RW_all_mean_runtimes_T_Zfix = pd.DataFrame(T_means)
+RW_all_mean_runtimes_T_Zfix = RW_all_mean_runtimes_T_Zfix.sort_index()
+
+# Variances
+T_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_T_dict.items()}
+RW_all_var_runtimes_T_Zfix = pd.DataFrame(T_vars)
+RW_all_var_runtimes_T_Zfix = RW_all_var_runtimes_T_Zfix.sort_index()
+
+# Standard deviations
+T_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_T_dict.items()}
+RW_all_sd_runtimes_T_Zfix = pd.DataFrame(T_vars)
+RW_all_sd_runtimes_T_Zfix = RW_all_sd_runtimes_T_Zfix.sort_index()
+
+# Mean total runtimes with |X U Z| fixed to be plotted
+
+rrts_idx = RW_all_mean_runtimes_T_Zfix.columns
+rrts_cols0 = list(range(0,91,10))
+range_frac = [n/100 for n in rrts_cols0]
+
+RW_means_over_dim = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+for r in rrts_idx:
+    df = RW_all_mean_runtimes_tot_n_dict[r]
+    N = dim_dict[r]['V']
+    range_X = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        if C == 0:
+            RW_means_over_dim.loc[r,C] = df.loc[(1,0)]  
+        else:
+            c = int(C/10)
+            m = 0
+            tot = 0
+            for c1 in range(c+1):
+                c2 = c-c1
+                C1, C2 = range_X[c1], range_X[c2]
+                if C1 == 0: C1 = 1
+                if C1+C2 < N:
+                    s = df.loc[C1, C2]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            RW_means_over_dim.loc[r,C] = mu
+
+# Mean runtimes of Qn phase with |X U Z| fixed to be plotted
+            
+RW_means_over_dim_Qn = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+for r in rrts_idx:
+    df = RW_all_mean_runtimes_Qn_dict[r]
+    N = dim_dict[r]['V']
+    range_X = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        if C == 0:
+            RW_means_over_dim.loc[r,C] = df.loc[(1,0)]  
+        else:
+            c = int(C/10)
+            m = 0
+            tot = 0
+            for c1 in range(c+1):
+                c2 = c-c1
+                C1, C2 = range_X[c1], range_X[c2]
+                if C1 == 0: C1 = 1
+                if C1+C2 < N:
+                    s = df.loc[C1, C2]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            RW_means_over_dim_Qn.loc[r,C] = mu
+            
+# Mean runtimes of T phase with |Z| fixed to be plotted
+            
+RW_means_over_dim_Zfix = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+df = RW_all_mean_runtimes_T_Zfix
+for r in rrts_idx:
+    N = dim_dict[r]['V']
+    range_Z = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        c = int(C/10)
+        size_Z = range_Z[c]
+        t = round(df.loc[size_Z, r], 3)
+        RW_means_over_dim_Zfix.loc[r,C] = t
+        
     
-    
-########--------------- Save to disks ---------------########
+########--------------- Save to disk ---------------########
 
 
 # Means
@@ -314,6 +386,15 @@ with open(mean_runtimes_dir/ "RW_all_mean_runtimes_T_Zfix.pkl", "wb") as f:
     
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_baseline_dict, f)
+    
+with open(mean_runtimes_dir / "RW_means_over_dim.pkl", "wb") as f:
+    pickle.dump(RW_means_over_dim, f)
+    
+with open(mean_runtimes_dir / "RW_means_over_dim_Qn.pkl", "wb") as f:
+    pickle.dump(RW_means_over_dim, f)
+    
+with open(mean_runtimes_dir / "RW_means_over_dim_Zfix.pkl", "wb") as f:
+    pickle.dump(RW_means_over_dim_Zfix, f)
     
 # Variances    
 
@@ -383,13 +464,14 @@ RW_all_runtimes_WO_Qa_dict = copy.deepcopy(RW_all_runtimes_Qa_dict)
 RW_all_runtimes_WO_tot_a_dict = copy.deepcopy(RW_all_runtimes_tot_a_dict)
 RW_all_runtimes_WO_baseline_dict = copy.deepcopy(RW_all_runtimes_baseline_dict)
 
+threshold = 5
 for name in graph_names:
     for pair in RW_all_runtimes_WO_tot_n_dict[name].keys():
-        idx_n = filter_by_mod_zscore(RW_all_runtimes_WO_tot_n_dict[name][pair])
+        idx_n = filter_by_mod_zscore(RW_all_runtimes_WO_tot_n_dict[name][pair], threshold = threshold)
         RW_all_runtimes_WO_tot_n_dict[name][pair] = [RW_all_runtimes_WO_tot_n_dict[name][pair][i] for i in idx_n]
         RW_all_runtimes_WO_Tn_dict[name][pair] = [RW_all_runtimes_WO_Tn_dict[name][pair][i] for i in idx_n]
         RW_all_runtimes_WO_Qn_dict[name][pair] = [RW_all_runtimes_WO_Qn_dict[name][pair][i] for i in idx_n]
-        idx_a = filter_by_mod_zscore(RW_all_runtimes_WO_tot_a_dict[name][pair])
+        idx_a = filter_by_mod_zscore(RW_all_runtimes_WO_tot_a_dict[name][pair], threshold = threshold)
         RW_all_runtimes_WO_tot_a_dict[name][pair] = [RW_all_runtimes_WO_tot_a_dict[name][pair][i] for i in idx_a]
         RW_all_runtimes_WO_Ta_dict[name][pair] = [RW_all_runtimes_WO_Ta_dict[name][pair][i] for i in idx_a]
         RW_all_runtimes_WO_Qa_dict[name][pair] = [RW_all_runtimes_WO_Qa_dict[name][pair][i] for i in idx_a]
@@ -419,7 +501,7 @@ RW_all_runtimes_WO_list = [
                           RW_all_runtimes_WO_tot_n_dict,
                           RW_all_runtimes_WO_Ta_dict,
                           RW_all_runtimes_WO_Qa_dict,
-                          RW_all_runtimes_WO_tot_a_dict,
+                          RW_all_runtimes_WO_tot_a_dict
                           ]
 
 # Parallel lists for iteration
@@ -470,7 +552,7 @@ for algo_runtimes, mean_dict, var_dict, sd_dict in zip(RW_all_runtimes_WO_list, 
             if len(runtimes) > 0:
                 df_mean.loc[i, j] = np.mean(runtimes)
                 df_var.loc[i, j] = np.var(runtimes, ddof=1)  # sample variance
-                df_var.loc[i, j] = np.std(runtimes, ddof=1)
+                df_sd.loc[i, j] = np.std(runtimes, ddof=1)
             else:
                 df_mean.loc[i, j] = np.nan
                 df_var.loc[i, j] = np.nan
@@ -483,8 +565,9 @@ for algo_runtimes, mean_dict, var_dict, sd_dict in zip(RW_all_runtimes_WO_list, 
         
 for name in baseline_graph_names:
     for pair in RW_all_runtimes_WO_baseline_dict[name].keys():
-        idx_b = filter_by_mod_zscore(RW_all_runtimes_WO_baseline_dict[name][pair])
-        RW_all_runtimes_WO_baseline_dict[name][pair] = [RW_all_runtimes_WO_baseline_dict[name][pair][i] for i in idx_n]
+        idx_b = filter_by_mod_zscore(RW_all_runtimes_WO_baseline_dict[name][pair], threshold = threshold)
+        RW_all_runtimes_WO_baseline_dict[name][pair] = [RW_all_runtimes_WO_baseline_dict[name][pair][i] for i in idx_b]
+
         
 for name in baseline_graph_names:
     
@@ -545,6 +628,9 @@ Ta_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_WO_Ta_dict.it
 RW_all_sd_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_vars)
 RW_all_sd_runtimes_WO_Ta_Zfix = RW_all_sd_runtimes_WO_Ta_Zfix.sort_index()
 
+
+### Overall means and standard deviations
+
 for name in graph_names:
     RW_overall_means_WO_dict[name] = {}
     RW_overall_sd_WO_dict[name] = {}
@@ -579,6 +665,103 @@ for name in baseline_graph_names:
     RW_overall_means_WO_dict[name]['b'] = ov_mu_b
     RW_overall_sd_WO_dict[name]['b'] = ov_sd_b
     
+# Mean total runtimes with |X U Z| fixed to be plotted
+    
+rrts_idx = RW_all_mean_runtimes_WO_Tn_Zfix.columns
+rrts_cols0 = list(range(0,91,10))
+range_frac = [n/100 for n in rrts_cols0]
+RW_means_over_dim_WO = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+for r in rrts_idx:
+    df = RW_all_mean_runtimes_WO_tot_n_dict[r]
+    N = dim_dict[r]['V']
+    range_X = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        if C == 0:
+            RW_means_over_dim_WO.loc[r,C] = df.loc[(1,0)]  
+        else:
+            c = int(C/10)
+            m = 0
+            tot = 0
+            for c1 in range(c+1):
+                c2 = c-c1
+                C1, C2 = range_X[c1], range_X[c2]
+                if C1 == 0: C1 = 1
+                if C1+C2 < N:
+                    s = df.loc[C1, C2]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            RW_means_over_dim_WO.loc[r,C] = mu
+            
+
+# Mean runtimes of Qn phase with |X U Z| fixed to be plotted            
+            
+RW_means_over_dim_Qn_WO = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+for r in rrts_idx:
+    df = RW_all_mean_runtimes_WO_Qn_dict[r]
+    N = dim_dict[r]['V']
+    range_X = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        if C == 0:
+            RW_means_over_dim_Qn_WO.loc[r,C] = df.loc[(1,0)]  
+        else:
+            c = int(C/10)
+            m = 0
+            tot = 0
+            for c1 in range(c+1):
+                c2 = c-c1
+                C1, C2 = range_X[c1], range_X[c2]
+                if C1 == 0: C1 = 1
+                if C1+C2 < N:
+                    s = df.loc[C1, C2]
+                    tot += s
+                    m += 1
+            mu = round(tot/m, 3)
+            RW_means_over_dim_Qn_WO.loc[r,C] = mu
+
+# Mean runtimes of T phase with |Z| fixed to be plotted   
+            
+RW_means_over_dim_Zfix_WO = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols0
+)
+df = RW_all_mean_runtimes_WO_Tn_Zfix
+for r in rrts_idx:
+    N = dim_dict[r]['V']
+    range_Z = [int(N*f) for f in range_frac]
+    for C in rrts_cols0:
+        c = int(C/10)
+        size_Z = range_Z[c]
+        t = round(df.loc[size_Z, r], 3)
+        RW_means_over_dim_Zfix_WO.loc[r,C] = t
+    
+### Proportion of instances accounted for the computation of WO statistics
+    
+RW_WO_proportions_n, RW_WO_proportions_a, RW_WO_proportions_b = {}, {}, {}
+for name in graph_names:
+    df_n, df_a = RW_all_mean_runtimes_WO_tot_n_dict[name].copy(), RW_all_mean_runtimes_WO_tot_a_dict[name].copy()
+    if name in baseline_graph_names:
+        df_b = RW_all_mean_runtimes_WO_baseline_dict[name].copy()
+    for idx in df_n.index:
+        for col in df_n.columns:
+            if not np.isnan(df_n.loc[idx,col]):
+                perc_n = len(RW_all_runtimes_WO_tot_n_dict[name][(idx, col)]) / 100
+                perc_a = len(RW_all_runtimes_WO_tot_a_dict[name][(idx, col)]) / 100
+                df_n.loc[idx, col], df_a.loc[idx, col] = perc_n, perc_a
+                if name in baseline_graph_names:
+                    perc_b = len(RW_all_runtimes_WO_baseline_dict[name][(idx, col)]) / 100
+                    df_b.loc[idx, col] = perc_b
+    RW_WO_proportions_n[name] = df_n
+    RW_WO_proportions_a[name] = df_a
+    if name in baseline_graph_names:
+        RW_WO_proportions_b[name] = df_b
+        
 
 
     
@@ -610,6 +793,18 @@ with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
     
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_baseline_dict, f)
+    
+with open(mean_runtimes_dir / "RW_overall_means_WO_dict.pkl", "wb") as f:
+    pickle.dump(RW_overall_means_WO_dict, f)
+
+with open(mean_runtimes_dir / "RW_means_over_dim_WO.pkl", "wb") as f:
+    pickle.dump(RW_means_over_dim_WO, f)
+    
+with open(mean_runtimes_dir / "RW_means_over_dim_Qn_WO.pkl", "wb") as f:
+    pickle.dump(RW_means_over_dim_Qn_WO, f)
+    
+with open(mean_runtimes_dir / "RW_means_over_dim_Zfix_WO.pkl", "wb") as f:
+    pickle.dump(RW_means_over_dim_Zfix_WO, f)
     
 # Variances    
 
@@ -668,7 +863,20 @@ with open(var_runtimes_dir/ "RW_all_sd_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
     
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WO_baseline_dict, f)
+    
+with open(var_runtimes_dir / "RW_overall_sd_WO_dict.pkl", "wb") as f:
+    pickle.dump(RW_overall_sd_WO_dict, f)
+    
+# Proportions
 
+with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_n.pkl", "wb") as f:
+    pickle.dump(RW_WO_proportions_n, f)
+    
+with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_a.pkl", "wb") as f:
+    pickle.dump(RW_WO_proportions_a, f)
+    
+with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_b.pkl", "wb") as f:
+    pickle.dump(RW_WO_proportions_b, f)
 
 
         

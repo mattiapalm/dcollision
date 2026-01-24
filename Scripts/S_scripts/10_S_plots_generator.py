@@ -22,6 +22,9 @@ Path = require("pathlib").Path
 np = require("numpy")
 pickle = require("pickle")
 plt = require("matplotlib.pyplot", "matplotlib")
+pd = require("pandas")
+os = require("os")
+PIL = require("PIL")
 
 ###----------------------###
 
@@ -32,28 +35,12 @@ BASE = Path(__file__).resolve().parent.parent.parent
 runtimes_dir = BASE / "Results/Runtimes"
 all_runtimes_dir = runtimes_dir / "All_runtimes"
 mean_runtimes_dir = runtimes_dir / "Mean_runtimes"
-var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
+var_runtimes_dir = runtimes_dir / "Vars_and_sds"
+proportions_dir = runtimes_dir / "Proportions"
+out_dir = BASE / "Results/Plots"
+os.makedirs(out_dir, exist_ok=True)
 
 ########--------------- Load runtimes' files ---------------########
-
-# ### Read all runtimes
-    
-# ## Read transformation runtimes
-
-# with open(all_runtimes_dir / "S_all_runtimes_WO_T_dict.pkl", "rb") as f:
-#     S_all_runtimes_WO_T_dict = pickle.load(f)
-
-# ## Read query runtimes
-
-# # Native
-# with open(all_runtimes_dir / "S_all_runtimes_WO_Qn_dict.pkl", "rb") as f:
-#     S_all_runtimes_WO_Qn_dict = pickle.load(f)
-    
-# ## Read total runtimes
-
-# # Native
-# with open(all_runtimes_dir / "S_all_runtimes_WO_tot_n_dict.pkl", "rb") as f:
-#     S_all_runtimes_WO_tot_n_dict = pickle.load(f)
 
 
 ### Read mean runtimes
@@ -61,25 +48,73 @@ var_runtimes_dir = runtimes_dir / "Variances_of_the_runtimes"
 ## Read mean transformation runtimes
 
 # All
-with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_T_dict.pkl", "rb") as f:
-    S_all_mean_runtimes_WO_T_dict = pickle.load(f)
+with open(mean_runtimes_dir / "S_all_mean_runtimes_T_dict.pkl", "rb") as f:
+    S_all_mean_runtimes_T_dict = pickle.load(f)
+# with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_T_dict.pkl", "rb") as f:
+#     S_all_mean_runtimes_WO_T_dict = pickle.load(f)
+
     
-# |Z| fixed
-with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_T_Zfix.pkl", "rb") as f:
-    S_all_mean_runtimes_WO_T_Zfix = pickle.load(f)
+# All
+with open(mean_runtimes_dir / "S_all_mean_runtimes_T_dict.pkl", "rb") as f:
+    S_all_mean_runtimes_T_dict = pickle.load(f)
+# with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_T_dict.pkl", "rb") as f:
+#     S_all_mean_runtimes_WO_T_dict = pickle.load(f)
+
 
 ## Read mean query runtimes
 
 # Native
-with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_Qn_dict.pkl", "rb") as f:
-    S_all_mean_runtimes_WO_Qn_dict = pickle.load(f)
+with open(mean_runtimes_dir / "S_all_mean_runtimes_Qn_dict.pkl", "rb") as f:
+    S_all_mean_runtimes_Qn_dict = pickle.load(f)
+# with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_Qn_dict.pkl", "rb") as f:
+#     S_all_mean_runtimes_WO_Qn_dict = pickle.load(f)
 
 ## Read mean total runtimes
 
 # Native
-with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as f:
-    S_all_mean_runtimes_WO_tot_n_dict  = pickle.load(f)
+with open(mean_runtimes_dir / "S_all_mean_runtimes_tot_n_dict.pkl", "rb") as f:
+    S_all_mean_runtimes_tot_n_dict  = pickle.load(f)
+# with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+#     S_all_mean_runtimes_WO_tot_n_dict  = pickle.load(f)
+    
+    
+# # Overall means
 
+# with open(mean_runtimes_dir / "S_overall_means_WO_dict.pkl", "rb") as f:
+#     S_overall_means_WO_dict  = pickle.load(f)
+    
+# # Means over dimension
+
+# with open(mean_runtimes_dir / "S_means_over_dim_WO.pkl", "rb") as f:
+#     S_means_over_dim_WO  = pickle.load(f)
+    
+# with open(mean_runtimes_dir / "S_means_over_dim_Qn_WO.pkl", "rb") as f:
+#     S_means_over_dim_Qn_WO  = pickle.load(f)
+
+with open(mean_runtimes_dir / "S_means_over_dim_Zfix.pkl", "rb") as f:
+    S_means_over_dim_Zfix  = pickle.load(f)
+    
+with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1.pkl", "rb") as f:
+    S_means_Qn_over_Z_X1  = pickle.load(f)
+    
+with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1perc.pkl", "rb") as f:
+    S_means_Qn_over_Z_X1perc  = pickle.load(f)
+
+with open(mean_runtimes_dir / "S_means_Qn_over_X_Z1perc.pkl", "rb") as f:
+    S_means_Qn_over_X_Z1perc  = pickle.load(f)
+    
+# with open(mean_runtimes_dir / "S_means_over_dim_Zfix_WO.pkl", "rb") as f:
+#     S_means_over_dim_Zfix_WO  = pickle.load(f)
+    
+# with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1_WO.pkl", "rb") as f:
+#     S_means_Qn_over_Z_X1_WO  = pickle.load(f)
+    
+# with open(mean_runtimes_dir / "S_means_Qn_over_Z_X1perc_WO.pkl", "rb") as f:
+#     S_means_Qn_over_Z_X1perc_WO  = pickle.load(f)
+
+# with open(mean_runtimes_dir / "S_means_Qn_over_X_Z1perc_WO.pkl", "rb") as f:
+#     S_means_Qn_over_X_Z1perc_WO  = pickle.load(f)
+    
 
 # ### Read variances of the runtimes
 
@@ -106,14 +141,61 @@ with open(mean_runtimes_dir / "S_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as 
 #     S_all_var_runtimes_WO_tot_n_dict  = pickle.load(f)
 
 
+### Read standard deviations of the runtimes
+
+## Load standard deviations of transformation runtimes
+
+# # All
+# with open(var_runtimes_dir / "S_all_sd_runtimes_T_dict.pkl", "rb") as f:
+#     S_all_sd_runtimes_T_dict = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_sd_runtimes_WO_T_dict.pkl", "rb") as f:
+#     S_all_sd_runtimes_WO_T_dict = pickle.load(f)
+    
+# # |Z| fixed
+# with open(var_runtimes_dir / "S_all_sd_runtimes_T_Zfix.pkl", "rb") as f:
+#     S_all_sd_runtimes_T_Zfix = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_sd_runtimes_WO_T_Zfix.pkl", "rb") as f:
+#     S_all_sd_runtimes_WO_T_Zfix = pickle.load(f)
+
+# ## Load standard deviations of query runtimes
+
+# # Native
+# with open(var_runtimes_dir / "S_all_sd_runtimes_Qn_dict.pkl", "rb") as f:
+#     S_all_sd_runtimes_Qn_dict = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_sd_runtimes_WO_Qn_dict.pkl", "rb") as f:
+#     S_all_sd_runtimes_WO_Qn_dict = pickle.load(f)
+
+# ## Load standard deviations of total runtimes
+
+# # Native
+# with open(var_runtimes_dir / "S_all_sd_runtimes_tot_n_dict.pkl", "rb") as f:
+#     S_all_sd_runtimes_tot_n_dict  = pickle.load(f)
+# with open(var_runtimes_dir / "S_all_sd_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+#     S_all_sd_runtimes_WO_tot_n_dict  = pickle.load(f)
+    
+# # Overall standard deviations
+    
+# with open(var_runtimes_dir / "S_overall_sd_WO_dict.pkl", "rb") as f:
+#     S_overall_sd_WO_dict  = pickle.load(f)
+
+
+## Load proportions of WO runtimes
+
+# Native
+with open(proportions_dir / "S_WO_proportions_n.pkl", "rb") as f:
+    S_WO_proportions_n  = pickle.load(f)
+
+
     
 ##########========================================================############
 
 ### Graphs' names
 
 graph_types = ['BA', 'ER', 'LF', 'TR']
-current_run_types = ['BA', 'LF', 'TR']
-current_run_dim = ['3', '4']
+current_run_types = ['BA', 'ER', 'LF', 'TR']
+current_run_dim = ['0', '1', '2']
+GR0, GR1, GR2 = ['ER0', 'BA0', 'LF0', 'TR0'], ['ER1', 'BA1', 'LF1', 'TR1'], ['ER2', 'BA2', 'LF2', 'TR2']
+GER, GBA, GLF, GTR = ['ER0','ER1','ER2'], ['BA0','BA1','BA2'], ['LF0','LF1','LF2'], ['TR0','TR1','TR2']
 
 current_run_names = []
 for t in current_run_types:
@@ -123,188 +205,325 @@ for t in current_run_types:
 
 ########--------------- PLOTS ---------------########
 
-########------––-- Native - Transformation only ----––----########
 
-S_mean_T_Zfix_interpolated = S_all_mean_runtimes_WO_T_Zfix.interpolate(method='index', limit_area='inside')
+colors20 = plt.cm.tab20c
+blues = tuple(reversed(colors20.colors[:3]))
+oranges = tuple(reversed(colors20.colors[4:7]))
+greens = tuple(reversed(colors20.colors[8:11]))
+greys = tuple(reversed(colors20.colors[16:19]))
+colors = blues + oranges + greens + greys
+dict_colors = {}
+i = 0
+for GXX in GER, GBA, GLF, GTR:
+    for dag in GXX:
+        dict_colors[dag] = colors[i]
+        i+=1
+        
+markers = ("o", "^", "s", "P")
+dict_markers = {'ER':"o", 'BA':"^", 'LF':"s", 'TR':"P"}
 
-### |Z| fixed
-for col in current_run_names:
-    plt.figure()
-    plt.plot(S_mean_T_Zfix_interpolated.index, S_mean_T_Zfix_interpolated[col], marker='o')
-    plt.title(f'Transformation runtime for {col}')
-    plt.xlabel('|Z|')
-    plt.ylabel('mean rt')
-    plt.ylim(bottom=0)
-    plt.grid(True)
+DIC_tot = S_all_mean_runtimes_tot_n_dict
+DIC_T = S_all_mean_runtimes_T_dict
+# DIC_tot = S_all_mean_runtimes_WO_tot_n_dict
+# DIC_T = S_all_mean_runtimes_WO_T_dict
+df_largest_tot = pd.DataFrame(
+    index=graph_types,
+    columns=current_run_dim
+)
+df_largest_T = pd.DataFrame(
+    index=graph_types,
+    columns=current_run_dim
+)
+for t in graph_types:
+    for d in current_run_dim:
+        dag = t+d
+        
+        df = DIC_tot[dag]
+        w = float(np.max(df))
+        matches = df.where(df == w).stack()
+        i = list(matches.index)[0] 
+        df_largest_tot.loc[t,d] = (round(w,3), i)
+        
+        df = DIC_T[dag]
+        w = float(np.max(df))
+        matches = df.where(df == w).stack()
+        i = list(matches.index)[0] 
+        df_largest_T.loc[t,d] = (round(w,3), i)
+    
+width=0.25
+step = 0.3
+x_pos = np.arange(4) * step
+for GRD in [GR0, GR1, GR2]:
+    d = GRD[0][2]
+    labels = [f"{dag}\n {df_largest_tot.loc[dag[:2],d][1]}" for dag in GRD]
+    y_tot = [df_largest_tot.loc[dag[:2], d][0] for dag in GRD]
+    y_T   = [df_largest_T.loc[dag[:2], d][0] for dag in GRD]
+    plt.figure(figsize=(max(3, 4 * 1.2), 4))
+    plt.bar(x_pos, y_tot, width=width, label='Id. of d-sep. nodes')
+    plt.bar(x_pos, y_T,   width=width, label='d-coll. gr. gen.')
+    plt.xticks(
+            x_pos,
+            labels,
+            rotation=45,)
+    plt.tight_layout()
+    plt.ylabel("Mean runtime in seconds")
+    tit = f"Largest runtimes in {GRD}"
+    plt.title(tit)
+    plt.legend(loc='upper left', bbox_to_anchor=(0, 0.8, 0.6, 0.2), reverse=True)
+    plt.savefig(os.path.join(out_dir, f"S_BC_largest_{d}.png"), dpi=300, bbox_inches="tight")
     plt.show()
-        
-# ### PLOTS FIND Y_ALL QUERY
+    plt.close()
+    
+    
+df_zfix = S_means_over_dim_Zfix
+#df_zfix = S_means_over_dim_Zfix_WO
+x = df_zfix.columns.astype(str)   # convert tuple → string
 
-# ### LINEAR INTERPOLATION
-
-# for name in current_run_names:
-    
-#     df1 = S_all_mean_runtimes_WO_Qn_dict[name]     # first dataframe
-
-#     for row_idx in df1.index:
-        
-#         y1 = df1.loc[row_idx]
-#         y2 = df2.loc[row_idx]
-    
-#         mask = ~df1.loc[row_idx].isna()   # use original mask
-#         x = df1.columns[mask].astype(float)
-    
-#         plt.figure()
-#         plt.plot(x, y1[mask], 'o-', color='blue', label='Native')
-    
-#         plt.title(name + f" |X| = {row_idx}")
-#         plt.xlabel("|Z|")
-#         plt.ylabel("mean t")
-#         plt.xlim(left=0, right=1.05*x.max())
-#         plt.ylim(bottom=0, top=1.15*max(y1.max(), y2.max()))
-#         plt.legend()
-#         plt.grid(True)
-#         plt.show()
-        
-#     for col in df1.columns:
-        
-#         y1 = df1[col]
-#         y2 = df2[col]
-    
-#         mask = ~df1[col].isna()
-#         x = df1.index[mask]
-    
-#         plt.figure()
-#         plt.plot(x, y1[mask], 'o-', color='blue', label='Native')
-    
-#         plt.title(name + f" |Z| = {col}")
-#         plt.xlabel("|X|")
-#         plt.ylabel("mean t")
-#         plt.xlim(left=0, right=1.05*x.max())
-#         plt.ylim(bottom=0, top=1.15*max(y1.max(), y2.max()))
-#         plt.legend()
-#         plt.grid(True)
-#         plt.show()
-        
-        
-
-########------––-- Native  with row/column fixed ----––----########
-    
-for name in current_run_names:
-    
-    df = S_all_mean_runtimes_WO_Qn_dict[name]
-
-    colors = plt.cm.tab20(np.linspace(0, 1, len(df.columns)))  # distinct colors
-
-    # Interpolate along rows (vary row index)
-    df_col = df.interpolate(method='linear', axis=0, limit_area='inside')
-    
-    plt.figure()
-    
-    for idx, col in enumerate(df.columns):
-        y_full = df_col[col]
-        mask = ~df[col].isna()
-        x = df.index[mask]
-        y = y_full[mask]
-    
-        plt.plot(x, y, label=f"{col}", color=colors[idx])
-    
-    plt.xlabel("|X|")
-    plt.ylabel("mean t")
-    plt.title(name + " |Z| fixed")
+for GRD in [GR0, GR1, GR2]:
+    d = GRD[0][2]
+    plt.figure(figsize= (6,4))
+    for dag in GRD:
+        y = df_zfix.loc[dag].astype(float)
+        plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+    plt.title(f"Mean rt for d-col. gr. gen. in {GRD}")
+    plt.xlabel("Proportion of nodes in the input $Z$")
+    plt.ylabel("Mean runtime in seconds")
     plt.grid(True)
     plt.legend()
+    plt.savefig(os.path.join(out_dir, f"S_LC_GEN_{d}.png"), dpi=300, bbox_inches="tight")
     plt.show()
+    plt.close()
     
-    # Interpolate along columns (vary column index)
-    df_row = df.interpolate(method='linear', axis=1, limit_area='inside')
-    
-    colors = plt.cm.tab20(np.linspace(0, 1, len(df.index)))  # distinct colors
-    
-    plt.figure()
-    
-    for idx, row in enumerate(df.index):
-        y_full = df_row.loc[row]
-        mask = ~df.loc[row].isna()
-        x = df.columns[mask].astype(float)
-        y = y_full[mask]
-    
-        plt.plot(x, y, label=f"{row}", color=colors[idx])
+df_x1 = S_means_Qn_over_Z_X1
+#df_x1 = S_means_Qn_over_Z_X1_WO
+x = df_x1.columns.astype(str)   # convert tuple → string
 
-    plt.xlabel("|Z|")
-    plt.ylabel("mean t")
-    plt.title(name + " |X| fixed")
+for GRD in [GR0, GR1, GR2]:
+    d = GRD[0][2]
+    plt.figure(figsize= (6,4))
+    for dag in GRD:
+        y = df_x1.loc[dag].astype(float)
+        plt.plot(x, y, marker=dict_markers[dag[:2]],  color=dict_colors[dag], label=dag)
+    plt.title(f"Mean rt for Id. of d-sep. nodes |X|=1 in {GRD}")
+    plt.xlabel("Proportion of nodes in the input $Z$")
+    plt.ylabel("Mean runtime in seconds")
     plt.grid(True)
     plt.legend()
+    plt.savefig(os.path.join(out_dir, f"S_LC_ID_X1_{d}.png"), dpi=300, bbox_inches="tight")
     plt.show()
- 
+    plt.close()
+
+all_dags = GR0 + GR1 + GR2
+plt.figure(figsize= (7,4))
+for GRD in [GR2, GR1, GR0]:
+    d = GRD[0][2]
+    for dag in GRD:
+        y = df_x1.loc[dag].astype(float)
+        y = np.log(y)
+        plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+plt.title(f"Mean rt for Id. of d-sep. nodes |X|=1 in {GRD}")
+plt.xlabel("Proportion of nodes in the input $Z$")
+plt.ylabel("Mean runtime in log(seconds)")
+plt.grid(True)
+plt.legend(
+    loc="center left",
+    bbox_to_anchor=(1.02, 0.5),
+    frameon=False)
+plt.tight_layout(rect=[0, 0, 0.75, 1])
+plt.savefig(os.path.join(out_dir, "S_LC_ID_X1_LOG.png"), dpi=300, bbox_inches="tight")
+plt.show()
+plt.close()
+    
+
+df_x1perc = S_means_Qn_over_Z_X1perc
+#df_x1 = S_means_Qn_over_Z_X1_WO
+x = df_x1perc.columns.astype(str)   # convert tuple → string
+
+plt.figure(figsize=(7,4))
+all_dags = GR0 + GR1 + GR2
+i = 0
+for GRD in [GR2, GR1, GR0]:
+    for dag in GRD:
+        y = df_x1perc.loc[dag].astype(float)
+        plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        i += 1
+
+plt.title("Mean rt for Id. of d-sep. nodes |X|= 0.01|V|")
+plt.xlabel("Proportion of nodes in the input $Z$")
+plt.ylabel("Mean runtime in seconds")
+plt.grid(True)
+
+plt.legend(
+    loc="center left",
+    bbox_to_anchor=(1.02, 0.5),
+    frameon=False
+)
+
+plt.tight_layout(rect=[0, 0, 0.75, 1])
+plt.savefig(os.path.join(out_dir, "S_LC_ID_X1perc.png"), dpi=300, bbox_inches="tight")
+plt.show()
+plt.close()
+
+
+df_z1perc = S_means_Qn_over_X_Z1perc
+#df_z1perc = S_means_Qn_over_X_Z1perc_WO
+x = df_z1perc.columns.astype(str)   # convert tuple → string
+
+plt.figure(figsize=(7, 4))
+i = 0
+for GRD in [GR2, GR1, GR0]:
+    for dag in GRD:
+        y = df_z1perc.loc[dag].astype(float)
+        plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        i += 1
+
+plt.title("Mean rt for Id. of d-sep. nodes |Z|= 0.01|V|")
+plt.xlabel("Proportion of nodes in the input $X$")
+plt.ylabel("Mean runtime in seconds")
+plt.grid(True)
+plt.legend(
+    loc="center left",
+    bbox_to_anchor=(1.02, 0.5),
+    frameon=False
+)
+plt.tight_layout(rect=[0, 0, 0.75, 1])
+plt.savefig(os.path.join(out_dir, "S_LC_ID_Z1perc_LOG.png"), dpi=300, bbox_inches="tight")
+plt.show()
+plt.close()
+
+plt.figure(figsize=(7, 4))
+i = 0
+for GRD in [GR2, GR1, GR0]:
+    for dag in GRD:
+        y = df_z1perc.loc[dag].astype(float)
+        y = np.log(y)
+        plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        i += 1
+
+plt.title("Mean rt for Id. of d-sep. nodes |Z|= 0.01|V|")
+plt.xlabel("Proportion of nodes in the input $X$")
+plt.ylabel("Mean runtime in seconds")
+plt.grid(True)
+plt.legend(
+    loc="center left",
+    bbox_to_anchor=(1.02, 0.5),
+    frameon=False
+)
+plt.tight_layout(rect=[0, 0, 0.75, 1])
+plt.savefig(os.path.join(out_dir, "S_LC_ID_Z1perc_LOG.png"), dpi=300, bbox_inches="tight")
+plt.show()
+plt.close()
+
+df_zfix = S_means_over_dim_Zfix
+#df_zfix = S_means_over_dim_Zfix_WO
+x = df_zfix.columns.astype(str)   # convert tuple → string
+
+fig, axes = plt.subplots(1, 3, figsize=(12, 3), sharey=False)
+
+i=0
+for GRD in [GR0, GR1, GR2]:
+    ax = axes[i]
+    d = GRD[0][2]
+    for dag in GRD:
+        y = df_zfix.loc[dag].astype(float)
+        ax.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
         
-"""
-### Main comparisons
-
-dict_sachs = {'|X| fixed' : [1,6,2], '|Z| fixed' : [0,2]}
-dict_child = {'|X| fixed' : [1,2], '|Z| fixed' : [0,5]}
-dict_smallcovid = {'|X| fixed' : [1,9], '|Z| fixed': [0,1,2]}
-dict_reducedcovid = {'|X| fixed' : [1,9], '|Z| fixed': [0,1,2]}
-dict_covid = {'|X| fixed' : [1,10,22], '|Z| fixed' : [0,2]}
-dict_barley = {'|X| fixed' : [1,9,33], '|Z| fixed' : [0,9,28]}
-dict_win95pt = {'|X| fixed' : [1,2,45,53], '|Z| fixed' : [0,15]}
-dict_cnsampledag = {'|X| fixed' : [1,16,83,116], '|Z| fixed' : [0,16,116]}
-dict_link = {'|X| fixed' : [1,71,642], '|Z| fixed' : [0,71,642]}
-dict_munin = {'|X| fixed' : [1,104,936], '|Z| fixed' : [0,104,936]}
-
-dict_fixed = {}
-dict_fixed['SACHS'] = dict_sachs
-dict_fixed['CHILD'] = dict_child
-dict_fixed['SMALLCOVID'] = dict_smallcovid
-dict_fixed['REDUCEDCOVID'] = dict_reducedcovid
-dict_fixed['COVID'] = dict_covid
-dict_fixed['BARLEY'] = dict_barley
-dict_fixed['WIN95PTS'] = dict_win95pt
-dict_fixed['CNSAMPLEDAG'] = dict_cnsampledag
-dict_fixed['LINK'] = dict_link
-dict_fixed['MUNIN'] = dict_munin
-
-
-for name in current_run_names:
+    #ax.set_title(f"{GRD}")
+    ax.set_xlabel("Proportion of nodes in the input $Z$")
+    ax.set_ylabel("Mean runtime in seconds")
+    ax.legend(loc='upper right', fontsize=8)
+    ax.grid(True)
+    i+=1
     
-    df1 = S_all_mean_runtimes_WO_Qn_dict[name]
-    df2 = S_all_mean_runtimes_Qa_dict[name]
-    
-    rows_to_keep = [r for r in dict_fixed[name]['|X| fixed'] if r in df1.index]
-    cols = df1.columns  # full set of Z values
+fig.suptitle("Mean runtime for d-collision graph generation", y = 0.82)
 
-    # Interpolate along columns (axis=1)
-    norm_interp = df1.loc[rows_to_keep].interpolate(axis=1, limit_area='inside')
+# 👇 collect legend handles from ONE axis
+handles, labels = axes[0].get_legend_handles_labels()
 
-    plt.figure(figsize=(8, 5))
+# leave space for legend
+fig.tight_layout(rect=[0, 0, 1, 0.88])
 
-    for r in rows_to_keep:
-        plt.plot(cols, norm_interp.loc[r], marker='o', label=f"|X|={r} Native")
+fig.savefig(os.path.join(out_dir, "S_LC_GEN_3in1.png"), dpi=300, bbox_inches="tight")
+plt.close(fig)
+img = PIL.Image.open(out_dir / "S_LC_GEN_3in1.png")
+img.show()
 
-    plt.title(f"{name}: Runtime Comparison (|Z| varies)")
-    plt.xlabel("|Z|")
-    plt.ylabel("runtime")
-    plt.grid(True)
-    plt.legend()
-    plt.show()
-    
-    cols_to_keep = [c for c in dict_fixed[name]['|Z| fixed'] if c in df1.columns]
-    rows = df1.index  # full set of X values
 
-    # Interpolate along rows (axis=0)
-    norm_interp = df1[cols_to_keep].interpolate(axis=0, limit_area='inside')
 
-    plt.figure(figsize=(8, 5))
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.5), sharey=False)
 
-    for c in cols_to_keep:
-        plt.plot(rows, norm_interp[c], marker='o', label=f"|Z|={c} Native")
+ax1, ax2, ax3 = axes
 
-    plt.title(f"{name}: Runtime Comparison (|X| varies)")
-    plt.xlabel("|X|")
-    plt.ylabel("runtime")
-    plt.grid(True)
-    plt.legend()
-    plt.show()
 
-"""
+df_x1perc = S_means_Qn_over_Z_X1perc
+#df_x1 = S_means_Qn_over_Z_X1_WO
+x = df_x1perc.columns.astype(str)   # convert tuple → string
+i = 0
+for GRD in [GR2, GR1, GR0]:
+    for dag in GRD:
+        y = df_x1perc.loc[dag].astype(float)
+        ax1.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        i += 1
+
+ax1.set_title("|X|= 0.01|V|")
+ax1.set_xlabel("Proportion of nodes in the input $Z$")
+ax1.set_ylabel("Mean runtime in seconds")
+ax1.grid(True)
+#ax1.tight_layout(rect=[0, 0, 0.75, 1])
+
+for GRD in [GR2, GR1, GR0]:
+    d = GRD[0][2]
+    for dag in GRD:
+        y = df_x1.loc[dag].astype(float)
+        y = np.log(y)
+        ax2.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+ax2.set_title("|X|=1")
+ax2.set_xlabel("Proportion of nodes in the input $Z$")
+ax2.set_ylabel("Mean runtime in log(seconds)")
+ax2.grid(True)
+#ax2.tight_layout(rect=[0, 0, 0.75, 1])
+
+df_z1perc = S_means_Qn_over_X_Z1perc
+#df_z1perc = S_means_Qn_over_X_Z1perc_WO
+x = df_z1perc.columns.astype(str)   # convert tuple → string
+
+i = 0
+for GRD in [GR2, GR1, GR0]:
+    for dag in GRD:
+        y = df_z1perc.loc[dag].astype(float)
+        y = np.log(y)
+        ax3.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        i += 1
+
+ax3.set_title("|Z|= 0.01|V|")
+ax3.set_xlabel("Proportion of nodes in the input $X$")
+ax3.set_ylabel("Mean runtime in log(seconds)")
+ax3.grid(True)
+#ax3.tight_layout(rect=[0, 0, 0.75, 1])
+
+
+fig.suptitle("Mean runtime for Identification of d-separated nodes", y = 0.90)
+
+# 👇 collect legend handles from ONE axis
+handles, labels = axes[0].get_legend_handles_labels()
+
+fig.legend(
+    handles,
+    labels,
+    loc="upper center",
+    bbox_to_anchor=(0.5, 0.85),   # 👈 BELOW suptitle
+    ncol=len(labels),
+    frameon=False,
+    fontsize=8
+)
+
+# leave space for legend
+fig.tight_layout(rect=[0, 0, 1, 0.88])
+
+fig.savefig(os.path.join(out_dir, "S_LC_ID_3in1.png"), dpi=300, bbox_inches="tight")
+plt.close(fig)
+img = PIL.Image.open(out_dir / "S_LC_ID_3in1.png")
+img.show()
+
+
+        
