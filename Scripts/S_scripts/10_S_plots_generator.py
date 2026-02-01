@@ -22,6 +22,7 @@ Path = require("pathlib").Path
 np = require("numpy")
 pickle = require("pickle")
 plt = require("matplotlib.pyplot", "matplotlib")
+from matplotlib.lines import Line2D
 pd = require("pandas")
 os = require("os")
 PIL = require("PIL")
@@ -348,7 +349,7 @@ for GRD in [GR2, GR1, GR0]:
         plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
         i += 1
 
-plt.title("Mean rt for Id. of d-sep. nodes |X|= 0.01|V|")
+plt.title("Mean rt for Id. of d-sep. nodes $|X|= 0.01\mathcal{|V|}$")
 plt.xlabel("Proportion of nodes in the input $Z$")
 plt.ylabel("Mean runtime in seconds")
 plt.grid(True)
@@ -377,7 +378,7 @@ for GRD in [GR2, GR1, GR0]:
         plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
         i += 1
 
-plt.title("Mean rt for Id. of d-sep. nodes |Z|= 0.01|V|")
+plt.title("Mean rt for Id. of d-sep. nodes $|Z|= 0.01\mathcal{|V|}$")
 plt.xlabel("Proportion of nodes in the input $X$")
 plt.ylabel("Mean runtime in seconds")
 plt.grid(True)
@@ -396,11 +397,11 @@ i = 0
 for GRD in [GR2, GR1, GR0]:
     for dag in GRD:
         y = df_z1perc.loc[dag].astype(float)
-        y = np.log(y)
         plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        plt.yscale('log', base=2)
         i += 1
 
-plt.title("Mean rt for Id. of d-sep. nodes |Z|= 0.01|V|")
+plt.title("Mean rt for Id. of d-sep. nodes $|Z|= 0.01\mathcal{|V|}$")
 plt.xlabel("Proportion of nodes in the input $X$")
 plt.ylabel("Mean runtime in seconds")
 plt.grid(True)
@@ -418,6 +419,9 @@ df_zfix = S_means_over_dim_Zfix
 #df_zfix = S_means_over_dim_Zfix_WO
 x = df_zfix.columns.astype(str)   # convert tuple → string
 
+
+############
+
 fig, axes = plt.subplots(1, 3, figsize=(12, 3), sharey=False)
 
 i=0
@@ -430,95 +434,112 @@ for GRD in [GR0, GR1, GR2]:
         
     #ax.set_title(f"{GRD}")
     ax.set_xlabel("Proportion of nodes in the input $Z$")
-    ax.set_ylabel("Mean runtime in seconds")
-    ax.legend(loc='upper right', fontsize=8)
-    ax.grid(True)
+    ax.tick_params(axis='x', labelsize=8)
+    if GRD==GR0:
+        leg=ax.legend(title='GR0', loc='upper right', ncol=2, prop={'size':9})
+        # leg.get_title().set_fontweight('bold')
+    else:
+        tit = 'GR'+d
+        leg=ax.legend(title=tit, loc='upper right', ncol=2, prop={'size':9})
+        # leg.get_title().set_fontweight('bold')
     i+=1
-    
-fig.suptitle("Mean runtime for d-collision graph generation", y = 0.82)
+
+fig.suptitle("Synthetic DAGs: d-collision graph generation", y=0.8, fontsize=12)
+fig.supylabel("Mean runtime in sec.", x=0.04, y=0.44, fontsize=12)
+
+
+for ax in axes:
+    ax.grid(True, axis='y', alpha=0.3)
+    # for lbl in ax.get_xticklabels() + ax.get_yticklabels():
+    #     lbl.set_fontweight('bold')
+        
+axes[0].set_position([0.08, 0.14, 0.255, 0.5833333])
+axes[1].set_position([0.38, 0.14, 0.255, 0.5833333])
+axes[2].set_position([0.68, 0.14, 0.255, 0.5833333])
 
 # 👇 collect legend handles from ONE axis
 handles, labels = axes[0].get_legend_handles_labels()
-
-# leave space for legend
-fig.tight_layout(rect=[0, 0, 1, 0.88])
 
 fig.savefig(os.path.join(out_dir, "S_LC_GEN_3in1.png"), dpi=300, bbox_inches="tight")
 plt.close(fig)
 img = PIL.Image.open(out_dir / "S_LC_GEN_3in1.png")
 img.show()
 
-
+###
 
 fig, axes = plt.subplots(1, 3, figsize=(12, 3.5), sharey=False)
 
 ax1, ax2, ax3 = axes
 
-
 df_x1perc = S_means_Qn_over_Z_X1perc
-#df_x1 = S_means_Qn_over_Z_X1_WO
+
 x = df_x1perc.columns.astype(str)   # convert tuple → string
 i = 0
-for GRD in [GR2, GR1, GR0]:
+for GRD in [GR0, GR1, GR2]:
     for dag in GRD:
         y = df_x1perc.loc[dag].astype(float)
         ax1.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
         i += 1
 
-ax1.set_title("|X|= 0.01|V|")
+ax1.set_title("$|X|= 0.01|\mathcal{V}|$")
 ax1.set_xlabel("Proportion of nodes in the input $Z$")
-ax1.set_ylabel("Mean runtime in seconds")
-ax1.grid(True)
-#ax1.tight_layout(rect=[0, 0, 0.75, 1])
 
-for GRD in [GR2, GR1, GR0]:
+for GRD in [GR0, GR1, GR2]:
     d = GRD[0][2]
     for dag in GRD:
         y = df_x1.loc[dag].astype(float)
-        y = np.log(y)
         ax2.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
-ax2.set_title("|X|=1")
+        ax2.set_yscale('log')
+ax2.set_title("$|X|=1$")
 ax2.set_xlabel("Proportion of nodes in the input $Z$")
-ax2.set_ylabel("Mean runtime in log(seconds)")
-ax2.grid(True)
-#ax2.tight_layout(rect=[0, 0, 0.75, 1])
+ax2.minorticks_off()
 
 df_z1perc = S_means_Qn_over_X_Z1perc
-#df_z1perc = S_means_Qn_over_X_Z1perc_WO
 x = df_z1perc.columns.astype(str)   # convert tuple → string
 
 i = 0
-for GRD in [GR2, GR1, GR0]:
+for GRD in [GR0, GR1, GR2]:
     for dag in GRD:
         y = df_z1perc.loc[dag].astype(float)
-        y = np.log(y)
         ax3.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        ax3.set_yscale('log')
         i += 1
 
-ax3.set_title("|Z|= 0.01|V|")
-ax3.set_xlabel("Proportion of nodes in the input $X$")
-ax3.set_ylabel("Mean runtime in log(seconds)")
-ax3.grid(True)
-#ax3.tight_layout(rect=[0, 0, 0.75, 1])
+ax3.set_title(r"$|Z|= 0.01|\mathcal{V}|$")
+ax3.set_xlabel(r"Proportion of nodes in the input $X$")
+ax3.minorticks_off()
 
 
-fig.suptitle("Mean runtime for Identification of d-separated nodes", y = 0.90)
+for ax in axes:
+    ax.tick_params(axis='x', labelsize=8)
+    ax.grid(True, axis='y', alpha=0.3)
+    # for lbl in ax.get_xticklabels() + ax.get_yticklabels():
+    #     lbl.set_fontweight('bold')
+        
+axes[0].set_position([0.08, 0.14, 0.255, 0.5])
+axes[1].set_position([0.38, 0.14, 0.255, 0.5])
+axes[2].set_position([0.68, 0.14, 0.255, 0.5])
+
+fig.supylabel("Mean runtime in sec.", x=0.04, y=0.39, fontsize=12)
+fig.suptitle("Synthetic DAGs: Identification of d-separated nodes", y = 0.87, fontsize=12)
 
 # 👇 collect legend handles from ONE axis
 handles, labels = axes[0].get_legend_handles_labels()
 
+tit = 'GR0'.ljust(76) + 'GR1'.ljust(77) + 'GR2'
+
 fig.legend(
     handles,
     labels,
+    ncol=len(handles),
     loc="upper center",
-    bbox_to_anchor=(0.5, 0.85),   # 👈 BELOW suptitle
-    ncol=len(labels),
+    title = tit,
+    title_fontproperties = {'size':10},
+    bbox_to_anchor=(0.5, 0.835),
     frameon=False,
-    fontsize=8
+    prop={'size': 9}
 )
 
-# leave space for legend
-fig.tight_layout(rect=[0, 0, 1, 0.88])
 
 fig.savefig(os.path.join(out_dir, "S_LC_ID_3in1.png"), dpi=300, bbox_inches="tight")
 plt.close(fig)

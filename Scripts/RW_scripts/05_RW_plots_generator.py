@@ -23,6 +23,8 @@ np = require("numpy")
 pickle = require("pickle")
 plt = require("matplotlib.pyplot", "matplotlib")
 pd = require("pandas")
+os = require("os")
+PIL = require("PIL")
 
 ###----------------------###
 
@@ -35,6 +37,8 @@ all_runtimes_dir = runtimes_dir / "All_runtimes"
 mean_runtimes_dir = runtimes_dir / "Mean_runtimes"
 var_runtimes_dir = runtimes_dir / "Vars_and_sds"
 proportions_dir = runtimes_dir / "Proportions"
+out_dir = BASE / "Results/Plots"
+os.makedirs(out_dir, exist_ok=True)
 
 
 ########--------------- Load runtimes' files ---------------########
@@ -45,55 +49,90 @@ proportions_dir = runtimes_dir / "Proportions"
 ## Read mean transformation runtimes
 
 # All
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_dict.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_Tn_dict = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_T_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_T_dict = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_WO_Tn_dict = pickle.load(f)
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Tn_dict.pkl", "rb") as f:
+    RW_all_mean_runtimes_WSO_Tn_dict = pickle.load(f)
     
 # |Z| fixed
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_Zfix.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_Tn_Zfix = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_T_Zfix.pkl", "rb") as f:
+#     RW_all_mean_runtimes_T_Zfix = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_Zfix.pkl", "rb") as f:
+#     RW_all_mean_runtimes_WO_Tn_Zfix = pickle.load(f)
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Tn_Zfix.pkl", "rb") as f:
+    RW_all_mean_runtimes_WSO_Tn_Zfix = pickle.load(f)
 
 ## Read mean query runtimes
 
 # Native
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qn_dict.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_Qn_dict = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qn_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_Qn_dict = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qn_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_WO_Qn_dict = pickle.load(f)
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Qn_dict.pkl", "rb") as f:
+    RW_all_mean_runtimes_WSO_Qn_dict = pickle.load(f)
 
 # # APOC
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qa_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_Qa_dict = pickle.load(f)
 # with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qa_dict.pkl", "rb") as f:
 #     RW_all_mean_runtimes_WO_Qa_dict = pickle.load(f)
 
 ## Read mean total runtimes
 
 # Native
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as f:
-    RW_all_mean_runtimes_WO_tot_n_dict  = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_n_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_tot_n_dict  = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_n_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_WO_tot_n_dict  = pickle.load(f)
+with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_tot_n_dict.pkl", "rb") as f:
+    RW_all_mean_runtimes_WSO_tot_n_dict  = pickle.load(f)
 
 # # APOC
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_a_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_tot_a_dict  = pickle.load(f)
 # with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_a_dict.pkl", "rb") as f:
 #     RW_all_mean_runtimes_WO_tot_a_dict  = pickle.load(f)
     
 # Baseline
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_baseline_dict.pkl", "rb") as f:
+#     RW_all_mean_runtimes_baseline_dict  = pickle.load(f)
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "rb") as f:
     RW_all_mean_runtimes_WO_baseline_dict  = pickle.load(f)
     
 # Overall means
-
+# with open(mean_runtimes_dir / "RW_overall_means_dict.pkl", "rb") as f:
+#     RW_overall_means_dict  = pickle.load(f)
 with open(mean_runtimes_dir / "RW_overall_means_WO_dict.pkl", "rb") as f:
     RW_overall_means_WO_dict  = pickle.load(f)
+with open(mean_runtimes_dir / "RW_overall_means_WSO_dict.pkl", "rb") as f:
+    RW_overall_means_WSO_dict  = pickle.load(f)
     
 # Means over dimension
 
-with open(mean_runtimes_dir / "RW_means_over_dim_WO.pkl", "rb") as f:
-    RW_means_over_dim_WO  = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_means_over_dim_tot_n.pkl", "rb") as f:
+#     RW_means_over_dim  = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_means_over_dim_tot_n_WO.pkl", "rb") as f:
+#     RW_means_over_dim_WO  = pickle.load(f)
+with open(mean_runtimes_dir / "RW_means_over_dim_tot_n_WSO.pkl", "rb") as f:
+    RW_means_over_dim_WSO  = pickle.load(f)
     
-with open(mean_runtimes_dir / "RW_means_over_dim_Qn_WO.pkl", "rb") as f:
-    RW_means_over_dim_Qn_WO  = pickle.load(f)
-    
-with open(mean_runtimes_dir / "RW_means_over_dim_Zfix_WO.pkl", "rb") as f:
-    RW_means_over_dim_Zfix_WO  = pickle.load(f)
-    
+# with open(mean_runtimes_dir / "RW_means_over_dim_Qn.pkl", "rb") as f:
+#     RW_means_over_dim_Qn  = pickle.load(f)
+# with open(mean_runtimes_dir / "RW_means_over_dim_Qn_WO.pkl", "rb") as f:
+#     RW_means_over_dim_Qn_WO  = pickle.load(f)
+with open(mean_runtimes_dir / "RW_means_over_dim_Qn_WSO.pkl", "rb") as f:
+    RW_means_over_dim_Qn_WSO  = pickle.load(f)
 
-
+# with open(mean_runtimes_dir / "RW_means_over_dim_Zfix.pkl", "rb") as f:
+#     RW_means_over_dim_Zfix  = pickle.load(f)    
+# with open(mean_runtimes_dir / "RW_means_over_dim_Zfix_WO.pkl", "rb") as f:
+#     RW_means_over_dim_Zfix_WO  = pickle.load(f)
+with open(mean_runtimes_dir / "RW_means_over_dim_Zfix_WSO.pkl", "rb") as f:
+    RW_means_over_dim_Zfix_WSO  = pickle.load(f)
+    
 # ### Read variances of the runtimes
 
 # ## Read variances of transformation runtimes
@@ -163,11 +202,14 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_a_dict.pkl", "rb") as f:
     RW_all_sd_runtimes_WO_tot_a_dict  = pickle.load(f)
     
 # Baseline
+with open(var_runtimes_dir / "RW_all_sd_runtimes_baseline_dict.pkl", "rb") as f:
+    RW_all_sd_runtimes_baseline_dict  = pickle.load(f)
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_baseline_dict.pkl", "rb") as f:
     RW_all_sd_runtimes_WO_baseline_dict  = pickle.load(f)
     
 # Overall standard deviations
-    
+with open(var_runtimes_dir / "RW_overall_sd_dict.pkl", "rb") as f:
+    RW_overall_sd_dict  = pickle.load(f)   
 with open(var_runtimes_dir / "RW_overall_sd_WO_dict.pkl", "rb") as f:
     RW_overall_sd_WO_dict  = pickle.load(f)
 
@@ -560,18 +602,20 @@ for name in graph_names:
     relevant_rts0.rename(columns={0: (1,0), 1: '(10%,10%)', 2: '(20%,20%)', 3:'(30%,30%)', 4:'(40%,40%)'}, inplace=True)
 
 """
+
+
 with open(BASE / "Results/dim_dict.pkl", "rb") as f:
     dim_dict = pickle.load(f)
     
-new_cols = {n: n/100 for n in range(0,91,10)}
+"""new_cols = {n: n/100 for n in range(0,91,10)}
 new_cols[0] = '0'
 new_cols2 = new_cols.copy()
 new_cols2[0] = (1,0)
 
 
 rrts_idx = RW_all_mean_runtimes_WO_Tn_Zfix.columns
-rrts_cols1 = [0,'Mean','Largest']
-relevant_rts1 = pd.DataFrame(
+rrts_cols1 = ['Mean','Largest']
+relevant_rts1_WO = pd.DataFrame(
     index=rrts_idx,
     columns=rrts_cols1
 )
@@ -579,17 +623,17 @@ for r in rrts_idx:
     df = RW_all_mean_runtimes_WO_tot_n_dict[r]
     N = dim_dict[r]['V']
     for c in rrts_cols1:
-        if c == 0:
-            relevant_rts1.loc[r,c] = df.loc[1,0]  
-        elif c == 'Mean':
+        if c == 'Mean':
            mu = float(np.mean(df))
-           relevant_rts1.loc[r,c] = mu
+           relevant_rts1_WO.loc[r,c] = mu
         else:
             w = float(np.max(df))
             matches = df.where(df == w).stack()
             i = list(matches.index)[0]
-            relevant_rts1.loc[r,c] = (w, i)            
-relevant_rts1.rename(columns=new_cols, inplace=True)
+            relevant_rts1_WO.loc[r,c] = (w, i)            
+relevant_rts1_WO.rename(columns=new_cols, inplace=True)
+
+## Mean total runtimes WO
 
 df = RW_means_over_dim_WO
 df.rename(columns=new_cols2, inplace=True)
@@ -607,7 +651,23 @@ plt.grid(True)
 plt.legend()
 plt.show()
 
+## Mean runtimes T WO
 
+df = RW_means_over_dim_Zfix_WO
+df.rename(columns=new_cols, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+plt.title("Mean runtimes of the d-collision graph generation phase")
+plt.xlabel("Proportion of nodes in the input $Z$")
+plt.ylabel("Mean runtime")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+## Mean runtimes Qn WO
 
 df = RW_means_over_dim_Qn_WO
 df.rename(columns=new_cols2, inplace=True)
@@ -625,20 +685,7 @@ plt.grid(True)
 plt.legend()
 plt.show()
 
-
-df = RW_means_over_dim_Zfix_WO
-df.rename(columns=new_cols, inplace=True)
-x = df.columns.astype(str)   # convert tuple → string
-plt.figure(figsize= (8,6))
-for name in graph_names:
-    y = df.loc[name].astype(float)
-    plt.plot(x, y, marker='o', label=name)
-plt.title("Mean runtimes of the d-collision graph generation phase")
-plt.xlabel("Proportion of nodes in the input $Z$")
-plt.ylabel("Mean runtime")
-plt.grid(True)
-plt.legend()
-plt.show()
+## Baseline data WO
 
 bs_cols = [0,'Mean']
 relevant_bs = pd.DataFrame(
@@ -663,45 +710,9 @@ for r in baseline_graph_names:
 relevant_bs.rename(columns={0: (1,0)}, inplace=True)
 
 
+# Bars T
 Tdf_idx = graph_names
-Tdf_cols = [0, 5, 8, 'Mean']
-Tdf = pd.DataFrame(
-    index=Tdf_idx,
-    columns=Tdf_cols
-)
-for r in Tdf.index:
-    df = RW_all_mean_runtimes_WO_Tn_dict[r]
-    for c in Tdf_cols:
-        if c == 0:
-            mu = float(np.mean(df.loc[:, 0]))
-        elif c == 5 or c==8:
-            n = dim_dict[r][c][0]
-            mu = float(np.mean(df.loc[:, n]))
-        else:
-            mu = float(np.mean(df))
-        Tdf.loc[r,c] = round(mu, 3)    
-Tdf.rename(columns={0: '0%', 5: '50%', 8: '80%'}, inplace=True)
-
-"""Tdf_sd = pd.DataFrame(
-    index=Tdf_idx,
-    columns=Tdf_cols
-)
-for r in Tdf_sd.index:
-    df = RW_all_sd_runtimes_WO_Tn_dict[r]
-    for c in Tdf_cols:
-        if c == 0:
-            sd = df.loc[1,0]
-        elif c == 5 or c==8:
-            n = dim_dict[r][c][0]
-            sd = df.loc[, n]
-        else:
-            mu = float(np.mean(df))
-        Tdf_sd.loc[r,c] = round(mu, 3)    
-Tdf.rename(columns={0: '0%', 5: '50%', 8: '80%'}, inplace=True)"""
-
-
-Tdf_idx = graph_names
-Tdf2_cols = [0, 'Mean', 'Largest']
+Tdf2_cols = ['Mean', 'Largest']
 Tdf2 = pd.DataFrame(
     index=Tdf_idx,
     columns=Tdf2_cols
@@ -709,19 +720,17 @@ Tdf2 = pd.DataFrame(
 for r in Tdf2.index:
     df = RW_all_mean_runtimes_WO_Tn_dict[r]
     for c in Tdf2_cols:
-        if c == 0:
-            v = df.loc[1,0]
-        elif c == 'Mean':
-            v = float(np.mean(df))
+        if c == 'Mean':
+           v = float(np.mean(df))
         else:
-            i = relevant_rts1.loc[r,'Largest'][1]
+            i = relevant_rts1_WO.loc[r,'Largest'][1]
             v = df.loc[i[0], i[1]]
         Tdf2.loc[r,c] = round(v, 3)    
 Tdf2.rename(columns={0: (1,0)}, inplace=True)
 
-
+# Bars tot
 totn_idx = graph_names
-totn_cols = [0, 'Mean', 'Largest']
+totn_cols = ['Mean', 'Largest']
 totn = pd.DataFrame(
     index=totn_idx,
     columns=totn_cols
@@ -729,10 +738,192 @@ totn = pd.DataFrame(
 for r in totn.index:
     df = RW_all_mean_runtimes_WO_tot_n_dict[r]
     for c in totn_cols:
+        if c == 'Mean':
+           v = float(np.mean(df))
+        else:
+            i = relevant_rts1_WO.loc[r,'Largest'][1]
+            v = df.loc[i[0], i[1]]
+        totn.loc[r,c] = round(v, 3)    
+totn.rename(columns={0: (1,0)}, inplace=True)
+
+xti = [f"{dag}\n {relevant_rts1_WO.loc[dag,'Largest'][1]}" for dag in graph_names]
+graph_names = ['SACHS', 'C01', 'C02', 'COVID', 'BARLEY', 'WIN95PTS', 'CNSDAG', 'LINK', 'MUNIN']
+
+df1 = totn
+df2 = Tdf2
+
+for col in df1.columns:
+    plt.figure()
+    if col == 'Largest':
+        x = xti
+    else:
+        x = df1.index
+    plt.bar(x, df1[col], label = 'd-sep. nodes id.')
+    plt.bar(x, df2[col], label = 'd-coll. gr. gen.')
+    plt.xticks(rotation=45)   # 45 degrees
+    plt.tight_layout()
+    if col == (1,0):
+        tit = "Mean runtimes for (|X|,|Z|)=(1,0)"
+    elif col == "Mean":
+        tit = "Overall mean runtimes"
+    else:
+        tit = "Largest mean runtimes"
+    plt.title(tit)
+    plt.legend(loc='upper center', bbox_to_anchor=(0, 0.8, 0.6, 0.2), reverse=True)
+    plt.show()
+    
+    
+fig, axes = plt.subplots(1, 2, figsize=(6, 3), sharey=False)
+
+ax1, ax2 = axes
+
+df = RW_means_over_dim_Qn_WO
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    ax1.plot(x, y, marker='o', label=name)
+
+ax1.title("Mean runtimes of the d-separated nodes identification phase")
+ax1.xlabel("Proportion of nodes in the input $X \cup Z$")
+plt.ylabel("Mean runtime in seconds")
+plt.grid(True)
+plt.legend()
+plt.show()"""
+
+    
+
+
+
+##################
+
+
+"""
+rrts_idx = RW_all_mean_runtimes_T_Zfix.columns
+rrts_cols1 = ['Mean','Largest']
+relevant_rts1 = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols1
+)
+for r in rrts_idx:
+    df = RW_all_mean_runtimes_tot_n_dict[r]
+    N = dim_dict[r]['V']
+    for c in rrts_cols1:
+        if c == 'Mean':
+           mu = float(np.mean(df))
+           relevant_rts1.loc[r,c] = mu
+        else:
+            w = float(np.max(df))
+            matches = df.where(df == w).stack()
+            i = list(matches.index)[0]
+            relevant_rts1.loc[r,c] = (w, i)            
+relevant_rts1.rename(columns=new_cols, inplace=True)
+
+## Mean total runtimes
+
+df = RW_means_over_dim
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+
+plt.title("Trend of the mean total runtime")
+plt.xlabel("Sizes of the input $X \cup Z$")
+plt.ylabel("Mean runtime")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+## Mean runtimes T
+
+df = RW_means_over_dim_Zfix
+df.rename(columns=new_cols, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+plt.title("Mean runtimes of the d-collision graph generation phase")
+plt.xlabel("Proportion of nodes in the input $Z$")
+plt.ylabel("Mean runtime")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+## Mean runtimes Qn
+
+df = RW_means_over_dim_Qn
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+
+plt.title("Mean runtimes of the d-separated nodes identification phase")
+plt.xlabel("Proportion of nodes in the input $X \cup Z$")
+plt.ylabel("Mean runtime")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+## Baseline data
+
+bs_cols = [0,'Mean']
+relevant_bs = pd.DataFrame(
+    index=baseline_graph_names,
+    columns=bs_cols
+)
+for r in baseline_graph_names:
+    df_means = RW_all_mean_runtimes_baseline_dict[r]
+    df_sds = RW_all_sd_runtimes_baseline_dict[r]
+    for c in bs_cols:
         if c == 0:
-            v = df.loc[1,0]
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            relevant_bs.loc[r,c] = (mu, sd)
         elif c == 'Mean':
-            v = float(np.mean(df))
+           mu = round(RW_overall_means_dict[r]['b'],3)
+           sd = round(RW_overall_sd_dict[r]['b'],3)
+           relevant_bs.loc[r,c] = (mu, sd,)
+relevant_bs.rename(columns={0: (1,0)}, inplace=True)
+
+
+# Bars T
+Tdf_idx = graph_names
+Tdf2_cols = ['Mean', 'Largest']
+Tdf2 = pd.DataFrame(
+    index=Tdf_idx,
+    columns=Tdf2_cols
+)
+for r in Tdf2.index:
+    df = RW_all_mean_runtimes_T_dict[r]
+    for c in Tdf2_cols:
+        if c == 'Mean':
+           v = float(np.mean(df))
+        else:
+            i = relevant_rts1.loc[r,'Largest'][1]
+            v = df.loc[i[0], i[1]]
+        Tdf2.loc[r,c] = round(v, 3)    
+Tdf2.rename(columns={0: (1,0)}, inplace=True)
+
+# Bars tot
+totn_idx = graph_names
+totn_cols = ['Mean', 'Largest']
+totn = pd.DataFrame(
+    index=totn_idx,
+    columns=totn_cols
+)
+for r in totn.index:
+    df = RW_all_mean_runtimes_tot_n_dict[r]
+    for c in totn_cols:
+        if c == 'Mean':
+           v = float(np.mean(df))
         else:
             i = relevant_rts1.loc[r,'Largest'][1]
             v = df.loc[i[0], i[1]]
@@ -764,3 +955,305 @@ for col in df1.columns:
     plt.title(tit)
     plt.legend(loc='upper center', bbox_to_anchor=(0, 0.8, 0.6, 0.2), reverse=True)
     plt.show()
+    
+
+fig, axes = plt.subplots(1, 2, figsize=(6, 3), sharey=False)
+
+ax1, ax2 = axes
+
+df = RW_means_over_dim_Qn
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    ax1.plot(x, y, marker='o', label=name)
+
+ax1.title("Mean runtimes of the d-separated nodes identification phase")
+ax1.xlabel("Proportion of nodes in the input $X \cup Z$")
+plt.ylabel("Mean runtime in seconds")
+plt.grid(True)
+plt.legend()
+plt.show()
+"""
+
+new_cols = {n: n/100 for n in range(0,91,10)}
+new_cols[0] = '0'
+new_cols2 = new_cols.copy()
+new_cols2[0] = (1,0)
+
+
+rrts_idx = RW_all_mean_runtimes_WSO_Tn_Zfix.columns
+rrts_cols1 = ['Mean','Largest']
+relevant_rts1_WSO = pd.DataFrame(
+    index=rrts_idx,
+    columns=rrts_cols1
+)
+for r in rrts_idx:
+    df = RW_all_mean_runtimes_WSO_tot_n_dict[r]
+    N = dim_dict[r]['V']
+    for c in rrts_cols1:
+        if c == 'Mean':
+           mu = float(np.mean(df))
+           relevant_rts1_WSO.loc[r,c] = mu
+        else:
+            w = float(np.max(df))
+            matches = df.where(df == w).stack()
+            i = list(matches.index)[0]
+            relevant_rts1_WSO.loc[r,c] = (w, i)            
+relevant_rts1_WSO.rename(columns=new_cols, inplace=True)
+
+## Mean total runtimes WO
+
+df = RW_means_over_dim_WSO
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+
+plt.title(r"$\mathbf{Trend \; of \; the \; mean \; total  \; runtime}$")
+plt.xlabel(r"$\mathbf{Proportion \; of  \;nodes \; in \; the \; input \; X \cup Z}$")
+plt.ylabel(r"$\mathbf{Mean \; runtime \; in  \; seconds}$")
+plt.xticks(fontsize=12, fontweight='bold')
+plt.yticks(fontsize=12, fontweight='bold')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+## Mean runtimes T WO
+
+df = RW_means_over_dim_Zfix_WSO
+df.rename(columns=new_cols, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+plt.title(r"$\mathbf{Mean \; runtimes \; for \; d-collision \; graph \; generation}$", fontsize=16)
+plt.xlabel(r"$\mathbf{Proportion \; of  \;nodes \; in \; the \; input \; Z}$", fontsize=14)
+plt.ylabel(r"$\mathbf{Mean \; runtime \; in  \; seconds}$", fontsize=14)
+plt.xticks(fontsize=12, fontweight='bold')
+plt.yticks(fontsize=12, fontweight='bold')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+## Mean runtimes Qn WO
+
+df = RW_means_over_dim_Qn_WSO
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+plt.figure(figsize= (8,6))
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    plt.plot(x, y, marker='o', label=name)
+
+plt.title(r"$\mathbf{Mean \; runtimes \; for \; Identification \; of \; d-separated \; nodes}$", fontsize=16)
+plt.xlabel(r"$\mathbf{Proportion \; of  \;nodes \; in \; the \; input \; X \cup Z}$", fontsize=14)
+plt.ylabel(r"$\mathbf{Mean \; runtime \; in  \; seconds}$", fontsize=14)
+plt.xticks(fontsize=12, fontweight='bold')
+plt.yticks(fontsize=12, fontweight='bold')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+## Baseline data WO
+
+bs_cols = [0,'Mean']
+relevant_bs = pd.DataFrame(
+    index=baseline_graph_names,
+    columns=bs_cols
+)
+for r in baseline_graph_names:
+    df_means = RW_all_mean_runtimes_WO_baseline_dict[r]
+    df_sds = RW_all_sd_runtimes_WO_baseline_dict[r]
+    df_props = RW_WO_proportions_b[r]
+    for c in bs_cols:
+        if c == 0:
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            prop = df_props.loc[1,0]
+            relevant_bs.loc[r,c] = (mu, sd, prop)
+        elif c == 'Mean':
+           mu = round(RW_overall_means_WO_dict[r]['b'],3)
+           sd = round(RW_overall_sd_WO_dict[r]['b'],3)
+           prop = round(np.mean(df_props),3)
+           relevant_bs.loc[r,c] = (mu, sd, prop)
+relevant_bs.rename(columns={0: (1,0)}, inplace=True)
+
+
+# Bars T
+Tdf_idx = graph_names
+Tdf2_cols = ['Mean', 'Largest']
+Tdf2 = pd.DataFrame(
+    index=Tdf_idx,
+    columns=Tdf2_cols
+)
+for r in Tdf2.index:
+    df = RW_all_mean_runtimes_WSO_Tn_dict[r]
+    for c in Tdf2_cols:
+        if c == 'Mean':
+           v = float(np.mean(df))
+        else:
+            i = relevant_rts1_WSO.loc[r,'Largest'][1]
+            v = df.loc[i[0], i[1]]
+        Tdf2.loc[r,c] = round(v, 3)    
+Tdf2.rename(columns={0: (1,0)}, inplace=True)
+
+# Bars tot
+totn_idx = graph_names
+totn_cols = ['Mean', 'Largest']
+totn = pd.DataFrame(
+    index=totn_idx,
+    columns=totn_cols
+)
+for r in totn.index:
+    df = RW_all_mean_runtimes_WSO_tot_n_dict[r]
+    for c in totn_cols:
+        if c == 'Mean':
+           v = float(np.mean(df))
+        else:
+            i = relevant_rts1_WSO.loc[r,'Largest'][1]
+            v = df.loc[i[0], i[1]]
+        totn.loc[r,c] = round(v, 3)    
+totn.rename(columns={0: (1,0)}, inplace=True)
+
+
+list_pairs = [f"{relevant_rts1_WSO.loc[dag,'Largest'][1]}" for dag in graph_names]
+
+xti = [f"{dag}\n {pair}" for dag, pair in zip(graph_names, list_pairs)]
+
+
+df1 = totn
+df2 = Tdf2
+
+for col in df1.columns:
+    plt.figure()
+    if col == 'Largest':
+        x = xti
+    else:
+        x = [rf"$\mathbf{{{idx}}}$" for idx in df1.index]
+    plt.bar(x, df1[col], label = r"$\mathbf{Identification \; of \; d-separated \; nodes}$")
+    plt.bar(x, df2[col], label = r"$\mathbf{d-collision \; graph \; generation}$")
+    plt.xticks(rotation=45, fontsize=10, fontweight = 'bold')
+    plt.yticks(fontsize=10, fontweight='bold')   
+    plt.tight_layout()
+    if col == "Mean":
+        tit = r"$\mathbf{Overall \; mean  \; runtimes}$"
+    else:
+        tit = r"$\mathbf{Largest \; mean \; runtimes}$"
+    plt.title(tit, fontsize=16)
+
+    plt.ylabel(r"$\mathbf{Mean \; runtime \; in  \; seconds}$", fontsize=14)
+
+    plt.legend(loc='upper center', bbox_to_anchor=(0, 0.8, 0.85, 0.2), reverse=True, fontsize=13)
+    plt.show()
+
+
+###BARS
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.5), sharey=True)
+
+ax1, ax2 = axes
+
+df1 = totn
+df2 = Tdf2
+
+# x = [rf"$\mathbf{{{idx}}}$" for idx in df1.index]
+x = df1.index
+ax1.bar(x, df1['Mean'], label = r"Identification of d-separated nodes")
+ax1.bar(x, df2['Mean'], label = r"d-collision graph generation")
+ax1.tick_params(axis='x', rotation=45, labelsize=10)
+ax1.set_title(r"Overall mean runtimes", fontsize=14)
+ax1.legend(loc='upper center', bbox_to_anchor=(0, 0.8, 0.86, 0.2), reverse=True, fontsize=10.7)
+
+x = [rf"$\mathbf{{{idx}}}$" for idx in df1.index]
+ax2.bar(xti, df1['Largest'], label = r"Identification of d-separated nodes")
+ax2.bar(xti, df2['Largest'], label = r"d-collision graph generation")
+ax2.tick_params(axis='x', rotation=45, labelsize=9.5)
+ax2.set_title(r"Largest mean runtimes", fontsize=14)
+ax2.legend(loc='upper center', bbox_to_anchor=(0, 0.8, 0.86, 0.2), reverse=True, fontsize=10.7)
+ax2.tick_params(axis='y', labelleft=True)
+
+
+# for ax in (ax1, ax2):
+#     for lbl in ax.get_xticklabels() + ax.get_yticklabels():
+#         lbl.set_fontweight('bold')
+
+fig.supylabel("Mean runtime in sec.", y=0.59, fontsize=15)
+fig.tight_layout()
+
+fig.savefig(os.path.join(out_dir, "RW_bars.png"), dpi=300, bbox_inches="tight")
+plt.close(fig)
+img = PIL.Image.open(out_dir / "RW_bars.png")
+img.show()
+
+
+
+####LCS
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 5), sharey=True)
+
+ax1, ax2 = axes
+
+## Mean runtimes T WO
+
+df = RW_means_over_dim_Zfix_WSO
+df.rename(columns=new_cols, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    ax1.plot(x, y, marker='o', label=name)
+ax1.set_title(r"d-collision graph generation", fontsize=14)
+ax1.set_xlabel(r"Proportion of nodes in the input Z", fontsize=16)
+ax1.tick_params(axis='x', labelsize=11)
+#ax1.legend(loc='upper left', ncol=3)
+
+
+## Mean runtimes Qn WO
+
+df = RW_means_over_dim_Qn_WSO
+df.rename(columns=new_cols2, inplace=True)
+x = df.columns.astype(str)   # convert tuple → string
+
+for name in graph_names:
+    y = df.loc[name].astype(float)
+    ax2.plot(x, y, marker='o', label=name)
+
+ax2.set_title(r"Identification of d-separated nodes", fontsize=14)
+ax2.set_xlabel(r"Proportion of nodes  in the input $X \cup Z$", fontsize=16)
+ax2.tick_params(axis='x', labelsize=11)
+ax2.tick_params(axis='y', labelleft=True)
+
+
+#ax2.legend(loc='upper left', ncol=3)
+
+for ax in (ax1, ax2):
+    # for lbl in ax.get_xticklabels() + ax.get_yticklabels():
+    #     lbl.set_fontweight('bold')
+    ax.grid(True, axis='y', alpha=0.3)
+        
+fig.supylabel("Mean runtime in sec.", y=0.46, fontsize=15)
+
+handles, labels = axes[0].get_legend_handles_labels()
+
+fig.legend(
+    handles,
+    labels,
+    loc="upper center",
+    bbox_to_anchor=(0.5, 0.92),
+    ncol=5,
+    frameon=False,
+    prop={'size': 12},
+)
+
+fig.tight_layout(rect=[0, 0, 1, 0.82])
+
+fig.savefig(os.path.join(out_dir, "RW_lcs.png"), dpi=300, bbox_inches="tight")
+plt.close(fig)
+img = PIL.Image.open(out_dir / "RW_lcs.png")
+img.show()

@@ -127,7 +127,7 @@ for name in names_of_graphs:
         rel = Relationship(node_u, "CAUSES", node_v)
         graph_db.merge(rel)
     
-    range_ = [int(N_nodes * f) for f in range_frac]
+    """range_ = [int(N_nodes * f) for f in range_frac]
     
     dim_dict[name] = {'V': N_nodes, 'E' : E_edges, '0': (1,0)}
     for i in range(9):
@@ -146,5 +146,5 @@ name = 'C02'
 pair = 1,0
 h = 13
 X, Z = RW_X_inputs[name][pair][h], RW_Z_inputs[name][pair][h]
-print(f"X = {X}, Z= {Z}")
+print(f"X = {X}, Z= {Z}")"""
 

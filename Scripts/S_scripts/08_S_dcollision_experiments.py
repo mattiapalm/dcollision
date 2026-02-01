@@ -55,8 +55,8 @@ from queries import (
 )
 
 graph_types = ['BA', 'ER', 'LF', 'TR']
-current_run_types = ['ER']
-current_run_dim = ['0']
+current_run_types = ['TR']
+current_run_dim = ['2']
 
 current_run_names = []
 for t in current_run_types:
@@ -136,7 +136,7 @@ for name in current_run_names:
         rel = Relationship(node_u, "CAUSES", node_v)
         graph_db.merge(rel)
     
-    for pair in all_pairs:
+    """for pair in all_pairs:
                 
             card_X, card_Z = pair  # unfolds |X| and |Z|
         
@@ -204,4 +204,4 @@ for name in current_run_names:
                 
             n_pair += 1
             
-file.close()
+file.close()"""
