@@ -1085,6 +1085,29 @@ for r in baseline_graph_names:
            relevant_bs.loc[r,c] = (mu, sd, prop)
 relevant_bs.rename(columns={0: (1,0)}, inplace=True)
 
+## Baseline data
+
+bs_cols = [0,'Mean']
+relevant_bs_all = pd.DataFrame(
+    index=baseline_graph_names,
+    columns=bs_cols
+)
+for r in baseline_graph_names:
+    df_means = RW_all_mean_runtimes_baseline_dict[r]
+    df_sds = RW_all_sd_runtimes_baseline_dict[r]
+    df_props = 1-RW_WO_proportions_b[r]
+    for c in bs_cols:
+        if c == 0:
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            prop = df_props.loc[1,0]
+            relevant_bs.loc[r,c] = (mu, sd, prop)
+        elif c == 'Mean':
+           mu = round(RW_overall_means_WO_dict[r]['b'],3)
+           sd = round(RW_overall_sd_WO_dict[r]['b'],3)
+           prop = round(np.mean(df_props),3)
+           relevant_bs.loc[r,c] = (mu, sd, prop)
+relevant_bs_all.rename(columns={0: (1,0)}, inplace=True)
 
 # Bars T
 Tdf_idx = graph_names

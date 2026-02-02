@@ -250,7 +250,8 @@ for t in graph_types:
         matches = df.where(df == w).stack()
         i = list(matches.index)[0] 
         df_largest_T.loc[t,d] = (round(w,3), i)
-    
+
+
 width=0.25
 step = 0.3
 x_pos = np.arange(4) * step
@@ -370,27 +371,130 @@ df_z1perc = S_means_Qn_over_X_Z1perc
 #df_z1perc = S_means_Qn_over_X_Z1perc_WO
 x = df_z1perc.columns.astype(str)   # convert tuple → string
 
-plt.figure(figsize=(7, 4))
+plt.figure(figsize=(12, 4))
 i = 0
 for GRD in [GR2, GR1, GR0]:
+    d = GRD[0][2]
     for dag in GRD:
         y = df_z1perc.loc[dag].astype(float)
         plt.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
         i += 1
+    plt.title("Mean rt for Id. of d-sep. nodes $|Z|= 0.01\mathcal{|V|}$")
+    plt.xlabel("Proportion of nodes in the input $X$")
+    plt.ylabel("Mean runtime in seconds")
+    plt.grid(True)
+    plt.legend(
+        loc="center left",
+        bbox_to_anchor=(1.02, 0.5),
+        frameon=False
+    )
+    plt.tight_layout(rect=[0, 0, 0.75, 1])
+    plt.savefig(os.path.join(out_dir, f"S_LC_ID_Z1perc_LOG_{d}.png"), dpi=300, bbox_inches="tight")
+    plt.show()
+    plt.close()
+    
+#######
 
-plt.title("Mean rt for Id. of d-sep. nodes $|Z|= 0.01\mathcal{|V|}$")
-plt.xlabel("Proportion of nodes in the input $X$")
-plt.ylabel("Mean runtime in seconds")
-plt.grid(True)
-plt.legend(
-    loc="center left",
-    bbox_to_anchor=(1.02, 0.5),
-    frameon=False
-)
-plt.tight_layout(rect=[0, 0, 0.75, 1])
-plt.savefig(os.path.join(out_dir, "S_LC_ID_Z1perc_LOG.png"), dpi=300, bbox_inches="tight")
-plt.show()
-plt.close()
+df_x1 = S_means_Qn_over_Z_X1
+#df_x1 = S_means_Qn_over_Z_X1_WO
+x = df_x1.columns.astype(str)   # convert tuple → string
+    
+fig, axes = plt.subplots(1, 3, figsize=(12, 3), sharey=False)
+
+i=0
+for GRD in [GR0, GR1, GR2]:
+    ax = axes[i]
+    d = GRD[0][2]
+    for dag in GRD:
+        y = df_x1.loc[dag].astype(float)
+        ax.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        
+    #ax.set_title(f"{GRD}")
+    ax.set_xlabel("Proportion of nodes in the input $Z$")
+    ax.tick_params(axis='x', labelsize=8)
+    ax.tick_params(axis='y', labelsize=8)
+    if GRD==GR0:
+        leg=ax.legend(title='GR0', loc='upper right', ncol=2, prop={'size':9})
+        # leg.get_title().set_fontweight('bold')
+    else:
+        tit = 'GR'+d
+        leg=ax.legend(title=tit, loc='upper right', ncol=2, prop={'size':9})
+        # leg.get_title().set_fontweight('bold')
+    i+=1
+
+fig.suptitle(r"Synthetic DAGs: Identification of d-separated nodes,   |X|=1", y=0.8, fontsize=12)
+fig.supylabel("Mean runtime in sec.", x=0.04, y=0.44, fontsize=10)
+
+
+for ax in axes:
+    ax.grid(True, axis='y', alpha=0.3)
+    # for lbl in ax.get_xticklabels() + ax.get_yticklabels():
+    #     lbl.set_fontweight('bold')
+        
+axes[0].set_position([0.08, 0.14, 0.255, 0.5833333])
+axes[1].set_position([0.38, 0.14, 0.255, 0.5833333])
+axes[2].set_position([0.68, 0.14, 0.255, 0.5833333])
+
+# 👇 collect legend handles from ONE axis
+handles, labels = axes[0].get_legend_handles_labels()
+
+fig.savefig(os.path.join(out_dir, "S_LC_ID_X1_3in1.png"), dpi=300, bbox_inches="tight")
+plt.close(fig)
+img = PIL.Image.open(out_dir / "S_LC_ID_X1_3in1.png")
+img.show()
+    
+#######
+
+df_z1perc = S_means_Qn_over_X_Z1perc
+#df_z1perc = S_means_Qn_over_X_Z1perc_WO
+x = df_z1perc.columns.astype(str)   # convert tuple → string
+    
+fig, axes = plt.subplots(1, 3, figsize=(12, 3), sharey=False)
+
+i=0
+for GRD in [GR0, GR1, GR2]:
+    ax = axes[i]
+    d = GRD[0][2]
+    for dag in GRD:
+        y = df_z1perc.loc[dag].astype(float)
+        ax.plot(x, y, marker=dict_markers[dag[:2]], color=dict_colors[dag], label=dag)
+        
+    #ax.set_title(f"{GRD}")
+    ax.set_xlabel("Proportion of nodes in the input $X$")
+    ax.tick_params(axis='x', labelsize=8)
+    ax.tick_params(axis='y', labelsize=8)
+    if GRD==GR0:
+        leg=ax.legend(title='GR0', loc='upper right', ncol=2, prop={'size':9})
+        # leg.get_title().set_fontweight('bold')
+    else:
+        tit = 'GR'+d
+        leg=ax.legend(title=tit, loc='upper right', ncol=2, prop={'size':9})
+        # leg.get_title().set_fontweight('bold')
+    i+=1
+
+fig.suptitle(r"Synthetic DAGs: Identification of d-separated nodes,   |Z|=0.01|$\mathcal{V}$|", y=0.8, fontsize=12)
+fig.supylabel("Mean runtime in sec.", x=0.04, y=0.44, fontsize=10)
+
+
+for ax in axes:
+    ax.grid(True, axis='y', alpha=0.3)
+    # for lbl in ax.get_xticklabels() + ax.get_yticklabels():
+    #     lbl.set_fontweight('bold')
+        
+axes[0].set_position([0.08, 0.14, 0.255, 0.5833333])
+axes[1].set_position([0.38, 0.14, 0.255, 0.5833333])
+axes[2].set_position([0.68, 0.14, 0.255, 0.5833333])
+
+# 👇 collect legend handles from ONE axis
+handles, labels = axes[0].get_legend_handles_labels()
+
+fig.savefig(os.path.join(out_dir, "S_LC_ID_Zfix_3in1.png"), dpi=300, bbox_inches="tight")
+plt.close(fig)
+img = PIL.Image.open(out_dir / "S_LC_ID_Zfix_3in1.png")
+img.show()
+
+
+#######
 
 plt.figure(figsize=(7, 4))
 i = 0

@@ -307,7 +307,7 @@ for name in graph_names:
     
 for name in baseline_graph_names:
     ov_mu_b = np.mean(RW_all_mean_runtimes_baseline_dict[name])
-    ov_sd_b = np.std(RW_all_mean_runtimes_baseline_dict[name])
+    ov_sd_b = np.nanstd(RW_all_mean_runtimes_baseline_dict[name].to_numpy())
     RW_overall_means_dict[name]['b'] = ov_mu_b
     RW_overall_sd_dict[name]['b'] = ov_sd_b
 
@@ -328,6 +328,7 @@ RW_all_var_runtimes_T_Zfix = RW_all_var_runtimes_T_Zfix.sort_index()
 T_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_T_dict.items()}
 RW_all_sd_runtimes_T_Zfix = pd.DataFrame(T_vars)
 RW_all_sd_runtimes_T_Zfix = RW_all_sd_runtimes_T_Zfix.sort_index()
+
 
 # Mean total runtimes with |X U Z| fixed to be plotted
 
@@ -428,6 +429,55 @@ for r in rrts_idx:
         if np.isnan(RW_means_over_dim_Zfix.loc[r,C]):
             idx =str((c-1)*10)+'%'
             RW_means_over_dim_Zfix.loc[r,C] = RW_means_over_dim_Zfix.loc[r,idx]
+            
+            
+## Baseline data
+
+bs_cols = [0,'Mean']
+relevant_bs_all = pd.DataFrame(
+    index=baseline_graph_names,
+    columns=bs_cols
+)
+for r in baseline_graph_names:
+    df_means = RW_all_mean_runtimes_baseline_dict[r]
+    df_sds = RW_all_sd_runtimes_baseline_dict[r]
+    #df_props = 1-RW_WO_proportions_b[r]
+    for c in bs_cols:
+        if c == 0:
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            #prop = df_props.loc[1,0]
+            relevant_bs_all.loc[r,c] = (mu, sd)
+        elif c == 'Mean':
+           mu = round(RW_overall_means_dict[r]['b'],3)
+           sd = round(RW_overall_sd_dict[r]['b'],3)
+           #prop = round(np.mean(df_props),3)
+           relevant_bs_all.loc[r,c] = (mu, sd)
+relevant_bs_all.rename(columns={0: (1,0)}, inplace=True)
+
+## SACHS table
+
+dcm_cols = [0,'Mean']
+relevant_dcm_all = pd.DataFrame(
+    index=baseline_graph_names,
+    columns=bs_cols
+)
+for r in baseline_graph_names:
+    df_means = RW_all_mean_runtimes_tot_n_dict[r]
+    df_sds = RW_all_sd_runtimes_tot_n_dict[r]
+    #df_props = 1-RW_WO_proportions_b[r]
+    for c in bs_cols:
+        if c == 0:
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            #prop = df_props.loc[1,0]
+            relevant_dcm_all.loc[r,c] = (mu, sd)
+        elif c == 'Mean':
+           mu = round(RW_overall_means_dict[r]['tot_n'],3)
+           sd = round(RW_overall_sd_dict[r]['tot_n'],3)
+           #prop = round(np.mean(df_props),3)
+           relevant_dcm_all.loc[r,c] = (mu, sd)
+relevant_dcm_all.rename(columns={0: (1,0)}, inplace=True)
         
     
 ########--------------- Save to disk ---------------########
@@ -849,7 +899,65 @@ for name in graph_names:
     RW_WO_proportions_a[name] = df_a
     if name in baseline_graph_names:
         RW_WO_proportions_b[name] = df_b
+        
 
+RW_outliers_n, RW_outliers_a, RW_outliers_b = {}, {}, {}
+for name in graph_names:
+    RW_outliers_n[name] = 1 - RW_WO_proportions_n[name]
+    RW_outliers_a[name] = 1 - RW_WO_proportions_a[name]
+    if name in baseline_graph_names:
+        RW_outliers_b[name] = 1 - RW_WO_proportions_b[name]
+        
+        
+## Baseline data WO
+
+bs_cols = [0,'Mean']
+relevant_bs = pd.DataFrame(
+    index=baseline_graph_names,
+    columns=bs_cols
+)
+for r in baseline_graph_names:
+    df_means = RW_all_mean_runtimes_WO_baseline_dict[r]
+    df_sds = RW_all_sd_runtimes_WO_baseline_dict[r]
+    df_props = RW_WO_proportions_b[r]
+    for c in bs_cols:
+        if c == 0:
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            prop = df_props.loc[1,0]
+            relevant_bs.loc[r,c] = (mu, sd, prop)
+        elif c == 'Mean':
+           mu = round(RW_overall_means_WO_dict[r]['b'],3)
+           sd = round(RW_overall_sd_WO_dict[r]['b'],3)
+           prop = round(np.mean(df_props),3)
+           relevant_bs.loc[r,c] = (mu, sd, prop)
+relevant_bs.rename(columns={0: (1,0)}, inplace=True)
+
+
+## DCGM data  WO
+
+bs_cols = [0,'Mean']
+relevant_dcm_WO = pd.DataFrame(
+    index=baseline_graph_names,
+    columns=bs_cols
+)
+for r in baseline_graph_names:
+    df_means = RW_all_mean_runtimes_WO_tot_n_dict[r]
+    df_sds = RW_all_sd_runtimes_WO_tot_n_dict[r]
+    df_props = RW_WO_proportions_n[r]
+    for c in bs_cols:
+        if c == 0:
+            mu = round(df_means.loc[1,0], 3)
+            sd = round(df_sds.loc[1,0], 3)
+            prop = df_props.loc[1,0]
+            relevant_dcm_WO.loc[r,c] = (mu, sd, prop)
+        elif c == 'Mean':
+           mu = round(RW_overall_means_WO_dict[r]['tot_n'],3)
+           sd = round(RW_overall_sd_WO_dict[r]['tot_n'],3)
+           prop = round(np.mean(df_props),3)
+           relevant_dcm_WO.loc[r,c] = (mu, sd, prop)
+relevant_dcm_WO.rename(columns={0: (1,0)}, inplace=True)
+        
     
 # Means
 
@@ -963,6 +1071,15 @@ with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_a.pkl", "wb") a
     
 with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_b.pkl", "wb") as f:
     pickle.dump(RW_WO_proportions_b, f)
+    
+with open(BASE / "Results/Runtimes/Proportions/RW_outliers_n.pkl", "wb") as f:
+    pickle.dump(RW_outliers_n, f)
+    
+with open(BASE / "Results/Runtimes/Proportions/RW_outliers_a.pkl", "wb") as f:
+    pickle.dump(RW_outliers_a, f)
+    
+with open(BASE / "Results/Runtimes/Proportions/RW_outliers_b.pkl", "wb") as f:
+    pickle.dump(RW_outliers_b, f)
     
     
 ########--------------- Without Some Outliers ---------------########
