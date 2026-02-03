@@ -129,7 +129,6 @@ for name in names_of_graphs:
     ########--------------- Generate inputs ---------------########
     
     RW_X_inputs[name], RW_Z_inputs[name] = {}, {}
-    random.seed(2026)
 
     for card_X in range_X:
         for card_Z in range_Z:

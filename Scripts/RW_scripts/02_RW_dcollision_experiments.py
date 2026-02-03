@@ -33,7 +33,7 @@ pickle = require("pickle")
 # Neo4j connection settings
 host = "bolt://localhost:7687"
 username = "neo4j"
-neo4j_psw = "graph000"
+neo4j_psw = "password"
 
 # Base path
 BASE = Path(__file__).resolve().parent.parent.parent
@@ -84,8 +84,7 @@ all_paths_to_dags = [path_to_sachs,
                      path_to_link,
                      path_to_munin
                      ]
-names_of_graphs = ['SACHS']
-all_paths_to_dags = [path_to_sachs]
+
 data_files = dict(zip(names_of_graphs, all_paths_to_dags))
 
 ########--------------- Upload the inputs files ---------------########
@@ -101,19 +100,19 @@ with open(inputs_dir / "RW_Z_inputs.pkl", "rb") as f:
 all_runtimes_T_dict = {}
 all_runtimes_Qn_dict = {}
 all_runtimes_tot_n_dict = {}
-all_runtimes_Qa_dict = {}
-all_runtimes_tot_a_dict = {}
+# all_runtimes_Qa_dict = {}
+# all_runtimes_tot_a_dict = {}
 
 for name in names_of_graphs:
     all_runtimes_T_dict[name] = {}
     all_runtimes_Qn_dict[name] = {}
     all_runtimes_tot_n_dict[name] = {}
-    all_runtimes_Qa_dict[name] = {}
-    all_runtimes_tot_a_dict[name] = {}
+    # all_runtimes_Qa_dict[name] = {}
+    # all_runtimes_tot_a_dict[name] = {}
     
 ########--------------- Iterates over the DAGs ---------------########
     
-text_file = open("RW_DC_execution.txt", "w")
+# text_file = open("RW_DC_execution.txt", "w")
 
 for name in names_of_graphs:
     
@@ -137,8 +136,8 @@ for name in names_of_graphs:
     N_nodes = len(G.nodes())   # Number of nodes in the DAG
     
     to_be_printed = f"The graph {name} has {N_nodes} nodes and {len(G.edges())} edges"
-    text_file.write(to_be_printed+'\n')
-    text_file.flush()
+    # text_file.write(to_be_printed+'\n')
+    # text_file.flush()
     print(to_be_printed)
 
     ### Connect to Neo4j
@@ -197,7 +196,7 @@ for name in names_of_graphs:
     n_pair=1   # keeps truck of the current cardinality pair
     
     graph_db.run(query_dcollision_reset)
-    Y_all_dict = {}
+    # Y_all_dict = {}
 
     for pair in all_pairs:
                 
@@ -211,7 +210,7 @@ for name in names_of_graphs:
         Qn_rts, Qa_rts = [], []
         tot_n_rts, tot_a_rts = [], []
         
-        Y_all_dict[pair] = []
+        # Y_all_dict[pair] = []
         
         its = len(X_instances)   # number of iterations (inputs) for the pair
         
@@ -227,24 +226,24 @@ for name in names_of_graphs:
             
             # Run the algorithm
             
-            # Transformation
+            # d-collision graph generation
             start_T = time.time()
             graph_db.run(query_dcollision_1of4, parameters=params_T)
             graph_db.run(query_dcollision_2of4)
             graph_db.run(query_dcollision_3of4)
             end_T = time.time()
             
-            # Native
+            # Identification of d-separated nodes (Native)
             Y_all_n = graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
             end_Qn = time.time()
             
-            # Partial reset
-            graph_db.run(query_dcollision_partial_reset)
+            # # Partial reset
+            # graph_db.run(query_dcollision_partial_reset)
             
-            # APOC
-            start_Qa = time.time()
-            Y_all_a = graph_db.run(query_dcollision_4of4_apoc, parameters=params_Q).evaluate()
-            end_Qa = time.time()
+            # # Identification of d-separated nodes (APOC)
+            # start_Qa = time.time()
+            # Y_all_a = graph_db.run(query_dcollision_4of4_apoc, parameters=params_Q).evaluate()
+            # end_Qa = time.time()
 
             # Reset
             graph_db.run(query_dcollision_reset)
@@ -253,44 +252,47 @@ for name in names_of_graphs:
             T_rt = end_T - start_T; T_rts.append(T_rt)
             Qn_rt = end_Qn - end_T; Qn_rts.append(Qn_rt)
             tot_n_rt = T_rt + Qn_rt; tot_n_rts.append(tot_n_rt)
-            Qa_rt = end_Qa - start_Qa; Qa_rts.append(Qa_rt)
-            tot_a_rt = T_rt + Qa_rt; tot_a_rts.append(tot_a_rt)
+            # Qa_rt = end_Qa - start_Qa; Qa_rts.append(Qa_rt)
+            # tot_a_rt = T_rt + Qa_rt; tot_a_rts.append(tot_a_rt)
             
             all_runtimes_T_dict[name][pair] = T_rts
             all_runtimes_Qn_dict[name][pair] = Qn_rts
             all_runtimes_tot_n_dict[name][pair] = tot_n_rts
-            all_runtimes_Qa_dict[name][pair] = Qa_rts
-            all_runtimes_tot_a_dict[name][pair] = tot_a_rts
-            Y_all_dict[pair].append(Y_all_n)
+            # all_runtimes_Qa_dict[name][pair] = Qa_rts
+            # all_runtimes_tot_a_dict[name][pair] = tot_a_rts
+            # Y_all_dict[pair].append(Y_all_n)
         
             # Save to disk
             
+            # d-collision graph generation
             with open(all_runtimes_dir / "RW_all_runtimes_T_dict.pkl", "wb") as f:
                 pickle.dump(all_runtimes_T_dict, f)
-        
+            
+            # Identification of d-separated nodes
             with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "wb") as f:
                 pickle.dump(all_runtimes_Qn_dict, f)
-        
+                
+            # Total runtimes
             with open(all_runtimes_dir / "RW_all_runtimes_tot_n_dict.pkl", "wb") as f:
                 pickle.dump(all_runtimes_tot_n_dict, f)
                 
-            with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "wb") as f:
-                pickle.dump(all_runtimes_Qa_dict, f)
+            # with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "wb") as f:
+            #     pickle.dump(all_runtimes_Qa_dict, f)
         
-            with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "wb") as f:
-                pickle.dump(all_runtimes_tot_a_dict, f)
+            # with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "wb") as f:
+            #     pickle.dump(all_runtimes_tot_a_dict, f)
                 
-            with open(results_dir / f"RW_Y_all_dict_{name}.pkl", "wb") as f:
-                pickle.dump(Y_all_dict, f)
+            # with open(results_dir / f"RW_Y_all_dict_{name}.pkl", "wb") as f:
+            #     pickle.dump(Y_all_dict, f)
                 
             to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
-            text_file.write(to_be_printed+f"T: {T_rt}; N: {Qn_rt}; A: {Qa_rt}\n")
-            text_file.flush()
+            # text_file.write(to_be_printed+f"T: {T_rt}; N: {Qn_rt}; A: {Qa_rt}\n")
+            # text_file.flush()
             print(to_be_printed)
                 
         n_pair += 1
             
-text_file.close()
+# text_file.close()
 
     
 

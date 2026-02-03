@@ -34,7 +34,7 @@ pickle = require("pickle")
 # Neo4j connection settings
 host = "bolt://localhost:7687"
 username = "neo4j"
-neo4j_psw = "graph000"
+neo4j_psw = "password"
 
 # Base path
 BASE = Path(__file__).resolve().parent.parent.parent
@@ -54,16 +54,28 @@ from queries import query_baseline_1, query_baseline_2
 names_of_graphs = ['SACHS', 'CHILD', 'C01',  'C02']# 'COVID', 'BARLEY', 'WIN95PTS', 'CNSDAG', 'LINK', 'MUNIN']
 
 path_to_sachs = RW_dags_dir / "sachs.bif"
-path_to_child = RW_dags_dir / "child.bif"
-path_to_c01= RW_dags_dir / "c01.json"
+path_to_c01 = RW_dags_dir / "c01.json"
 path_to_c02 = RW_dags_dir / "c02.json"
+path_to_child = RW_dags_dir / "child.bif"
+# path_to_covid19 = RW_dags_dir / "covid19.json"
+# path_to_barley = RW_dags_dir / "barley.bif"
+# path_to_win95pts = RW_dags_dir / "win95pts.bif"
+# path_to_cnsdag = RW_dags_dir / "cnsdag.json"
+# path_to_link = RW_dags_dir / "link.bif"
+# path_to_munin = RW_dags_dir / "munin.bif"
 
 
-all_paths_to_dags = [ path_to_sachs,
-                      path_to_child,
-                      path_to_c01,
-                      path_to_c02
-                    ]
+all_paths_to_dags = [path_to_sachs,
+                     path_to_c01,
+                     path_to_c02,
+                     path_to_child,
+                     # path_to_covid19,
+                     # path_to_barley,
+                     # path_to_win95pts,
+                     # path_to_cnsdag,
+                     # path_to_link,
+                     # path_to_munin
+                     ]
 
 data_files = dict(zip(names_of_graphs, all_paths_to_dags))
 
@@ -83,7 +95,7 @@ for name in names_of_graphs:
 
 ########--------------- Iterates over the DAGs ---------------########
 
-text_file = open("RW_Baseline_execution.txt", "w")
+#text_file = open("RW_Baseline_execution.txt", "w")
 
 ### Open the DAG
 
@@ -106,8 +118,8 @@ for name in names_of_graphs:
     N_nodes = len(G.nodes()) # Number of nodes in the DAG
     
     to_be_printed = f"The graph {name} has {N_nodes} nodes and {len(G.edges())} edges"
-    text_file.write(to_be_printed+'\n')
-    text_file.flush()
+    # text_file.write(to_be_printed+'\n')
+    # text_file.flush()
     print(to_be_printed)
 
     ### Connect to Neo4j
@@ -201,10 +213,10 @@ for name in names_of_graphs:
                 pickle.dump(RW_all_runtimes_baseline_dict, f)
                 
             to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} B; rt:{rt_b}"
-            text_file.write(to_be_printed+'\n')
-            text_file.flush()
+            # text_file.write(to_be_printed+'\n')
+            # text_file.flush()
             print(to_be_printed)
             
         n_pair += 1
         
-text_file.close()
+# text_file.close()

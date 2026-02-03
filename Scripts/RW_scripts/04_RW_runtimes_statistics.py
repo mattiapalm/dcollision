@@ -76,27 +76,27 @@ small_graphs = ['SACHS', 'C01', 'C02', 'CHILD', 'COVID']
 
 ########--------------- Load the runtimes' files ---------------########
     
-## Load transformation runtimes
+## Load d-collision graph generation runtimes
 with open(all_runtimes_dir / "RW_all_runtimes_T_dict.pkl", "rb") as f:
     RW_all_runtimes_T_dict = pickle.load(f)
 
-## Load query runtimes
+## Load Identification of d-separated nodes runtimes
 
 # Native
 with open(all_runtimes_dir / "RW_all_runtimes_Qn_dict.pkl", "rb") as f:
     RW_all_runtimes_Qn_dict = pickle.load(f)
-# APOC
-with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "rb") as f:
-    RW_all_runtimes_Qa_dict = pickle.load(f)
+# # APOC
+# with open(all_runtimes_dir / "RW_all_runtimes_Qa_dict.pkl", "rb") as f:
+#     RW_all_runtimes_Qa_dict = pickle.load(f)
     
 ## Load total runtimes
 
 # Native
 with open(all_runtimes_dir / "RW_all_runtimes_tot_n_dict.pkl", "rb") as f:
     RW_all_runtimes_tot_n_dict = pickle.load(f)
-# APOC
-with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "rb") as f:
-    RW_all_runtimes_tot_a_dict = pickle.load(f)
+# # APOC
+# with open(all_runtimes_dir / "RW_all_runtimes_tot_a_dict.pkl", "rb") as f:
+#     RW_all_runtimes_tot_a_dict = pickle.load(f)
 
 ## Baseline runtimes
 with open(all_runtimes_dir / "RW_all_runtimes_baseline_dict.pkl", "rb") as f:
@@ -109,9 +109,9 @@ with open(BASE / "Results/dim_dict.pkl", "rb") as f:
     
 all_dicts = [RW_all_runtimes_T_dict,
              RW_all_runtimes_Qn_dict,
-             RW_all_runtimes_Qa_dict,
+             # RW_all_runtimes_Qa_dict,
              RW_all_runtimes_tot_n_dict,
-             RW_all_runtimes_tot_a_dict,
+             # RW_all_runtimes_tot_a_dict,
              RW_all_runtimes_baseline_dict
              ]
 
@@ -123,49 +123,49 @@ all_dicts = [RW_all_runtimes_T_dict,
 # Initialization
 RW_all_mean_runtimes_T_dict = {}
 RW_all_mean_runtimes_Qn_dict, RW_all_mean_runtimes_tot_n_dict = {}, {}
-RW_all_mean_runtimes_Qa_dict, RW_all_mean_runtimes_tot_a_dict = {}, {}
+# RW_all_mean_runtimes_Qa_dict, RW_all_mean_runtimes_tot_a_dict = {}, {}
 RW_all_mean_runtimes_baseline_dict = {}
 RW_all_var_runtimes_T_dict = {}
 RW_all_var_runtimes_Qn_dict, RW_all_var_runtimes_tot_n_dict = {}, {}
-RW_all_var_runtimes_Qa_dict, RW_all_var_runtimes_tot_a_dict = {}, {}
+# RW_all_var_runtimes_Qa_dict, RW_all_var_runtimes_tot_a_dict = {}, {}
 RW_all_var_runtimes_baseline_dict = {}
 RW_all_sd_runtimes_T_dict = {}
 RW_all_sd_runtimes_Qn_dict, RW_all_sd_runtimes_tot_n_dict = {}, {}
-RW_all_sd_runtimes_Qa_dict, RW_all_sd_runtimes_tot_a_dict = {}, {}
+# RW_all_sd_runtimes_Qa_dict, RW_all_sd_runtimes_tot_a_dict = {}, {}
 RW_all_sd_runtimes_baseline_dict = {}
 RW_overall_means_dict, RW_overall_sd_dict = {}, {}
 
 RW_all_runtimes_list = [
                           RW_all_runtimes_T_dict,
                           RW_all_runtimes_Qn_dict,
-                          RW_all_runtimes_tot_n_dict,
-                          RW_all_runtimes_Qa_dict,
-                          RW_all_runtimes_tot_a_dict
+                          RW_all_runtimes_tot_n_dict
+                          # ,RW_all_runtimes_Qa_dict,
+                          # RW_all_runtimes_tot_a_dict
                        ]
 
 # Parallel lists for iteration
 means_dict_list = [
     RW_all_mean_runtimes_T_dict,
     RW_all_mean_runtimes_Qn_dict,
-    RW_all_mean_runtimes_tot_n_dict,
-    RW_all_mean_runtimes_Qa_dict,
-    RW_all_mean_runtimes_tot_a_dict
+    RW_all_mean_runtimes_tot_n_dict
+    # ,RW_all_mean_runtimes_Qa_dict,
+    # RW_all_mean_runtimes_tot_a_dict
 ]
 
 vars_dict_list = [
     RW_all_var_runtimes_T_dict,
     RW_all_var_runtimes_Qn_dict,
-    RW_all_var_runtimes_tot_n_dict,
-    RW_all_var_runtimes_Qa_dict,
-    RW_all_var_runtimes_tot_a_dict
+    RW_all_var_runtimes_tot_n_dict
+    # ,RW_all_var_runtimes_Qa_dict,
+    # RW_all_var_runtimes_tot_a_dict
 ]
 
 sd_dict_list = [
     RW_all_sd_runtimes_T_dict,
     RW_all_sd_runtimes_Qn_dict,
-    RW_all_sd_runtimes_tot_n_dict,
-    RW_all_sd_runtimes_Qa_dict,
-    RW_all_sd_runtimes_tot_a_dict
+    RW_all_sd_runtimes_tot_n_dict
+    # ,RW_all_sd_runtimes_Qa_dict,
+    # RW_all_sd_runtimes_tot_a_dict
 ]
 
 X_dims =  [1, '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%']
@@ -287,23 +287,23 @@ for name in graph_names:
     ov_mu_T = np.mean(RW_all_mean_runtimes_T_dict[name])
     ov_mu_Qn = np.mean(RW_all_mean_runtimes_Qn_dict[name])
     ov_mu_tot_n = np.mean(RW_all_mean_runtimes_tot_n_dict[name])
-    ov_mu_Qa = np.mean(RW_all_mean_runtimes_Qa_dict[name])
-    ov_mu_tot_a = np.mean(RW_all_mean_runtimes_tot_a_dict[name])
+    # ov_mu_Qa = np.mean(RW_all_mean_runtimes_Qa_dict[name])
+    # ov_mu_tot_a = np.mean(RW_all_mean_runtimes_tot_a_dict[name])
     ov_sd_T = np.nanstd(RW_all_mean_runtimes_T_dict[name].to_numpy())
     ov_sd_Qn = np.nanstd(RW_all_mean_runtimes_Qn_dict[name].to_numpy())
     ov_sd_tot_n = np.nanstd(RW_all_mean_runtimes_tot_n_dict[name].to_numpy())
-    ov_sd_Qa = np.nanstd(RW_all_mean_runtimes_Qa_dict[name].to_numpy())
-    ov_sd_tot_a = np.nanstd(RW_all_mean_runtimes_tot_a_dict[name].to_numpy())
+    # ov_sd_Qa = np.nanstd(RW_all_mean_runtimes_Qa_dict[name].to_numpy())
+    # ov_sd_tot_a = np.nanstd(RW_all_mean_runtimes_tot_a_dict[name].to_numpy())
     RW_overall_means_dict[name]['T'] = ov_mu_T
     RW_overall_means_dict[name]['Qn'] = ov_mu_Qn
     RW_overall_means_dict[name]['tot_n'] = ov_mu_tot_n
-    RW_overall_means_dict[name]['Qa'] = ov_mu_Qa
-    RW_overall_means_dict[name]['tot_a'] = ov_mu_tot_a
+    # RW_overall_means_dict[name]['Qa'] = ov_mu_Qa
+    # RW_overall_means_dict[name]['tot_a'] = ov_mu_tot_a
     RW_overall_sd_dict[name]['T'] = ov_sd_T
     RW_overall_sd_dict[name]['Qn'] = ov_sd_Qn
     RW_overall_sd_dict[name]['tot_n'] = ov_sd_tot_n
-    RW_overall_sd_dict[name]['Qa'] = ov_sd_Qa
-    RW_overall_sd_dict[name]['tot_a'] = ov_sd_tot_a
+    # RW_overall_sd_dict[name]['Qa'] = ov_sd_Qa
+    # RW_overall_sd_dict[name]['tot_a'] = ov_sd_tot_a
     
 for name in baseline_graph_names:
     ov_mu_b = np.mean(RW_all_mean_runtimes_baseline_dict[name])
@@ -312,7 +312,7 @@ for name in baseline_graph_names:
     RW_overall_sd_dict[name]['b'] = ov_sd_b
 
 
-### Retrieve means and variances of the runtimes for the transformation with |Z| fixed
+### Retrieve means and variances of the runtimes for the d-collision graph generation phase with |Z| fixed
 
 # Means
 T_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_T_dict.items()}
@@ -331,7 +331,6 @@ RW_all_sd_runtimes_T_Zfix = RW_all_sd_runtimes_T_Zfix.sort_index()
 
 
 # Mean total runtimes with |X U Z| fixed to be plotted
-
 
 rrts_idx = RW_all_mean_runtimes_T_Zfix.columns
 
@@ -369,8 +368,9 @@ for r in rrts_idx:
             elif np.isnan(RW_means_over_dim_tot_n.loc[r,C]):
                 idx = str((c-1)*10)+'%'
                 RW_means_over_dim_tot_n.loc[r,C] = RW_means_over_dim_tot_n.loc[r,idx]
-
-# Mean runtimes of Qn phase with |X U Z| fixed to be plotted
+                
+                
+# Mean runtimes of Identification of d-separated nodes with |X U Z| fixed to be plotted
             
 RW_means_over_dim_Qn = pd.DataFrame(
     index=rrts_idx,
@@ -406,7 +406,7 @@ for r in rrts_idx:
                 idx = str((c-1)*10)+'%'
                 RW_means_over_dim_Qn.loc[r,C] = RW_means_over_dim_Qn.loc[r,idx]
             
-# Mean runtimes of T phase with |Z| fixed to be plotted
+# Mean runtimes of d-collision graph generation with |Z| fixed to be plotted
             
 RW_means_over_dim_Zfix = pd.DataFrame(
     index=rrts_idx,
@@ -432,8 +432,7 @@ for r in rrts_idx:
             
             
 ## Baseline data
-
-bs_cols = [0,'Mean']
+bs_cols = [0,'Overall']
 relevant_bs_all = pd.DataFrame(
     index=baseline_graph_names,
     columns=bs_cols
@@ -441,23 +440,19 @@ relevant_bs_all = pd.DataFrame(
 for r in baseline_graph_names:
     df_means = RW_all_mean_runtimes_baseline_dict[r]
     df_sds = RW_all_sd_runtimes_baseline_dict[r]
-    #df_props = 1-RW_WO_proportions_b[r]
     for c in bs_cols:
         if c == 0:
             mu = round(df_means.loc[1,0], 3)
             sd = round(df_sds.loc[1,0], 3)
-            #prop = df_props.loc[1,0]
             relevant_bs_all.loc[r,c] = (mu, sd)
-        elif c == 'Mean':
+        elif c == 'Overall':
            mu = round(RW_overall_means_dict[r]['b'],3)
            sd = round(RW_overall_sd_dict[r]['b'],3)
-           #prop = round(np.mean(df_props),3)
            relevant_bs_all.loc[r,c] = (mu, sd)
 relevant_bs_all.rename(columns={0: (1,0)}, inplace=True)
 
-## SACHS table
-
-dcm_cols = [0,'Mean']
+## d-collision Graph Method table
+dcm_cols = [0,'Overall']
 relevant_dcm_all = pd.DataFrame(
     index=baseline_graph_names,
     columns=bs_cols
@@ -465,17 +460,14 @@ relevant_dcm_all = pd.DataFrame(
 for r in baseline_graph_names:
     df_means = RW_all_mean_runtimes_tot_n_dict[r]
     df_sds = RW_all_sd_runtimes_tot_n_dict[r]
-    #df_props = 1-RW_WO_proportions_b[r]
     for c in bs_cols:
         if c == 0:
             mu = round(df_means.loc[1,0], 3)
             sd = round(df_sds.loc[1,0], 3)
-            #prop = df_props.loc[1,0]
             relevant_dcm_all.loc[r,c] = (mu, sd)
-        elif c == 'Mean':
+        elif c == 'Overall':
            mu = round(RW_overall_means_dict[r]['tot_n'],3)
            sd = round(RW_overall_sd_dict[r]['tot_n'],3)
-           #prop = round(np.mean(df_props),3)
            relevant_dcm_all.loc[r,c] = (mu, sd)
 relevant_dcm_all.rename(columns={0: (1,0)}, inplace=True)
         
@@ -494,11 +486,11 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qn_dict.pkl", "wb") as f:
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_tot_n_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_Qa_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_Qa_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_tot_a_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_tot_a_dict, f)
     
 with open(mean_runtimes_dir/ "RW_all_mean_runtimes_T_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_T_Zfix, f)
@@ -529,11 +521,11 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_Qn_dict.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_var_runtimes_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_tot_n_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_Qa_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_Qa_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_tot_a_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_tot_a_dict, f)
     
 with open(var_runtimes_dir/ "RW_all_var_runtimes_T_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_T_Zfix, f)
@@ -552,11 +544,11 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_Qn_dict.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_sd_runtimes_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_tot_n_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_Qa_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_Qa_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_tot_a_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_tot_a_dict, f)
     
 with open(var_runtimes_dir/ "RW_all_sd_runtimes_T_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_T_Zfix, f)
@@ -572,13 +564,12 @@ with open(var_runtimes_dir / "RW_overall_sd_dict.pkl", "wb") as f:
 ########--------------- Without Outliers ---------------########
 
     
-
 RW_all_runtimes_WO_Tn_dict = copy.deepcopy(RW_all_runtimes_T_dict)
-RW_all_runtimes_WO_Ta_dict = copy.deepcopy(RW_all_runtimes_T_dict)
+# RW_all_runtimes_WO_Ta_dict = copy.deepcopy(RW_all_runtimes_T_dict)
 RW_all_runtimes_WO_Qn_dict = copy.deepcopy(RW_all_runtimes_Qn_dict)
 RW_all_runtimes_WO_tot_n_dict = copy.deepcopy(RW_all_runtimes_tot_n_dict)
-RW_all_runtimes_WO_Qa_dict = copy.deepcopy(RW_all_runtimes_Qa_dict)
-RW_all_runtimes_WO_tot_a_dict = copy.deepcopy(RW_all_runtimes_tot_a_dict)
+# RW_all_runtimes_WO_Qa_dict = copy.deepcopy(RW_all_runtimes_Qa_dict)
+# RW_all_runtimes_WO_tot_a_dict = copy.deepcopy(RW_all_runtimes_tot_a_dict)
 RW_all_runtimes_WO_baseline_dict = copy.deepcopy(RW_all_runtimes_baseline_dict)
 
 threshold = 5
@@ -588,26 +579,29 @@ for name in graph_names:
         RW_all_runtimes_WO_tot_n_dict[name][pair] = [RW_all_runtimes_WO_tot_n_dict[name][pair][i] for i in idx_n]
         RW_all_runtimes_WO_Tn_dict[name][pair] = [RW_all_runtimes_WO_Tn_dict[name][pair][i] for i in idx_n]
         RW_all_runtimes_WO_Qn_dict[name][pair] = [RW_all_runtimes_WO_Qn_dict[name][pair][i] for i in idx_n]
-        idx_a = filter_by_mod_zscore(RW_all_runtimes_WO_tot_a_dict[name][pair], threshold = threshold)
-        RW_all_runtimes_WO_tot_a_dict[name][pair] = [RW_all_runtimes_WO_tot_a_dict[name][pair][i] for i in idx_a]
-        RW_all_runtimes_WO_Ta_dict[name][pair] = [RW_all_runtimes_WO_Ta_dict[name][pair][i] for i in idx_a]
-        RW_all_runtimes_WO_Qa_dict[name][pair] = [RW_all_runtimes_WO_Qa_dict[name][pair][i] for i in idx_a]
+        # idx_a = filter_by_mod_zscore(RW_all_runtimes_WO_tot_a_dict[name][pair], threshold = threshold)
+        # RW_all_runtimes_WO_tot_a_dict[name][pair] = [RW_all_runtimes_WO_tot_a_dict[name][pair][i] for i in idx_a]
+        # RW_all_runtimes_WO_Ta_dict[name][pair] = [RW_all_runtimes_WO_Ta_dict[name][pair][i] for i in idx_a]
+        # RW_all_runtimes_WO_Qa_dict[name][pair] = [RW_all_runtimes_WO_Qa_dict[name][pair][i] for i in idx_a]
         
 
 
 
 # Initialization
-RW_all_mean_runtimes_WO_Tn_dict, RW_all_mean_runtimes_WO_Ta_dict = {}, {}
+RW_all_mean_runtimes_WO_Tn_dict = {}
+# RW_all_mean_runtimes_WO_Ta_dict = {}
 RW_all_mean_runtimes_WO_Qn_dict, RW_all_mean_runtimes_WO_tot_n_dict = {}, {}
-RW_all_mean_runtimes_WO_Qa_dict, RW_all_mean_runtimes_WO_tot_a_dict = {}, {}
+# RW_all_mean_runtimes_WO_Qa_dict, RW_all_mean_runtimes_WO_tot_a_dict = {}, {}
 RW_all_mean_runtimes_WO_baseline_dict = {}
-RW_all_var_runtimes_WO_Tn_dict, RW_all_var_runtimes_WO_Ta_dict = {}, {}
+RW_all_var_runtimes_WO_Tn_dict = {}
+# RW_all_var_runtimes_WO_Ta_dict = {}
 RW_all_var_runtimes_WO_Qn_dict, RW_all_var_runtimes_WO_tot_n_dict = {}, {}
-RW_all_var_runtimes_WO_Qa_dict, RW_all_var_runtimes_WO_tot_a_dict = {}, {}
+# RW_all_var_runtimes_WO_Qa_dict, RW_all_var_runtimes_WO_tot_a_dict = {}, {}
 RW_all_var_runtimes_WO_baseline_dict = {}
-RW_all_sd_runtimes_WO_Tn_dict, RW_all_sd_runtimes_WO_Ta_dict = {}, {}
+RW_all_sd_runtimes_WO_Tn_dict = {}
+# RW_all_sd_runtimes_WO_Ta_dict = {}
 RW_all_sd_runtimes_WO_Qn_dict, RW_all_sd_runtimes_WO_tot_n_dict = {}, {}
-RW_all_sd_runtimes_WO_Qa_dict, RW_all_sd_runtimes_WO_tot_a_dict = {}, {}
+# RW_all_sd_runtimes_WO_Qa_dict, RW_all_sd_runtimes_WO_tot_a_dict = {}, {}
 RW_all_sd_runtimes_WO_baseline_dict = {}
 RW_overall_means_WO_dict, RW_overall_sd_WO_dict = {}, {}
 
@@ -615,38 +609,38 @@ RW_overall_means_WO_dict, RW_overall_sd_WO_dict = {}, {}
 RW_all_runtimes_WO_list = [
                           RW_all_runtimes_WO_Tn_dict,
                           RW_all_runtimes_WO_Qn_dict,
-                          RW_all_runtimes_WO_tot_n_dict,
-                          RW_all_runtimes_WO_Ta_dict,
-                          RW_all_runtimes_WO_Qa_dict,
-                          RW_all_runtimes_WO_tot_a_dict
+                          RW_all_runtimes_WO_tot_n_dict
+                          # ,RW_all_runtimes_WO_Ta_dict
+                          # ,RW_all_runtimes_WO_Qa_dict,
+                          # RW_all_runtimes_WO_tot_a_dict
                           ]
 
 # Parallel lists for iteration
 means_WO_dict_list = [
     RW_all_mean_runtimes_WO_Tn_dict,
     RW_all_mean_runtimes_WO_Qn_dict,
-    RW_all_mean_runtimes_WO_tot_n_dict,
-    RW_all_mean_runtimes_WO_Ta_dict,
-    RW_all_mean_runtimes_WO_Qa_dict,
-    RW_all_mean_runtimes_WO_tot_a_dict
+    RW_all_mean_runtimes_WO_tot_n_dict
+    # ,RW_all_mean_runtimes_WO_Ta_dict
+    # ,RW_all_mean_runtimes_WO_Qa_dict,
+    # RW_all_mean_runtimes_WO_tot_a_dict
     ]
 
 vars_WO_dict_list = [
     RW_all_var_runtimes_WO_Tn_dict,
     RW_all_var_runtimes_WO_Qn_dict,
-    RW_all_var_runtimes_WO_tot_n_dict,
-    RW_all_var_runtimes_WO_Ta_dict,
-    RW_all_var_runtimes_WO_Qa_dict,
-    RW_all_var_runtimes_WO_tot_a_dict
+    RW_all_var_runtimes_WO_tot_n_dict
+    # ,RW_all_var_runtimes_WO_Ta_dict
+    # RW_all_var_runtimes_WO_Qa_dict,
+    # RW_all_var_runtimes_WO_tot_a_dict
     ]
 
 sds_WO_dict_list = [
     RW_all_sd_runtimes_WO_Tn_dict,
     RW_all_sd_runtimes_WO_Qn_dict,
-    RW_all_sd_runtimes_WO_tot_n_dict,
-    RW_all_sd_runtimes_WO_Ta_dict,
-    RW_all_sd_runtimes_WO_Qa_dict,
-    RW_all_sd_runtimes_WO_tot_a_dict
+    RW_all_sd_runtimes_WO_tot_n_dict
+    # ,RW_all_sd_runtimes_WO_Ta_dict
+    # ,RW_all_sd_runtimes_WO_Qa_dict,
+    # RW_all_sd_runtimes_WO_tot_a_dict
     ]
 
 for algo_runtimes, mean_dict, var_dict, sd_dict in zip(RW_all_runtimes_WO_list, means_WO_dict_list, vars_WO_dict_list, sds_WO_dict_list):
@@ -716,34 +710,34 @@ for name in baseline_graph_names:
     RW_all_sd_runtimes_WO_baseline_dict[name] = df_sd
 
 
-# Retrieve means and variances of the runtimes for the transformation with |Z| fixed
+# Retrieve means and variances of the runtimes for d-collision graph generation with |Z| fixed
 
 # Means
 Tn_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WO_Tn_dict.items()}
 RW_all_mean_runtimes_WO_Tn_Zfix = pd.DataFrame(Tn_means)
 RW_all_mean_runtimes_WO_Tn_Zfix = RW_all_mean_runtimes_WO_Tn_Zfix.sort_index()
 
-Ta_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WO_Ta_dict.items()}
-RW_all_mean_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_means)
-RW_all_mean_runtimes_WO_Ta_Zfix = RW_all_mean_runtimes_WO_Ta_Zfix.sort_index()
+# Ta_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WO_Ta_dict.items()}
+# RW_all_mean_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_means)
+# RW_all_mean_runtimes_WO_Ta_Zfix = RW_all_mean_runtimes_WO_Ta_Zfix.sort_index()
 
 # Variances
 Tn_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WO_Tn_dict.items()}
 RW_all_var_runtimes_WO_Tn_Zfix = pd.DataFrame(Tn_vars)
 RW_all_var_runtimes_WO_Tn_Zfix = RW_all_var_runtimes_WO_Tn_Zfix.sort_index()
 
-Ta_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WO_Ta_dict.items()}
-RW_all_var_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_vars)
-RW_all_var_runtimes_WO_Ta_Zfix = RW_all_var_runtimes_WO_Ta_Zfix.sort_index()
+# Ta_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WO_Ta_dict.items()}
+# RW_all_var_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_vars)
+# RW_all_var_runtimes_WO_Ta_Zfix = RW_all_var_runtimes_WO_Ta_Zfix.sort_index()
 
 # Standard deviations
 Tn_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_WO_Tn_dict.items()}
 RW_all_sd_runtimes_WO_Tn_Zfix = pd.DataFrame(Tn_vars)
 RW_all_sd_runtimes_WO_Tn_Zfix = RW_all_sd_runtimes_WO_Tn_Zfix.sort_index()
 
-Ta_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_WO_Ta_dict.items()}
-RW_all_sd_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_vars)
-RW_all_sd_runtimes_WO_Ta_Zfix = RW_all_sd_runtimes_WO_Ta_Zfix.sort_index()
+# Ta_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_WO_Ta_dict.items()}
+# RW_all_sd_runtimes_WO_Ta_Zfix = pd.DataFrame(Ta_vars)
+# RW_all_sd_runtimes_WO_Ta_Zfix = RW_all_sd_runtimes_WO_Ta_Zfix.sort_index()
 
 
 ### Overall means and standard deviations
@@ -752,29 +746,29 @@ for name in graph_names:
     RW_overall_means_WO_dict[name] = {}
     RW_overall_sd_WO_dict[name] = {}
     ov_mu_Tn = np.mean(RW_all_mean_runtimes_WO_Tn_dict[name])
-    ov_mu_Ta = np.mean(RW_all_mean_runtimes_WO_Ta_dict[name])
+    # ov_mu_Ta = np.mean(RW_all_mean_runtimes_WO_Ta_dict[name])
     ov_mu_Qn = np.mean(RW_all_mean_runtimes_WO_Qn_dict[name])
     ov_mu_tot_n = np.mean(RW_all_mean_runtimes_WO_tot_n_dict[name])
-    ov_mu_Qa = np.mean(RW_all_mean_runtimes_WO_Qa_dict[name])
-    ov_mu_tot_a = np.mean(RW_all_mean_runtimes_WO_tot_a_dict[name])
+    # ov_mu_Qa = np.mean(RW_all_mean_runtimes_WO_Qa_dict[name])
+    # ov_mu_tot_a = np.mean(RW_all_mean_runtimes_WO_tot_a_dict[name])
     ov_sd_Tn = np.nanstd(RW_all_mean_runtimes_WO_Tn_dict[name].to_numpy())
-    ov_sd_Ta = np.nanstd(RW_all_mean_runtimes_WO_Ta_dict[name].to_numpy())
+    # ov_sd_Ta = np.nanstd(RW_all_mean_runtimes_WO_Ta_dict[name].to_numpy())
     ov_sd_Qn = np.nanstd(RW_all_mean_runtimes_WO_Qn_dict[name].to_numpy())
     ov_sd_tot_n = np.nanstd(RW_all_mean_runtimes_WO_tot_n_dict[name].to_numpy())
-    ov_sd_Qa = np.nanstd(RW_all_mean_runtimes_WO_Qa_dict[name].to_numpy())
-    ov_sd_tot_a = np.nanstd(RW_all_mean_runtimes_WO_tot_a_dict[name].to_numpy())
+    # ov_sd_Qa = np.nanstd(RW_all_mean_runtimes_WO_Qa_dict[name].to_numpy())
+    # ov_sd_tot_a = np.nanstd(RW_all_mean_runtimes_WO_tot_a_dict[name].to_numpy())
     RW_overall_means_WO_dict[name]['Tn'] = ov_mu_Tn
-    RW_overall_means_WO_dict[name]['Ta'] = ov_mu_Ta
+    # RW_overall_means_WO_dict[name]['Ta'] = ov_mu_Ta
     RW_overall_means_WO_dict[name]['Qn'] = ov_mu_Qn
     RW_overall_means_WO_dict[name]['tot_n'] = ov_mu_tot_n
-    RW_overall_means_WO_dict[name]['Qa'] = ov_mu_Qa
-    RW_overall_means_WO_dict[name]['tot_a'] = ov_mu_tot_a
+    # RW_overall_means_WO_dict[name]['Qa'] = ov_mu_Qa
+    # RW_overall_means_WO_dict[name]['tot_a'] = ov_mu_tot_a
     RW_overall_sd_WO_dict[name]['Tn'] = ov_sd_Tn
-    RW_overall_sd_WO_dict[name]['Ta'] = ov_sd_Ta
+    # RW_overall_sd_WO_dict[name]['Ta'] = ov_sd_Ta
     RW_overall_sd_WO_dict[name]['Qn'] = ov_sd_Qn
     RW_overall_sd_WO_dict[name]['tot_n'] = ov_sd_tot_n
-    RW_overall_sd_WO_dict[name]['Qa'] = ov_sd_Qa
-    RW_overall_sd_WO_dict[name]['tot_a'] = ov_sd_tot_a
+    # RW_overall_sd_WO_dict[name]['Qa'] = ov_sd_Qa
+    # RW_overall_sd_WO_dict[name]['tot_a'] = ov_sd_tot_a
     
 for name in baseline_graph_names:
     ov_mu_b = np.mean(RW_all_mean_runtimes_WO_baseline_dict[name])
@@ -819,7 +813,7 @@ for r in rrts_idx:
                 RW_means_over_dim_tot_n_WO.loc[r,C] = RW_means_over_dim_tot_n_WO.loc[r,idx]
                     
             
-# Mean runtimes of Qn phase with |X U Z| fixed to be plotted
+# Mean runtimes of Identification of d-separated nodes with |X U Z| fixed to be plotted
             
 RW_means_over_dim_Qn_WO = pd.DataFrame(
     index=rrts_idx,
@@ -855,8 +849,7 @@ for r in rrts_idx:
                 idx = str((c-1)*10)+'%'
                 RW_means_over_dim_Qn_WO.loc[r,C] = RW_means_over_dim_Qn_WO.loc[r,idx]
 
-# Mean runtimes of T phase with |Z| fixed to be plotted   
-            
+# Mean runtimes of d-collision graph generation with |Z| fixed to be plotted
 RW_means_over_dim_Zfix_WO = pd.DataFrame(
     index=rrts_idx,
     columns=Z_dims
@@ -881,37 +874,43 @@ for r in rrts_idx:
     
 ### Proportion of instances accounted for the computation of WO statistics
     
-RW_WO_proportions_n, RW_WO_proportions_a, RW_WO_proportions_b = {}, {}, {}
+RW_WO_proportions_n = {}
+# RW_WO_proportions_a = {}
+RW_WO_proportions_b = {}
 for name in graph_names:
-    df_n, df_a = RW_all_mean_runtimes_WO_tot_n_dict[name].copy(), RW_all_mean_runtimes_WO_tot_a_dict[name].copy()
+    df_n = RW_all_mean_runtimes_WO_tot_n_dict[name].copy()
+    # df_a = RW_all_mean_runtimes_WO_tot_a_dict[name].copy()
     if name in baseline_graph_names:
         df_b = RW_all_mean_runtimes_WO_baseline_dict[name].copy()
     for idx in df_n.index:
         for col in df_n.columns:
             if not np.isnan(df_n.loc[idx,col]):
                 perc_n = len(RW_all_runtimes_WO_tot_n_dict[name][(idx, col)]) / 100
-                perc_a = len(RW_all_runtimes_WO_tot_a_dict[name][(idx, col)]) / 100
-                df_n.loc[idx, col], df_a.loc[idx, col] = perc_n, perc_a
+                df_n.loc[idx, col] = perc_n
+                # perc_a = len(RW_all_runtimes_WO_tot_a_dict[name][(idx, col)]) / 100
+                # df_a.loc[idx, col] = perc_a
                 if name in baseline_graph_names:
                     perc_b = len(RW_all_runtimes_WO_baseline_dict[name][(idx, col)]) / 100
                     df_b.loc[idx, col] = perc_b
     RW_WO_proportions_n[name] = df_n
-    RW_WO_proportions_a[name] = df_a
+    # RW_WO_proportions_a[name] = df_a
     if name in baseline_graph_names:
         RW_WO_proportions_b[name] = df_b
         
 
-RW_outliers_n, RW_outliers_a, RW_outliers_b = {}, {}, {}
+RW_outliers_n = {}
+# RW_outliers_a = {}
+RW_outliers_b = {}
 for name in graph_names:
     RW_outliers_n[name] = 1 - RW_WO_proportions_n[name]
-    RW_outliers_a[name] = 1 - RW_WO_proportions_a[name]
+    # RW_outliers_a[name] = 1 - RW_WO_proportions_a[name]
     if name in baseline_graph_names:
         RW_outliers_b[name] = 1 - RW_WO_proportions_b[name]
         
         
 ## Baseline data WO
 
-bs_cols = [0,'Mean']
+bs_cols = [0,'Overall']
 relevant_bs = pd.DataFrame(
     index=baseline_graph_names,
     columns=bs_cols
@@ -919,24 +918,23 @@ relevant_bs = pd.DataFrame(
 for r in baseline_graph_names:
     df_means = RW_all_mean_runtimes_WO_baseline_dict[r]
     df_sds = RW_all_sd_runtimes_WO_baseline_dict[r]
-    df_props = RW_WO_proportions_b[r]
+    df_outs = RW_outliers_b[r]
     for c in bs_cols:
         if c == 0:
             mu = round(df_means.loc[1,0], 3)
             sd = round(df_sds.loc[1,0], 3)
-            prop = df_props.loc[1,0]
-            relevant_bs.loc[r,c] = (mu, sd, prop)
-        elif c == 'Mean':
+            out = round(df_outs.loc[1,0], 3)
+            relevant_bs.loc[r,c] = (mu, sd, out)
+        elif c == 'Overall':
            mu = round(RW_overall_means_WO_dict[r]['b'],3)
            sd = round(RW_overall_sd_WO_dict[r]['b'],3)
-           prop = round(np.mean(df_props),3)
-           relevant_bs.loc[r,c] = (mu, sd, prop)
+           out = round(np.mean(df_outs),3)
+           relevant_bs.loc[r,c] = (mu, sd, out)
 relevant_bs.rename(columns={0: (1,0)}, inplace=True)
 
 
-## DCGM data  WO
-
-bs_cols = [0,'Mean']
+## d-collison Graph Method data WO
+bs_cols = [0,'Overall']
 relevant_dcm_WO = pd.DataFrame(
     index=baseline_graph_names,
     columns=bs_cols
@@ -944,18 +942,18 @@ relevant_dcm_WO = pd.DataFrame(
 for r in baseline_graph_names:
     df_means = RW_all_mean_runtimes_WO_tot_n_dict[r]
     df_sds = RW_all_sd_runtimes_WO_tot_n_dict[r]
-    df_props = RW_WO_proportions_n[r]
+    df_outs = RW_outliers_n[r]
     for c in bs_cols:
         if c == 0:
             mu = round(df_means.loc[1,0], 3)
             sd = round(df_sds.loc[1,0], 3)
-            prop = df_props.loc[1,0]
-            relevant_dcm_WO.loc[r,c] = (mu, sd, prop)
-        elif c == 'Mean':
+            out = round(df_outs.loc[1,0], 3)
+            relevant_dcm_WO.loc[r,c] = (mu, sd, out)
+        elif c == 'Overall':
            mu = round(RW_overall_means_WO_dict[r]['tot_n'],3)
            sd = round(RW_overall_sd_WO_dict[r]['tot_n'],3)
-           prop = round(np.mean(df_props),3)
-           relevant_dcm_WO.loc[r,c] = (mu, sd, prop)
+           out = round(np.mean(df_outs),3)
+           relevant_dcm_WO.loc[r,c] = (mu, sd, out)
 relevant_dcm_WO.rename(columns={0: (1,0)}, inplace=True)
         
     
@@ -964,8 +962,8 @@ relevant_dcm_WO.rename(columns={0: (1,0)}, inplace=True)
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Tn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_Tn_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Ta_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WO_Ta_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Ta_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WO_Ta_dict, f)
 
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_Qn_dict, f)
@@ -973,17 +971,17 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qn_dict.pkl", "wb") as f:
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_tot_n_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WO_Qa_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WO_Qa_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WO_tot_a_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WO_tot_a_dict, f)
     
 with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WO_Tn_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_Tn_Zfix, f)
     
-with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WO_Ta_Zfix, f)
+# with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WO_Ta_Zfix, f)
     
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WO_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WO_baseline_dict, f)
@@ -1005,8 +1003,8 @@ with open(mean_runtimes_dir / "RW_means_over_dim_Zfix_WO.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Tn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_Tn_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Ta_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WO_Ta_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Ta_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WO_Ta_dict, f)
 
 with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_Qn_dict, f)
@@ -1014,17 +1012,17 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Qn_dict.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_var_runtimes_WO_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_tot_n_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WO_Qa_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_WO_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WO_Qa_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_WO_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WO_tot_a_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_WO_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WO_tot_a_dict, f)
     
 with open(var_runtimes_dir/ "RW_all_var_runtimes_WO_Tn_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_Tn_Zfix, f)
     
-with open(var_runtimes_dir/ "RW_all_var_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WO_Ta_Zfix, f)
+# with open(var_runtimes_dir/ "RW_all_var_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WO_Ta_Zfix, f)
     
 with open(var_runtimes_dir / "RW_all_var_runtimes_WO_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WO_baseline_dict, f)
@@ -1034,8 +1032,8 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_WO_baseline_dict.pkl", "wb") a
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Tn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WO_Tn_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Ta_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WO_Ta_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Ta_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WO_Ta_dict, f)
 
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WO_Qn_dict, f)
@@ -1043,17 +1041,17 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qn_dict.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WO_tot_n_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WO_Qa_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WO_Qa_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WO_tot_a_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WO_tot_a_dict, f)
     
 with open(var_runtimes_dir/ "RW_all_sd_runtimes_WO_Tn_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WO_Tn_Zfix, f)
     
-with open(var_runtimes_dir/ "RW_all_sd_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WO_Ta_Zfix, f)
+# with open(var_runtimes_dir/ "RW_all_sd_runtimes_WO_Ta_Zfix.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WO_Ta_Zfix, f)
     
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_baseline_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WO_baseline_dict, f)
@@ -1061,24 +1059,24 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_WO_baseline_dict.pkl", "wb") as
 with open(var_runtimes_dir / "RW_overall_sd_WO_dict.pkl", "wb") as f:
     pickle.dump(RW_overall_sd_WO_dict, f)
     
-# Proportions
+# Proportions and outliers
 
-with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_n.pkl", "wb") as f:
+with open(BASE / "Results/Runtimes/Outliers/RW_WO_proportions_n.pkl", "wb") as f:
     pickle.dump(RW_WO_proportions_n, f)
     
-with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_a.pkl", "wb") as f:
-    pickle.dump(RW_WO_proportions_a, f)
+# with open(BASE / "Results/Runtimes/Outliers/RW_WO_proportions_a.pkl", "wb") as f:
+#     pickle.dump(RW_WO_proportions_a, f)
     
-with open(BASE / "Results/Runtimes/Proportions/RW_WO_proportions_b.pkl", "wb") as f:
+with open(BASE / "Results/Runtimes/Outliers/RW_WO_proportions_b.pkl", "wb") as f:
     pickle.dump(RW_WO_proportions_b, f)
     
-with open(BASE / "Results/Runtimes/Proportions/RW_outliers_n.pkl", "wb") as f:
+with open(BASE / "Results/Runtimes/Outliers/RW_outliers_n.pkl", "wb") as f:
     pickle.dump(RW_outliers_n, f)
     
-with open(BASE / "Results/Runtimes/Proportions/RW_outliers_a.pkl", "wb") as f:
-    pickle.dump(RW_outliers_a, f)
+# with open(BASE / "Results/Runtimes/Outliers/RW_outliers_a.pkl", "wb") as f:
+#     pickle.dump(RW_outliers_a, f)
     
-with open(BASE / "Results/Runtimes/Proportions/RW_outliers_b.pkl", "wb") as f:
+with open(BASE / "Results/Runtimes/Outliers/RW_outliers_b.pkl", "wb") as f:
     pickle.dump(RW_outliers_b, f)
     
     
@@ -1087,74 +1085,74 @@ with open(BASE / "Results/Runtimes/Proportions/RW_outliers_b.pkl", "wb") as f:
     
 
 RW_all_runtimes_WSO_Tn_dict = copy.deepcopy(RW_all_runtimes_T_dict)
-RW_all_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_runtimes_T_dict)
+# RW_all_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_runtimes_T_dict)
 RW_all_runtimes_WSO_Qn_dict = copy.deepcopy(RW_all_runtimes_Qn_dict)
 RW_all_runtimes_WSO_tot_n_dict = copy.deepcopy(RW_all_runtimes_tot_n_dict)
-RW_all_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_runtimes_Qa_dict)
-RW_all_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_runtimes_tot_a_dict)
+# RW_all_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_runtimes_Qa_dict)
+# RW_all_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_runtimes_tot_a_dict)
 
 
 
 # Initialization
 RW_all_mean_runtimes_WSO_Tn_dict = copy.deepcopy(RW_all_mean_runtimes_T_dict)
-RW_all_mean_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_mean_runtimes_T_dict)
+# RW_all_mean_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_mean_runtimes_T_dict)
 RW_all_mean_runtimes_WSO_Qn_dict  = copy.deepcopy(RW_all_mean_runtimes_Qn_dict)
 RW_all_mean_runtimes_WSO_tot_n_dict = copy.deepcopy(RW_all_mean_runtimes_tot_n_dict)
-RW_all_mean_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_mean_runtimes_Qa_dict)
-RW_all_mean_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_mean_runtimes_tot_a_dict)
+# RW_all_mean_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_mean_runtimes_Qa_dict)
+# RW_all_mean_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_mean_runtimes_tot_a_dict)
 
 
 RW_all_var_runtimes_WSO_Tn_dict = copy.deepcopy(RW_all_var_runtimes_T_dict)
-RW_all_var_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_var_runtimes_T_dict)
+# RW_all_var_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_var_runtimes_T_dict)
 RW_all_var_runtimes_WSO_Qn_dict = copy.deepcopy(RW_all_var_runtimes_Qn_dict)
 RW_all_var_runtimes_WSO_tot_n_dict = copy.deepcopy(RW_all_var_runtimes_tot_n_dict)
-RW_all_var_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_var_runtimes_Qa_dict)
-RW_all_var_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_var_runtimes_tot_a_dict)
+# RW_all_var_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_var_runtimes_Qa_dict)
+# RW_all_var_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_var_runtimes_tot_a_dict)
 
 RW_all_sd_runtimes_WSO_Tn_dict = copy.deepcopy(RW_all_sd_runtimes_T_dict)
-RW_all_sd_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_sd_runtimes_T_dict)
+# RW_all_sd_runtimes_WSO_Ta_dict = copy.deepcopy(RW_all_sd_runtimes_T_dict)
 RW_all_sd_runtimes_WSO_Qn_dict = copy.deepcopy(RW_all_sd_runtimes_Qn_dict)
 RW_all_sd_runtimes_WSO_tot_n_dict = copy.deepcopy(RW_all_sd_runtimes_tot_n_dict)
-RW_all_sd_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_sd_runtimes_Qa_dict)
-RW_all_sd_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_sd_runtimes_tot_a_dict)
+# RW_all_sd_runtimes_WSO_Qa_dict = copy.deepcopy(RW_all_sd_runtimes_Qa_dict)
+# RW_all_sd_runtimes_WSO_tot_a_dict = copy.deepcopy(RW_all_sd_runtimes_tot_a_dict)
 
 
 
 RW_all_runtimes_WSO_list = [
                           RW_all_runtimes_WSO_Tn_dict,
                           RW_all_runtimes_WSO_Qn_dict,
-                          RW_all_runtimes_WSO_tot_n_dict,
-                          RW_all_runtimes_WSO_Ta_dict,
-                          RW_all_runtimes_WSO_Qa_dict,
-                          RW_all_runtimes_WSO_tot_a_dict
+                          RW_all_runtimes_WSO_tot_n_dict
+                          # ,RW_all_runtimes_WSO_Ta_dict
+                          # ,RW_all_runtimes_WSO_Qa_dict,
+                          # RW_all_runtimes_WSO_tot_a_dict
                           ]
 
 # Parallel lists for iteration
 means_WSO_dict_list = [
     RW_all_mean_runtimes_WSO_Tn_dict,
     RW_all_mean_runtimes_WSO_Qn_dict,
-    RW_all_mean_runtimes_WSO_tot_n_dict,
-    RW_all_mean_runtimes_WSO_Ta_dict,
-    RW_all_mean_runtimes_WSO_Qa_dict,
-    RW_all_mean_runtimes_WSO_tot_a_dict
+    RW_all_mean_runtimes_WSO_tot_n_dict
+    # ,RW_all_mean_runtimes_WSO_Ta_dict
+    # ,RW_all_mean_runtimes_WSO_Qa_dict,
+    # RW_all_mean_runtimes_WSO_tot_a_dict
     ]
 
 vars_WSO_dict_list = [
     RW_all_var_runtimes_WSO_Tn_dict,
     RW_all_var_runtimes_WSO_Qn_dict,
-    RW_all_var_runtimes_WSO_tot_n_dict,
-    RW_all_var_runtimes_WSO_Ta_dict,
-    RW_all_var_runtimes_WSO_Qa_dict,
-    RW_all_var_runtimes_WSO_tot_a_dict
+    RW_all_var_runtimes_WSO_tot_n_dict
+    # ,RW_all_var_runtimes_WSO_Ta_dict
+    # ,RW_all_var_runtimes_WSO_Qa_dict,
+    # RW_all_var_runtimes_WSO_tot_a_dict
     ]
 
 sds_WSO_dict_list = [
     RW_all_sd_runtimes_WSO_Tn_dict,
     RW_all_sd_runtimes_WSO_Qn_dict,
-    RW_all_sd_runtimes_WSO_tot_n_dict,
-    RW_all_sd_runtimes_WSO_Ta_dict,
-    RW_all_sd_runtimes_WSO_Qa_dict,
-    RW_all_sd_runtimes_WSO_tot_a_dict
+    RW_all_sd_runtimes_WSO_tot_n_dict
+    # ,RW_all_sd_runtimes_WSO_Ta_dict
+    # ,RW_all_sd_runtimes_WSO_Qa_dict,
+    # RW_all_sd_runtimes_WSO_tot_a_dict
     ]
 
 RW_overall_means_WSO_dict = {}
@@ -1172,34 +1170,34 @@ for ar, ar_WO, mu, mu_WO, var, var_WO, sd, sd_WO in zip(RW_all_runtimes_WSO_list
         
 
 
-# Retrieve means and variances of the runtimes for the transformation with |Z| fixed
+# Retrieve means and variances of the runtimes for d-collision graph generation with |Z| fixed
 
 # Means
 Tn_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WSO_Tn_dict.items()}
 RW_all_mean_runtimes_WSO_Tn_Zfix = pd.DataFrame(Tn_means)
 RW_all_mean_runtimes_WSO_Tn_Zfix = RW_all_mean_runtimes_WSO_Tn_Zfix.sort_index()
 
-Ta_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WSO_Ta_dict.items()}
-RW_all_mean_runtimes_WSO_Ta_Zfix = pd.DataFrame(Ta_means)
-RW_all_mean_runtimes_WSO_Ta_Zfix = RW_all_mean_runtimes_WSO_Ta_Zfix.sort_index()
+# Ta_means = {name: df.mean(axis=0) for name, df in RW_all_mean_runtimes_WSO_Ta_dict.items()}
+# RW_all_mean_runtimes_WSO_Ta_Zfix = pd.DataFrame(Ta_means)
+# RW_all_mean_runtimes_WSO_Ta_Zfix = RW_all_mean_runtimes_WSO_Ta_Zfix.sort_index()
 
 # Variances
 Tn_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WSO_Tn_dict.items()}
 RW_all_var_runtimes_WSO_Tn_Zfix = pd.DataFrame(Tn_vars)
 RW_all_var_runtimes_WSO_Tn_Zfix = RW_all_var_runtimes_WSO_Tn_Zfix.sort_index()
 
-Ta_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WSO_Ta_dict.items()}
-RW_all_var_runtimes_WSO_Ta_Zfix = pd.DataFrame(Ta_vars)
-RW_all_var_runtimes_WSO_Ta_Zfix = RW_all_var_runtimes_WSO_Ta_Zfix.sort_index()
+# Ta_vars = {name: df.mean(axis=0) for name, df in RW_all_var_runtimes_WSO_Ta_dict.items()}
+# RW_all_var_runtimes_WSO_Ta_Zfix = pd.DataFrame(Ta_vars)
+# RW_all_var_runtimes_WSO_Ta_Zfix = RW_all_var_runtimes_WSO_Ta_Zfix.sort_index()
 
 # Standard deviations
 Tn_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_WSO_Tn_dict.items()}
 RW_all_sd_runtimes_WSO_Tn_Zfix = pd.DataFrame(Tn_vars)
 RW_all_sd_runtimes_WSO_Tn_Zfix = RW_all_sd_runtimes_WSO_Tn_Zfix.sort_index()
 
-Ta_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_WSO_Ta_dict.items()}
-RW_all_sd_runtimes_WSO_Ta_Zfix = pd.DataFrame(Ta_vars)
-RW_all_sd_runtimes_WSO_Ta_Zfix = RW_all_sd_runtimes_WSO_Ta_Zfix.sort_index()
+# Ta_sds = {name: df.mean(axis=0) for name, df in RW_all_sd_runtimes_WSO_Ta_dict.items()}
+# RW_all_sd_runtimes_WSO_Ta_Zfix = pd.DataFrame(Ta_vars)
+# RW_all_sd_runtimes_WSO_Ta_Zfix = RW_all_sd_runtimes_WSO_Ta_Zfix.sort_index()
 
 
 ### Overall means and standard deviations
@@ -1208,29 +1206,29 @@ for name in graph_names:
     RW_overall_means_WSO_dict[name] = {}
     RW_overall_sd_WSO_dict[name] = {}
     ov_mu_Tn = np.mean(RW_all_mean_runtimes_WSO_Tn_dict[name])
-    ov_mu_Ta = np.mean(RW_all_mean_runtimes_WSO_Ta_dict[name])
+    # ov_mu_Ta = np.mean(RW_all_mean_runtimes_WSO_Ta_dict[name])
     ov_mu_Qn = np.mean(RW_all_mean_runtimes_WSO_Qn_dict[name])
     ov_mu_tot_n = np.mean(RW_all_mean_runtimes_WSO_tot_n_dict[name])
-    ov_mu_Qa = np.mean(RW_all_mean_runtimes_WSO_Qa_dict[name])
-    ov_mu_tot_a = np.mean(RW_all_mean_runtimes_WSO_tot_a_dict[name])
+    # ov_mu_Qa = np.mean(RW_all_mean_runtimes_WSO_Qa_dict[name])
+    # ov_mu_tot_a = np.mean(RW_all_mean_runtimes_WSO_tot_a_dict[name])
     ov_sd_Tn = np.nanstd(RW_all_mean_runtimes_WSO_Tn_dict[name].to_numpy())
-    ov_sd_Ta = np.nanstd(RW_all_mean_runtimes_WSO_Ta_dict[name].to_numpy())
+    # ov_sd_Ta = np.nanstd(RW_all_mean_runtimes_WSO_Ta_dict[name].to_numpy())
     ov_sd_Qn = np.nanstd(RW_all_mean_runtimes_WSO_Qn_dict[name].to_numpy())
     ov_sd_tot_n = np.nanstd(RW_all_mean_runtimes_WSO_tot_n_dict[name].to_numpy())
-    ov_sd_Qa = np.nanstd(RW_all_mean_runtimes_WSO_Qa_dict[name].to_numpy())
-    ov_sd_tot_a = np.nanstd(RW_all_mean_runtimes_WSO_tot_a_dict[name].to_numpy())
+    # ov_sd_Qa = np.nanstd(RW_all_mean_runtimes_WSO_Qa_dict[name].to_numpy())
+    # ov_sd_tot_a = np.nanstd(RW_all_mean_runtimes_WSO_tot_a_dict[name].to_numpy())
     RW_overall_means_WSO_dict[name]['Tn'] = ov_mu_Tn
-    RW_overall_means_WSO_dict[name]['Ta'] = ov_mu_Ta
+    # RW_overall_means_WSO_dict[name]['Ta'] = ov_mu_Ta
     RW_overall_means_WSO_dict[name]['Qn'] = ov_mu_Qn
     RW_overall_means_WSO_dict[name]['tot_n'] = ov_mu_tot_n
-    RW_overall_means_WSO_dict[name]['Qa'] = ov_mu_Qa
-    RW_overall_means_WSO_dict[name]['tot_a'] = ov_mu_tot_a
+    # RW_overall_means_WSO_dict[name]['Qa'] = ov_mu_Qa
+    # RW_overall_means_WSO_dict[name]['tot_a'] = ov_mu_tot_a
     RW_overall_sd_WSO_dict[name]['Tn'] = ov_sd_Tn
-    RW_overall_sd_WSO_dict[name]['Ta'] = ov_sd_Ta
+    # RW_overall_sd_WSO_dict[name]['Ta'] = ov_sd_Ta
     RW_overall_sd_WSO_dict[name]['Qn'] = ov_sd_Qn
     RW_overall_sd_WSO_dict[name]['tot_n'] = ov_sd_tot_n
-    RW_overall_sd_WSO_dict[name]['Qa'] = ov_sd_Qa
-    RW_overall_sd_WSO_dict[name]['tot_a'] = ov_sd_tot_a
+    # RW_overall_sd_WSO_dict[name]['Qa'] = ov_sd_Qa
+    # RW_overall_sd_WSO_dict[name]['tot_a'] = ov_sd_tot_a
     
     
 # Mean total runtimes with |X U Z| fixed to be plotted
@@ -1267,7 +1265,7 @@ for r in WSO_names:
                 RW_means_over_dim_tot_n_WSO.loc[r,C] = RW_means_over_dim_tot_n_WSO.loc[r,idx]
                     
             
-# Mean runtimes of Qn phase with |X U Z| fixed to be plotted
+# Mean runtimes of Identification of d-separated nodes phase with |X U Z| fixed to be plotted
             
 RW_means_over_dim_Qn_WSO = copy.deepcopy(RW_means_over_dim_Qn_WO)
 for r in WSO_names:
@@ -1300,7 +1298,7 @@ for r in WSO_names:
                 idx = str((c-1)*10)+'%'
                 RW_means_over_dim_Qn_WSO.loc[r,C] = RW_means_over_dim_Qn_WSO.loc[r,idx]
 
-# Mean runtimes of T phase with |Z| fixed to be plotted   
+# Mean runtimes of d-collision graph generation with |Z| fixed to be plotted   
             
 RW_means_over_dim_Zfix_WSO = copy.deepcopy(RW_means_over_dim_Zfix_WO)
 df = RW_all_mean_runtimes_WSO_Tn_Zfix
@@ -1320,7 +1318,17 @@ for r in WSO_names:
         if np.isnan(RW_means_over_dim_Zfix_WSO.loc[r,C]):
             idx =str((c-1)*10)+'%'
             RW_means_over_dim_Zfix_WSO.loc[r,C] = RW_means_over_dim_Zfix_WSO.loc[r,idx]
-    
+            
+            
+
+### d-collision Graph Method vs Baseline
+dcgm_vs_baseline = {}
+dcgm_vs_baseline['DCGM'] = relevant_dcm_all
+dcgm_vs_baseline['DCGM_WO'] = relevant_dcm_WO
+dcgm_vs_baseline['Baseline'] = relevant_bs_all
+dcgm_vs_baseline['Baseline_WO'] = relevant_bs
+with open(mean_runtimes_dir / "DCGM_VS_Baseline", "wb") as f:
+    pickle.dump(dcgm_vs_baseline, f)
 
     
 # Means
@@ -1328,8 +1336,8 @@ for r in WSO_names:
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Tn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WSO_Tn_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Ta_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WSO_Ta_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Ta_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WSO_Ta_dict, f)
 
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WSO_Qn_dict, f)
@@ -1337,17 +1345,17 @@ with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Qn_dict.pkl", "wb") as f
 with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WSO_tot_n_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WSO_Qa_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WSO_Qa_dict, f)
     
-with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WSO_tot_a_dict, f)
+# with open(mean_runtimes_dir / "RW_all_mean_runtimes_WSO_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WSO_tot_a_dict, f)
     
 with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WSO_Tn_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_mean_runtimes_WSO_Tn_Zfix, f)
     
-with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WSO_Ta_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_mean_runtimes_WSO_Ta_Zfix, f)
+# with open(mean_runtimes_dir/ "RW_all_mean_runtimes_WSO_Ta_Zfix.pkl", "wb") as f:
+#     pickle.dump(RW_all_mean_runtimes_WSO_Ta_Zfix, f)
     
 with open(mean_runtimes_dir / "RW_overall_means_WSO_dict.pkl", "wb") as f:
     pickle.dump(RW_overall_means_WSO_dict, f)
@@ -1366,8 +1374,8 @@ with open(mean_runtimes_dir / "RW_means_over_dim_Zfix_WSO.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_Tn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WSO_Tn_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_Ta_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WSO_Ta_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_Ta_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WSO_Ta_dict, f)
 
 with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WSO_Qn_dict, f)
@@ -1375,17 +1383,17 @@ with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_Qn_dict.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WSO_tot_n_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WSO_Qa_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WSO_Qa_dict, f)
     
-with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WSO_tot_a_dict, f)
+# with open(var_runtimes_dir / "RW_all_var_runtimes_WSO_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WSO_tot_a_dict, f)
     
 with open(var_runtimes_dir/ "RW_all_var_runtimes_WSO_Tn_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_var_runtimes_WSO_Tn_Zfix, f)
     
-with open(var_runtimes_dir/ "RW_all_var_runtimes_WSO_Ta_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_var_runtimes_WSO_Ta_Zfix, f)
+# with open(var_runtimes_dir/ "RW_all_var_runtimes_WSO_Ta_Zfix.pkl", "wb") as f:
+#     pickle.dump(RW_all_var_runtimes_WSO_Ta_Zfix, f)
     
 
     
@@ -1394,8 +1402,8 @@ with open(var_runtimes_dir/ "RW_all_var_runtimes_WSO_Ta_Zfix.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_Tn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WSO_Tn_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_Ta_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WSO_Ta_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_Ta_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WSO_Ta_dict, f)
 
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_Qn_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WSO_Qn_dict, f)
@@ -1403,17 +1411,17 @@ with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_Qn_dict.pkl", "wb") as f:
 with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_tot_n_dict.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WSO_tot_n_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_Qa_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WSO_Qa_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_Qa_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WSO_Qa_dict, f)
     
-with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_tot_a_dict.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WSO_tot_a_dict, f)
+# with open(var_runtimes_dir / "RW_all_sd_runtimes_WSO_tot_a_dict.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WSO_tot_a_dict, f)
     
 with open(var_runtimes_dir/ "RW_all_sd_runtimes_WSO_Tn_Zfix.pkl", "wb") as f:
     pickle.dump(RW_all_sd_runtimes_WSO_Tn_Zfix, f)
     
-with open(var_runtimes_dir/ "RW_all_sd_runtimes_WSO_Ta_Zfix.pkl", "wb") as f:
-    pickle.dump(RW_all_sd_runtimes_WSO_Ta_Zfix, f)
+# with open(var_runtimes_dir/ "RW_all_sd_runtimes_WSO_Ta_Zfix.pkl", "wb") as f:
+#     pickle.dump(RW_all_sd_runtimes_WSO_Ta_Zfix, f)
  
 with open(var_runtimes_dir / "RW_overall_sd_WSO_dict.pkl", "wb") as f:
     pickle.dump(RW_overall_sd_WSO_dict, f)

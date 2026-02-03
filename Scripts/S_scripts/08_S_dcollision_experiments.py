@@ -32,7 +32,7 @@ pickle = require("pickle")
 # Neo4j connection settings
 host = "bolt://localhost:7687"
 username = "neo4j"
-neo4j_psw = "graph000"
+neo4j_psw = "password"
 
 # Base path
 BASE = Path(__file__).resolve().parent.parent.parent
@@ -55,8 +55,8 @@ from queries import (
 )
 
 graph_types = ['BA', 'ER', 'LF', 'TR']
-current_run_types = ['TR']
-current_run_dim = ['2']
+current_run_types = ['BA','ER','LF','TR']
+current_run_dim = ['0','1','2']
 
 current_run_names = []
 for t in current_run_types:
@@ -68,7 +68,7 @@ for t in current_run_types:
 
 ########--------------- Iterates over the DAGs ---------------########
 
-file = open("S_DC_execution.txt", "w")
+# text_file = open("S_DC_execution.txt", "w")
 
 for name in current_run_names:
     
@@ -80,8 +80,8 @@ for name in current_run_names:
     N_nodes = len(G.nodes())    # Number of nodes in the DAG
 
     to_be_printed = f"The graph {name} has {N_nodes} nodes and {len(G.edges())} edges"
-    """file.write(to_be_printed+'\n')
-    file.flush()"""
+    # file.write(to_be_printed+'\n')
+    # file.flush()
     print(to_be_printed)
         
 # -------
@@ -136,7 +136,7 @@ for name in current_run_names:
         rel = Relationship(node_u, "CAUSES", node_v)
         graph_db.merge(rel)
     
-    """for pair in all_pairs:
+    for pair in all_pairs:
                 
             card_X, card_Z = pair  # unfolds |X| and |Z|
         
@@ -162,14 +162,14 @@ for name in current_run_names:
                 
                 # Run the algorithm
                 
-                # Transformation
+                # d-collision graph generation
                 start_T = time.time()
                 graph_db.run(query_dcollision_1of4, parameters=params_T)
                 graph_db.run(query_dcollision_2of4)
                 graph_db.run(query_dcollision_3of4)
                 end_T = time.time()
                 
-                # Native
+                # Identification of d-separated nodes
                 graph_db.run(query_dcollision_4of4_complete, parameters=params_Q).evaluate()
                 end_Qn = time.time()
                    
@@ -181,7 +181,6 @@ for name in current_run_names:
                 Qn_rt = end_Qn - end_T; Qn_rts.append(Qn_rt)
                 tot_n_rt = T_rt + Qn_rt; tot_n_rts.append(tot_n_rt)
 
-                
                 all_runtimes_T_dict[pair] = T_rts
                 all_runtimes_Qn_dict[pair] = Qn_rts
                 all_runtimes_tot_n_dict[pair] = tot_n_rts
@@ -198,10 +197,10 @@ for name in current_run_names:
                     pickle.dump(all_runtimes_tot_n_dict, f)
                     
                 to_be_printed = f"{name} {n_pair} / {tot_pairs}; |X|: {card_X}, |Z|: {card_Z}; it: {h+1} DC"
-                file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}")
-                file.flush()
+                # text_file.write(to_be_printed+f"\nT: {T_rt}; N: {Qn_rt}")
+                # text_file.flush()
                 print(to_be_printed)
                 
             n_pair += 1
             
-file.close()"""
+# text_file.close()

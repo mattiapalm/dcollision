@@ -204,8 +204,6 @@ for N in card_V_list:
     
     ########--------------- ERDOS-RENYI ---------------########
 
-    
-
     G_er = nx.erdos_renyi_graph(n=N, p=D, directed=False)
     DAG_er = transform_into_DAG(G_er, seed)
     

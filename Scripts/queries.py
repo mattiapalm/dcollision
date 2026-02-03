@@ -78,15 +78,6 @@ WHERE EXISTS {(a)-[:CAUSES*0..]->({in_Z:TRUE})}
 SET a.in_A = TRUE
 """
 
-query_dcollision_2of4_1 = """
-// Step 1: Find the ancestors of the nodes in Z, and set the properties
-MATCH (a)
-WHERE EXISTS {(a)-[:CAUSES]->{0,"""
-
-query_dcollision_2of4_2 = """}({in_Z:TRUE})}
-SET a.in_A = TRUE
-"""
-
 query_dcollision_3of4 =  """
 // Step 2: Draw the :CONNECTED edges determined by Z
 CALL() {

@@ -58,11 +58,9 @@ for t in graph_types:
     prefix = t
 
 ######## Load synthetic DAGs ########
-prefix = 'ER'
+
 for dag in S_dags_dir.iterdir():
     if (dag.is_file()
-        and dag.name.startswith(prefix)
-        and ('0' in dag.name)
         and dag.suffix == ".pkl"):
         with open(dag, "rb") as f:
             G = pickle.load(f)
@@ -101,8 +99,6 @@ for dag in S_dags_dir.iterdir():
             for card_Z in range_Z:
                 card_union = card_X + card_Z
                 if card_union < N:
-                    print(card_X, card_Z)
-                    
                     X_instances, Z_instances = {}, {}
                     for h in range(its):
                         sample_nodes = random.sample(list(G.nodes()), card_union)
@@ -118,7 +114,6 @@ for dag in S_dags_dir.iterdir():
         
         with open(inputs_dir / f"S_Z_inputs_{dag_name}.pkl", "wb") as f:
             pickle.dump(S_Z_inputs, f)
-    
 
             
         
