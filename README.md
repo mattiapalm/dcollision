@@ -17,14 +17,6 @@ This repository includes:
 - Supplemental material associated with the paper
 
 ---
-
-## Table of contents
-
-- 
--
--
-
----
 ## Experimental setup and requirements
 
 The experiments were run on a KVM-based virtual machine with 12 vCPUs, 125 GB RAM, and 1 TB of dedicated storage, running Ubuntu 24.04 LTS. Graph processing used Neo4j 5.26.17 on OpenJDK 17. Neo4j was configured with a 32 GB maximum Java heap and an 80 GB page cache. The experiments were implemented in Python 3.12.3 using a dedicated virtual environment.
