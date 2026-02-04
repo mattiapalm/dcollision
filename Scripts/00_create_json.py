@@ -5,6 +5,12 @@ from networkx.readwrite import json_graph
 from py2neo import Graph, Node, Relationship
 
 
+# Neo4j connection settings
+host = "bolt://localhost:7687"
+username = "neo4j"
+neo4j_psw = "password"
+
+
 # Base path
 BASE = Path(__file__).resolve().parent.parent
 
@@ -12,7 +18,7 @@ BASE = Path(__file__).resolve().parent.parent
 real_world_dags_dir   = BASE / "Real_world_dags"
 
 # Connect to your database
-graph = Graph("bolt://localhost:7687", auth=("neo4j", "graph000"))
+graph = Graph(host, auth=(username, neo4j_psw))
 
 # Run a query
 data = graph.run("MATCH (a)-[r]->(b) RETURN a, r, b").data()

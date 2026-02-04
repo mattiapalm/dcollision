@@ -51,6 +51,7 @@ The synthetic DAGs are produced with both ad-hoc and `NetworkX` methods.
 Scripts are organized as follows:
 - `Scripts/RW_script/` → real-world DAG experiments
 - `Scripts/S_scripts/` → synthetic DAG experiments
+
 Scripts that execute queries (`RW_02`, `RW_03`, `S_08`) require manual configuration of Neo4j credentials:
 
 ```
